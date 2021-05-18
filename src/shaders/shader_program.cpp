@@ -1,11 +1,10 @@
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "ShaderProgram.h"
+#include "shader_program.h"
 
 namespace shaders
 {

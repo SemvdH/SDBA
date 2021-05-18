@@ -6,10 +6,10 @@
 #include <ostream>
 
 #include "models/Model.h"
-#include "renderEngine/Loader.h"
-#include "renderEngine/ObjLoader.h"
+#include "renderEngine/loader.h"
+#include "renderEngine/obj_loader.h"
 #include "renderEngine/Renderer.h"
-#include "shaders/StaticShader.h"
+#include "shaders/static_shader.h"
 #include "toolbox/math.h"
 
 #pragma comment(lib, "glfw3.lib")
@@ -45,13 +45,13 @@ int main(void)
 	
 	
     models::RawModel raw_model = LoadObjModel("res/Tree.obj");
-    models::ModelTexture texture = { renderEngine::loader::LoadTexture("res/TreeTexture.png") };
+    models::ModelTexture texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
     models::TexturedModel model = { raw_model, texture };
     entities::Entity entity(model, glm::vec3(0, -5, -20), glm::vec3(0, 0, 0), 1);
 	
     shaders::StaticShader shader;
     shader.Init();
-    renderEngine::renderer::Init(shader);
+    render_engine::renderer::Init(shader);
 
     entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 	
@@ -64,11 +64,11 @@ int main(void)
         camera.move(window);
 
 		// Render
-        renderEngine::renderer::Prepare();
+        render_engine::renderer::Prepare();
         shader.Start();
         shader.LoadViewMatrix(camera);
 		
-        renderEngine::renderer::Render(entity, shader);
+        render_engine::renderer::Render(entity, shader);
 
 		// Finish up
         shader.Stop();
@@ -78,7 +78,7 @@ int main(void)
 
 	// Clean up
     shader.CleanUp();
-    renderEngine::loader::CleanUp();
+    render_engine::loader::CleanUp();
 	glfwTerminate();
     return 0;
 }

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "../entities/Entity.h"
-#include "../shaders/StaticShader.h"
+#include "../shaders/static_shader.h"
 
-namespace renderEngine
+namespace render_engine
 {
 	namespace renderer
 	{

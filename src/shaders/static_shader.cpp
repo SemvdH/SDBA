@@ -1,4 +1,4 @@
-#include "StaticShader.h"
+#include "static_shader.h"
 #include "../toolbox/math.h"
 
 namespace shaders

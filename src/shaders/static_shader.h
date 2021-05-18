@@ -1,8 +1,7 @@
 #pragma once
 
-#include <string>
 #include <glm/gtc/matrix_transform.hpp>
-#include "ShaderProgram.h"
+#include "shader_program.h"
 #include "../entities/Camera.h"
 
 /*

@@ -2,10 +2,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include "../models/Model.h"
-#include "Renderer.h"
+#include "renderer.h"
 #include "../toolbox/math.h"
 
-namespace renderEngine
+namespace render_engine
 {
 	namespace renderer
 	{

@@ -1,14 +1,14 @@
 #include <GL/glew.h>
 #include "../stb_image.h"
-#include "Loader.h"
+#include "loader.h"
 
-namespace renderEngine
+namespace render_engine
 {
 	namespace loader
 	{
-		static GLuint createVAO();
-		static void storeDataInAttributeList(int attributeNumber, int coordinateSize, std::vector<float>& data);
-		static void bindIndicesBuffer(std::vector<unsigned int>& indices);
+		static GLuint create_vao();
+		static void store_data_in_attribute_list(int attribute_number, int coordinate_size, std::vector<float>& data);
+		static void bind_indices_buffer(std::vector<unsigned int>& indices);
 
 		static std::vector<GLuint> vaos;
 		static std::vector<GLuint> vbos;
@@ -17,35 +17,35 @@ namespace renderEngine
 		/*
 			This function will generate a Model from vertex positions, textureCoordinates and indices.
 		*/
-		struct models::RawModel LoadToVAO(std::vector<float>& positions, std::vector<float>& textureCoords, std::vector<unsigned int>& indices)
+		struct models::RawModel LoadToVAO(std::vector<float>& positions, std::vector<float>& texture_coords, std::vector<unsigned int>& indices)
 		{
-			GLuint vaoID = createVAO();
-			bindIndicesBuffer(indices);
-			storeDataInAttributeList(0, 3, positions);
-			storeDataInAttributeList(1, 2, textureCoords);
+			GLuint vao_id = create_vao();
+			bind_indices_buffer(indices);
+			store_data_in_attribute_list(0, 3, positions);
+			store_data_in_attribute_list(1, 2, texture_coords);
 			glBindVertexArray(0);
-			return { vaoID, static_cast<int>(indices.size()) };
+			return { vao_id, static_cast<int>(indices.size()) };
 		}
 
 		/*
 			Loads an image as texture into openGL
 		 */
-		GLuint LoadTexture(std::string fileName)
+		GLuint LoadTexture(std::string file_name)
 		{
 			int width, height, bpp;
-			unsigned char* imgData = stbi_load(fileName.c_str(), &width, &height, &bpp, 4);
+			unsigned char* imgData = stbi_load(file_name.c_str(), &width, &height, &bpp, 4);
 
-			GLuint textureID;
-			glGenTextures(1, &textureID);
+			GLuint texture_id;
+			glGenTextures(1, &texture_id);
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, textureID);
+			glBindTexture(GL_TEXTURE_2D, texture_id);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			
 			stbi_image_free(imgData);
-			textures.push_back(textureID);
-			return textureID;
+			textures.push_back(texture_id);
+			return texture_id;
 		}
 
 		/*
@@ -61,26 +61,26 @@ namespace renderEngine
 		/*
 			This function will create a new VAO for a new mesh.
 		*/
-		static GLuint createVAO()
+		static GLuint create_vao()
 		{
-			GLuint vaoID;
-			glGenVertexArrays(1, &vaoID);
-			vaos.push_back(vaoID);
-			glBindVertexArray(vaoID);
-			return vaoID;
+			GLuint vao_id;
+			glGenVertexArrays(1, &vao_id);
+			vaos.push_back(vao_id);
+			glBindVertexArray(vao_id);
+			return vao_id;
 		}
 
 		/*
 			This function can store data (vbo) in a vao.
 		*/
-		static void storeDataInAttributeList(int attributeNumber, int coordinateSize, std::vector<float>& data)
+		static void store_data_in_attribute_list(int attribute_number, int coordinate_size, std::vector<float>& data)
 		{
-			GLuint vboID;
-			glGenBuffers(1, &vboID);
-			vbos.push_back(vboID);
-			glBindBuffer(GL_ARRAY_BUFFER, vboID);
+			GLuint vbo_id;
+			glGenBuffers(1, &vbo_id);
+			vbos.push_back(vbo_id);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.size(), &data[0], GL_STATIC_DRAW);
-			glVertexAttribPointer(attributeNumber, coordinateSize, GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(attribute_number, coordinate_size, GL_FLOAT, GL_FALSE, 0, 0);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 
@@ -105,12 +105,12 @@ namespace renderEngine
 					3,1,2
 				};
 		*/
-		static void bindIndicesBuffer(std::vector<unsigned int>& indices)
+		static void bind_indices_buffer(std::vector<unsigned int>& indices)
 		{
-			GLuint vboID;
-			glGenBuffers(1, &vboID);
-			vbos.push_back(vboID);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID);
+			GLuint vbo_id;
+			glGenBuffers(1, &vbo_id);
+			vbos.push_back(vbo_id);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo_id);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), &indices[0], GL_STATIC_DRAW);
 		}
 	}
