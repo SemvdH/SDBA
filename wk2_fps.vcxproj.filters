@@ -36,10 +36,10 @@
     <ClCompile Include="src\shaders\StaticShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\toolbox\Toolbox.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MainManager.cpp">
+    <ClCompile Include="src\toolbox\math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,10 +68,10 @@
     <ClInclude Include="src\shaders\StaticShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\toolbox\Toolbox.h">
+    <ClInclude Include="src\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\stb_image.h">
+    <ClInclude Include="src\toolbox\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

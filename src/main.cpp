@@ -1,18 +1,16 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <vector>
 #define STB_IMAGE_IMPLEMENTATION
-#include <ostream>
-
 #include "stb_image.h"
+#include <ostream>
 
 #include "models/Model.h"
 #include "renderEngine/Loader.h"
 #include "renderEngine/ObjLoader.h"
 #include "renderEngine/Renderer.h"
 #include "shaders/StaticShader.h"
-#include "toolbox/Toolbox.h"
+#include "toolbox/math.h"
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")

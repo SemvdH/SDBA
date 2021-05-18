@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../models/Model.h"
 #include "Renderer.h"
-#include "../toolbox/Toolbox.h"
+#include "../toolbox/math.h"
 
 namespace renderEngine
 {
@@ -52,7 +52,7 @@ namespace renderEngine
 			glEnableVertexAttribArray(1);
 
 			// Load the transformation of the model into the shader
-			const glm::mat4 modelMatrix = toolbox::createModelMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
+			const glm::mat4 modelMatrix = toolbox::CreateModelMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
 			shader.loadModelMatrix(modelMatrix);
 			
 			// Draw the model

@@ -21,13 +21,13 @@
   <ItemGroup>
     <ClCompile Include="src\entities\Camera.cpp" />
     <ClCompile Include="src\entities\Entity.cpp" />
-    <ClCompile Include="src\MainManager.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\renderEngine\Loader.cpp" />
     <ClCompile Include="src\renderEngine\ObjLoader.cpp" />
     <ClCompile Include="src\renderEngine\Renderer.cpp" />
     <ClCompile Include="src\shaders\ShaderProgram.cpp" />
     <ClCompile Include="src\shaders\StaticShader.cpp" />
-    <ClCompile Include="src\toolbox\Toolbox.cpp" />
+    <ClCompile Include="src\toolbox\math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entities\Camera.h" />
@@ -39,7 +39,7 @@
     <ClInclude Include="src\shaders\ShaderProgram.h" />
     <ClInclude Include="src\shaders\StaticShader.h" />
     <ClInclude Include="src\stb_image.h" />
-    <ClInclude Include="src\toolbox\Toolbox.h" />
+    <ClInclude Include="src\toolbox\math.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
