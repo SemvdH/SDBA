@@ -5,6 +5,8 @@
 #include "stb_image.h"
 #include <ostream>
 
+#include <opencv2/core.hpp>
+
 #include "models/model.h"
 #include "renderEngine/loader.h"
 #include "renderEngine/obj_loader.h"
