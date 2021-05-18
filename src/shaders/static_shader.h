@@ -2,7 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include "shader_program.h"
-#include "../entities/Camera.h"
+#include "../entities/camera.h"
 
 /*
 	This class does represents the shaders for the models.

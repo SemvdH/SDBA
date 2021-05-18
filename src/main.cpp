@@ -5,12 +5,12 @@
 #include "stb_image.h"
 #include <ostream>
 
-#include "models/Model.h"
+#include "models/model.h"
 #include "renderEngine/loader.h"
 #include "renderEngine/obj_loader.h"
-#include "renderEngine/Renderer.h"
+#include "renderEngine/renderer.h"
 #include "shaders/static_shader.h"
-#include "toolbox/math.h"
+#include "toolbox/toolbox.h"
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
@@ -60,8 +60,8 @@ int main(void)
 	{
         // Update
         const double delta = UpdateDelta();
-        entity.increaseRotation(glm::vec3(0, 1, 0));
-        camera.move(window);
+        entity.IncreaseRotation(glm::vec3(0, 1, 0));
+        camera.Move(window);
 
 		// Render
         render_engine::renderer::Prepare();

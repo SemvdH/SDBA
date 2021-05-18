@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../entities/Entity.h"
+#include "../entities/entity.h"
 #include "../shaders/static_shader.h"
 
 namespace render_engine

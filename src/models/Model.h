@@ -5,24 +5,24 @@
 namespace models
 {
 	/*
-		Structure for storing a vboID and vertexCount.
+		Structure for storing a vboID and vertex_count.
 
 		This structure represents a Bare bones Model (A mesh without a texture).
-		The vaoID, points to an ID stored by openGL and the
-		vertexCount is how many triangles in the mesh there are.
+		The vao_id, points to an ID stored by openGL and the
+		vertex_count is how many triangles in the mesh there are.
 	*/
 	struct RawModel
 	{
-		GLuint vaoID;
-		int vertexCount;
+		GLuint vao_id;
+		int vertex_count;
 	};
 
 	/*
-		Structure for storing a texture (textureID) to apply to a RawModel.
+		Structure for storing a texture (texture_id) to apply to a RawModel.
 	*/
 	struct ModelTexture
 	{
-		GLuint textureID;
+		GLuint texture_id;
 	};
 	
 	/*
@@ -32,7 +32,7 @@ namespace models
 	*/
 	struct TexturedModel
 	{
-		RawModel rawModel;
+		RawModel raw_model;
 		ModelTexture texture;
 	};
 }

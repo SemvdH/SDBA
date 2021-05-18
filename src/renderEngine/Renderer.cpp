@@ -1,9 +1,8 @@
 #include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
-#include "../models/Model.h"
+#include "../models/model.h"
 #include "renderer.h"
-#include "../toolbox/math.h"
+#include "../toolbox/toolbox.h"
 
 namespace render_engine
 {
@@ -41,24 +40,24 @@ namespace render_engine
 		*/
 		void Render(entities::Entity& entity, shaders::StaticShader& shader)
 		{
-			const models::TexturedModel model = entity.getModel();
-			const models::RawModel rawModel = model.rawModel;
+			const models::TexturedModel model = entity.GetModel();
+			const models::RawModel rawModel = model.raw_model;
 
 			// Enable the model
-			glBindVertexArray(rawModel.vaoID);
+			glBindVertexArray(rawModel.vao_id);
 
 			// Enable the inputs for the vertexShader
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
 
 			// Load the transformation of the model into the shader
-			const glm::mat4 modelMatrix = toolbox::CreateModelMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
+			const glm::mat4 modelMatrix = toolbox::CreateModelMatrix(entity.GetPosition(), entity.GetRotation(), entity.GetScale());
 			shader.LoadModelMatrix(modelMatrix);
 			
 			// Draw the model
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, model.texture.textureID);
-			glDrawElements(GL_TRIANGLES, rawModel.vertexCount, GL_UNSIGNED_INT, 0);
+			glBindTexture(GL_TEXTURE_2D, model.texture.texture_id);
+			glDrawElements(GL_TRIANGLES, rawModel.vertex_count, GL_UNSIGNED_INT, 0);
 			
 			glDisableVertexAttribArray(0);
 			glDisableVertexAttribArray(1);

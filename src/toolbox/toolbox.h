@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../entities/Camera.h"
+#include "../entities/camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace toolbox

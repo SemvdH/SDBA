@@ -6,9 +6,9 @@ namespace render_engine
 {
 	namespace loader
 	{
-		static GLuint create_vao();
-		static void store_data_in_attribute_list(int attribute_number, int coordinate_size, std::vector<float>& data);
-		static void bind_indices_buffer(std::vector<unsigned int>& indices);
+		static GLuint CreateVao();
+		static void StoreDataInAttributeList(int attribute_number, int coordinate_size, std::vector<float>& data);
+		static void BindIndicesBuffer(std::vector<unsigned int>& indices);
 
 		static std::vector<GLuint> vaos;
 		static std::vector<GLuint> vbos;
@@ -19,10 +19,10 @@ namespace render_engine
 		*/
 		struct models::RawModel LoadToVAO(std::vector<float>& positions, std::vector<float>& texture_coords, std::vector<unsigned int>& indices)
 		{
-			GLuint vao_id = create_vao();
-			bind_indices_buffer(indices);
-			store_data_in_attribute_list(0, 3, positions);
-			store_data_in_attribute_list(1, 2, texture_coords);
+			GLuint vao_id = CreateVao();
+			BindIndicesBuffer(indices);
+			StoreDataInAttributeList(0, 3, positions);
+			StoreDataInAttributeList(1, 2, texture_coords);
 			glBindVertexArray(0);
 			return { vao_id, static_cast<int>(indices.size()) };
 		}
@@ -61,7 +61,7 @@ namespace render_engine
 		/*
 			This function will create a new VAO for a new mesh.
 		*/
-		static GLuint create_vao()
+		static GLuint CreateVao()
 		{
 			GLuint vao_id;
 			glGenVertexArrays(1, &vao_id);
@@ -73,7 +73,7 @@ namespace render_engine
 		/*
 			This function can store data (vbo) in a vao.
 		*/
-		static void store_data_in_attribute_list(int attribute_number, int coordinate_size, std::vector<float>& data)
+		static void StoreDataInAttributeList(int attribute_number, int coordinate_size, std::vector<float>& data)
 		{
 			GLuint vbo_id;
 			glGenBuffers(1, &vbo_id);
@@ -105,7 +105,7 @@ namespace render_engine
 					3,1,2
 				};
 		*/
-		static void bind_indices_buffer(std::vector<unsigned int>& indices)
+		static void BindIndicesBuffer(std::vector<unsigned int>& indices)
 		{
 			GLuint vbo_id;
 			glGenBuffers(1, &vbo_id);

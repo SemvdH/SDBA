@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "../models/Model.h"
+#include "../models/model.h"
 
 namespace render_engine
 {

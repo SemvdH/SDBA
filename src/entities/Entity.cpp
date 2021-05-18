@@ -1,6 +1,4 @@
-#include "Entity.h"
-
-#include <iostream>
+#include "entity.h"
 
 namespace entities
 {
@@ -12,14 +10,14 @@ namespace entities
 	{
 	}
 
-	void Entity::increasePosition(const glm::vec3& distance)
+	void Entity::IncreasePosition(const glm::vec3& distance)
 	{
 		position.x += distance.x;
 		position.y += distance.y;
 		position.z += distance.z;
 	}
 
-	void Entity::increaseRotation(const glm::vec3& rotation)
+	void Entity::IncreaseRotation(const glm::vec3& rotation)
 	{
 		this->rotation.x += rotation.x;
 		this->rotation.y += rotation.y;

@@ -1,5 +1,5 @@
 #include "static_shader.h"
-#include "../toolbox/math.h"
+#include "../toolbox/toolbox.h"
 
 namespace shaders
 {
