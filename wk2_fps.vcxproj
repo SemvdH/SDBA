@@ -18,6 +18,29 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\entities\Camera.cpp" />
+    <ClCompile Include="src\entities\Entity.cpp" />
+    <ClCompile Include="src\MainManager.cpp" />
+    <ClCompile Include="src\renderEngine\Loader.cpp" />
+    <ClCompile Include="src\renderEngine\ObjLoader.cpp" />
+    <ClCompile Include="src\renderEngine\Renderer.cpp" />
+    <ClCompile Include="src\shaders\ShaderProgram.cpp" />
+    <ClCompile Include="src\shaders\StaticShader.cpp" />
+    <ClCompile Include="src\toolbox\Toolbox.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\entities\Camera.h" />
+    <ClInclude Include="src\entities\Entity.h" />
+    <ClInclude Include="src\models\Model.h" />
+    <ClInclude Include="src\renderEngine\Loader.h" />
+    <ClInclude Include="src\renderEngine\ObjLoader.h" />
+    <ClInclude Include="src\renderEngine\Renderer.h" />
+    <ClInclude Include="src\shaders\ShaderProgram.h" />
+    <ClInclude Include="src\shaders\StaticShader.h" />
+    <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="src\toolbox\Toolbox.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{A7ECF1BE-DB22-4BF7-BFF6-E3BF72691EE6}</ProjectGuid>
@@ -155,15 +178,6 @@
       <AdditionalLibraryDirectories>$(SolutionDir)lib\glfw-3.3.2\$(Platform);$(SolutionDir)lib\glew-2.1.0\lib\Release\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\FpsCam.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\tigl.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\FpsCam.h" />
-    <ClInclude Include="src\tigl.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
