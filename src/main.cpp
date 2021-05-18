@@ -16,7 +16,7 @@
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
 
-static double updateDelta();
+static double UpdateDelta();
 
 static GLFWwindow* window;
 
@@ -26,7 +26,7 @@ int main(void)
 	#pragma region OPENGL_SETTINGS
     if (!glfwInit())
         throw "Could not inditialize glwf";
-    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGT, "Eindopdracht - Menno Bil", NULL, NULL);
+    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGT, "SDBA", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -44,13 +44,13 @@ int main(void)
     });
 	
 	
-    models::RawModel rawModel = LoadObjModel("res/Tree.obj");
+    models::RawModel raw_model = LoadObjModel("res/Tree.obj");
     models::ModelTexture texture = { renderEngine::loader::LoadTexture("res/TreeTexture.png") };
-    models::TexturedModel model = { rawModel, texture };
+    models::TexturedModel model = { raw_model, texture };
     entities::Entity entity(model, glm::vec3(0, -5, -20), glm::vec3(0, 0, 0), 1);
 	
     shaders::StaticShader shader;
-    shader.init();
+    shader.Init();
     renderEngine::renderer::Init(shader);
 
     entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
@@ -59,35 +59,35 @@ int main(void)
 	while (!glfwWindowShouldClose(window))
 	{
         // Update
-        const double delta = updateDelta();
+        const double delta = UpdateDelta();
         entity.increaseRotation(glm::vec3(0, 1, 0));
         camera.move(window);
 
 		// Render
         renderEngine::renderer::Prepare();
-        shader.start();
-        shader.loadViewMatrix(camera);
+        shader.Start();
+        shader.LoadViewMatrix(camera);
 		
         renderEngine::renderer::Render(entity, shader);
 
 		// Finish up
-        shader.stop();
+        shader.Stop();
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
 	// Clean up
-    shader.cleanUp();
+    shader.CleanUp();
     renderEngine::loader::CleanUp();
 	glfwTerminate();
     return 0;
 }
 
-static double updateDelta()
+static double UpdateDelta()
 {
-    double currentTime = glfwGetTime();
-    static double lastFrameTime = currentTime;
-    double deltaTime = currentTime - lastFrameTime;
-    lastFrameTime = currentTime;
-    return deltaTime;
+    double current_time = glfwGetTime();
+    static double last_frame_time = current_time;
+    double delt_time = current_time - last_frame_time;
+    last_frame_time = current_time;
+    return delt_time;
 }

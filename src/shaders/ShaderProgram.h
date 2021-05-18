@@ -1,12 +1,11 @@
 #pragma once
 
 #include <GL/glew.h>
-#include <glm/gtc/matrix_transform.hpp>
 #include <string>
 
 
 /*
-	This abstract class represents a generic shader program.
+ * This abstract class represents a generic shader program.
  */
 
 namespace shaders
@@ -14,38 +13,37 @@ namespace shaders
 	class ShaderProgram
 	{
 	private:
-		GLuint programID;
-		GLuint vertexShaderID;
-		GLuint fragmentShaderID;
+		GLuint program_id;
+		GLuint vertex_shader_id;
+		GLuint fragment_shader_id;
 
 	public:
-		ShaderProgram(std::string& vertexShader, std::string& fragmentShader);
+		ShaderProgram(std::string& vertex_shader, std::string& fragment_shader);
 		virtual ~ShaderProgram() = default;
 
 		// Call this function after making the shaderprogram (sets all the attributes of the shader)
-		void init();
+		void Init();
 		// Call this function before rendering
-		void start() const;
+		void Start() const;
 		// Call this function after rendering
-		void stop() const;
+		void Stop() const;
 		// Call this function when closing the application
-		void cleanUp() const;
+		void CleanUp() const;
 
 	protected:
 		// Set the inputs of the vertex shader
-		virtual void setAttributes() const = 0;
-		void setAttribute(const GLuint attribute, const char* variableName) const;
+		virtual void SetAttributes() const = 0;
+		void SetAttribute(const GLuint attribute, const char* variable_name) const;
 
 		// Loads value's (uniform variables) into the shader
-		void loadFloat(GLuint location, GLfloat value) const;
-		void loadVector(GLuint location, glm::vec3 vector) const;
-		void loadMatrix(GLuint location, glm::mat4 matrix) const;
+		void LoadFloat(GLuint location, GLfloat value) const;
+		void LoadVector(GLuint location, glm::vec3 vector) const;
+		void LoadMatrix(GLuint location, glm::mat4 matrix) const;
 		
-		virtual void getAllUniformLocations() = 0;
-		GLuint getUniformLocation(const GLchar* uniformName) const;
+		virtual void GetAllUniformLocations() = 0;
+		GLuint GetUniformLocation(const GLchar* uniform_name) const;
 	
 	private:
-		GLuint loadShader(const std::string& shaderString, GLuint type) const;
-		//std::string readFromFile(const std::string& file) const;
+		GLuint LoadShader(const std::string& shader_string, GLuint type) const;
 	};
 }

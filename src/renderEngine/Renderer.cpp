@@ -21,9 +21,9 @@ namespace renderEngine
 			const glm::mat4 projectionMatrix = 
 				glm::perspective(glm::radians(FOV), (WINDOW_WIDTH / WINDOW_HEIGT), NEAR_PLANE, FAR_PLANE);
 			
-			shader.start();
-			shader.loadProjectionMatrix(projectionMatrix);
-			shader.stop();
+			shader.Start();
+			shader.LoadProjectionMatrix(projectionMatrix);
+			shader.Stop();
 		}
 
 		/*
@@ -53,7 +53,7 @@ namespace renderEngine
 
 			// Load the transformation of the model into the shader
 			const glm::mat4 modelMatrix = toolbox::CreateModelMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
-			shader.loadModelMatrix(modelMatrix);
+			shader.LoadModelMatrix(modelMatrix);
 			
 			// Draw the model
 			glActiveTexture(GL_TEXTURE0);

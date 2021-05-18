@@ -14,19 +14,19 @@ namespace shaders
 	class StaticShader : public ShaderProgram
 	{
 	private:
-		GLuint location_modelMatrix;
-		GLuint location_projectionMatrix;
-		GLuint location_viewMatrix;
+		GLuint location_model_matrix;
+		GLuint location_projection_matrix;
+		GLuint location_view_matrix;
 		
 	public:
 		StaticShader();
 
-		void loadModelMatrix(const glm::mat4& matrix) const;
-		void loadProjectionMatrix(const glm::mat4& projection) const;
-		void loadViewMatrix(entities::Camera& camera) const;
+		void LoadModelMatrix(const glm::mat4& matrix) const;
+		void LoadProjectionMatrix(const glm::mat4& projection) const;
+		void LoadViewMatrix(entities::Camera& camera) const;
 			
 	protected:
-		void setAttributes() const override;
-		void getAllUniformLocations() override;
+		void SetAttributes() const override;
+		void GetAllUniformLocations() override;
 	};
 }

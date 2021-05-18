@@ -3,7 +3,7 @@
 
 namespace shaders
 {
-	static std::string vertexShader = R"(
+	static std::string vertex_shader = R"(
 	#version 400 core
 	// The VertexShader is run for each vertex on the screen.
 
@@ -11,78 +11,77 @@ namespace shaders
 	// Position of the vertex
 	in vec3 position;
 	// Coordinates of the texture
-	in vec2 textureCoords;
+	in vec2 texture_coords;
 
-	// Equal to the textureCoords
-	out vec2 passTextureCoords;
+	// Equal to the texture_coords
+	out vec2 pass_texture_coords;
 
-	uniform mat4 modelMatrix;
-	uniform mat4 projectionMatrix;
-	uniform mat4 viewMatrix;
-
+	uniform mat4 model_matrix;
+	uniform mat4 projection_matrix;
+	uniform mat4 view_matrix;
 
 	void main(void)
 	{
 		// Tell OpenGL where to render the vertex
-		gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+		gl_Position = projection_matrix * view_matrix * model_matrix * vec4(position, 1.0);
 
-		// Pass the textureCoords directly to the fragment shader
-		passTextureCoords = textureCoords;
+		// Pass the texture_coords directly to the fragment shader
+		pass_texture_coords = texture_coords;
 	}
 	)";
 	
 
-	static std::string fragmentShader = R"(
+	static std::string fragment_shader = R"(
 	#version 400 core
 	// The FragmentShader is run for each pixel in a face on the screen.
 
 
 	// Interpolated textureCoordinates of the vertex (relative to the distance to each vertex)
-	in vec2 passTextureCoords;
+	in vec2 pass_texture_coords;
 
 	// Final color of the pixel
-	out vec4 outColor;
+	out vec4 out_color;
 
 	// The texture of the model
-	uniform sampler2D textureSampler;
+	uniform sampler2D texture_sampler;
 
 	void main(void)
 	{
-		outColor = texture(textureSampler, passTextureCoords);
+		out_color = texture(texture_sampler, pass_texture_coords);
 	}
 	)";
 	
 	
-	StaticShader::StaticShader(): ShaderProgram(vertexShader, fragmentShader)
+	StaticShader::StaticShader(): ShaderProgram(vertex_shader, fragment_shader)
 	{
 	}
 
-	void StaticShader::loadModelMatrix(const glm::mat4& matrix) const
+	void StaticShader::LoadModelMatrix(const glm::mat4& matrix) const
 	{
-		loadMatrix(location_modelMatrix, matrix);
+		LoadMatrix(location_model_matrix, matrix);
 	}
 
-	void StaticShader::loadProjectionMatrix(const glm::mat4& projection) const
+	void StaticShader::LoadProjectionMatrix(const glm::mat4& projection) const
 	{
-		loadMatrix(location_projectionMatrix, projection);
+		LoadMatrix(location_projection_matrix, projection);
 	}
 
-	void StaticShader::loadViewMatrix(entities::Camera& camera) const
+	void StaticShader::LoadViewMatrix(entities::Camera& camera) const
 	{
-		const glm::mat4 viewMatrix = toolbox::CreateViewMatrix(camera);
-		loadMatrix(location_viewMatrix, viewMatrix);
+		const glm::mat4 view_matrix = toolbox::CreateViewMatrix(camera);
+		LoadMatrix(location_view_matrix, view_matrix);
 	}
 
-	void StaticShader::setAttributes() const
+	void StaticShader::SetAttributes() const
 	{
-		setAttribute(0, "position");
-		setAttribute(1, "textureCoords");
+		SetAttribute(0, "position");
+		SetAttribute(1, "texture_coords");
 	}
 
-	void StaticShader::getAllUniformLocations()
+	void StaticShader::GetAllUniformLocations()
 	{
-		location_modelMatrix = getUniformLocation("modelMatrix");
-		location_projectionMatrix = getUniformLocation("projectionMatrix");
-		location_viewMatrix = getUniformLocation("viewMatrix");
+		location_model_matrix = GetUniformLocation("model_matrix");
+		location_projection_matrix = GetUniformLocation("projection_matrix");
+		location_view_matrix = GetUniformLocation("view_matrix");
 	}
 }

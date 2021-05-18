@@ -9,121 +9,99 @@
 
 namespace shaders
 {
-	ShaderProgram::ShaderProgram(std::string& vertexShader, std::string& fragmentShader)
+	ShaderProgram::ShaderProgram(std::string& vertex_shader, std::string& fragment_shader)
 	{
-		vertexShaderID = loadShader(vertexShader, GL_VERTEX_SHADER);
-		fragmentShaderID = loadShader(fragmentShader, GL_FRAGMENT_SHADER);
-		programID = glCreateProgram();
-		glAttachShader(programID, vertexShaderID);
-		glAttachShader(programID, fragmentShaderID);
+		vertex_shader_id = LoadShader(vertex_shader, GL_VERTEX_SHADER);
+		fragment_shader_id = LoadShader(fragment_shader, GL_FRAGMENT_SHADER);
+		program_id = glCreateProgram();
+		glAttachShader(program_id, vertex_shader_id);
+		glAttachShader(program_id, fragment_shader_id);
 	}
 
-	void ShaderProgram::init()
+	void ShaderProgram::Init()
 	{
-		setAttributes();
-		glLinkProgram(programID);
-		glValidateProgram(programID);
-		getAllUniformLocations();
+		SetAttributes();
+		glLinkProgram(program_id);
+		glValidateProgram(program_id);
+		GetAllUniformLocations();
 	}
 
-	// This method will start the shaders
-	void ShaderProgram::start() const
+	// This method will Start the shaders
+	void ShaderProgram::Start() const
 	{
-		glUseProgram(programID);
+		glUseProgram(program_id);
 	}
 
-	// This method will stop the shaders
-	void ShaderProgram::stop() const
+	// This method will Stop the shaders
+	void ShaderProgram::Stop() const
 	{
 		glUseProgram(0);
 	}
 
 	// This method will clean up all the shaders
-	void ShaderProgram::cleanUp() const
+	void ShaderProgram::CleanUp() const
 	{
-		stop();
-		glDetachShader(programID, vertexShaderID);
-		glDetachShader(programID, fragmentShaderID);
-		glDeleteShader(vertexShaderID);
-		glDeleteShader(fragmentShaderID);
-		glDeleteProgram(programID);
+		Stop();
+		glDetachShader(program_id, vertex_shader_id);
+		glDetachShader(program_id, fragment_shader_id);
+		glDeleteShader(vertex_shader_id);
+		glDeleteShader(fragment_shader_id);
+		glDeleteProgram(program_id);
 	}
 
 	// This method sets an input variabele into the shaders
-	void ShaderProgram::setAttribute(const GLuint attribute, const char* variableName) const
+	void ShaderProgram::SetAttribute(const GLuint attribute, const char* variable_name) const
 	{
-		glBindAttribLocation(programID, attribute, variableName);
+		glBindAttribLocation(program_id, attribute, variable_name);
 	}
 
-	void ShaderProgram::loadFloat(GLuint location, GLfloat value) const
+	void ShaderProgram::LoadFloat(GLuint location, GLfloat value) const
 	{
 		glUniform1f(location, value);
 	}
 
-	void ShaderProgram::loadVector(GLuint location, glm::vec3 vector) const
+	void ShaderProgram::LoadVector(GLuint location, glm::vec3 vector) const
 	{
-		// glUniform3f(location, vector.x, vector.y, vector.z);
 		glUniform3fv(location, 1, glm::value_ptr(vector));
 	}
 
-	void ShaderProgram::loadMatrix(GLuint location, glm::mat4 matrix) const
+	void ShaderProgram::LoadMatrix(GLuint location, glm::mat4 matrix) const
 	{
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	GLuint ShaderProgram::getUniformLocation(const GLchar* uniformName) const
+	GLuint ShaderProgram::GetUniformLocation(const GLchar* uniform_name) const
 	{
-		return glGetUniformLocation(programID, uniformName);
+		return glGetUniformLocation(program_id, uniform_name);
 	}
 
 	// This method loads a shader into openGL
-	GLuint ShaderProgram::loadShader(const std::string& shaderString, const GLuint type) const
+	GLuint ShaderProgram::LoadShader(const std::string& shader_string, const GLuint type) const
 	{
-		const char* shaderText = shaderString.c_str();
-		const GLuint shaderID = glCreateShader(type);
-		glShaderSource(shaderID, 1, &shaderText, NULL);
-		glCompileShader(shaderID);
+		const char* shader_text = shader_string.c_str();
+		const GLuint shader_id = glCreateShader(type);
+		glShaderSource(shader_id, 1, &shader_text, NULL);
+		glCompileShader(shader_id);
 		
 		GLint succes = 0;
-		glGetShaderiv(shaderID, GL_COMPILE_STATUS, &succes);
+		glGetShaderiv(shader_id, GL_COMPILE_STATUS, &succes);
 		if (succes == GL_FALSE)
 		{
-			GLint maxLength = 0;
-			glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
+			GLint max_length = 0;
+			glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &max_length);
 
-			std::vector<GLchar> errorLog(maxLength);
-			glGetShaderInfoLog(shaderID, maxLength, &maxLength, &errorLog[0]);
-			for (std::vector<GLchar>::const_iterator i = errorLog.begin(); i != errorLog.end(); ++i)
+			std::vector<GLchar> error_log(max_length);
+			glGetShaderInfoLog(shader_id, max_length, &max_length, &error_log[0]);
+			for (std::vector<GLchar>::const_iterator i = error_log.begin(); i != error_log.end(); ++i)
 			{
 				std::cout << *i;
 			}
 			std::cout << std::endl;
 			std::cerr << "Could not compile shader" << std::endl;
-			cleanUp();
+			CleanUp();
 			std::exit(-1);
 		}
 
-		return shaderID;
+		return shader_id;
 	}
-
-	//// This method reads a shader from a file into a string
-	//std::string ShaderProgram::readFromFile(const std::string& file) const
-	//{
-	//	std::string content;
-	//	std::ifstream fileStream(file, std::ios::in);
-
-	//	if (!fileStream.is_open()) {
-	//		std::cerr << "Could not read file " << file << ". File does not exist." << std::endl;
-	//		std::exit(-1);
-	//	}
-
-	//	std::string line;
-	//	while (!fileStream.eof()) {
-	//		std::getline(fileStream, line);
-	//		content.append(line + "\n");
-	//	}
-
-	//	fileStream.close();
-	//	return content;
-	//}
 }
