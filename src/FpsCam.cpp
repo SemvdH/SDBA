@@ -28,6 +28,11 @@ void FpsCam::move(float angle, float fac)
 
 void FpsCam::update(GLFWwindow* window)
 {
+	double currentTime = glfwGetTime();
+	static double lastFrameTime = 0;
+	double deltaTime = currentTime - lastFrameTime;
+	lastFrameTime = currentTime;
+
 	double x, y;
 	glfwGetCursorPos(window, &x, &y);
 
@@ -42,11 +47,11 @@ void FpsCam::update(GLFWwindow* window)
 
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		move(0, 0.05f);
+		move(0, 4.0f * deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		move(180, 0.05f);
+		move(180, 4.0f * deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		move(90, 0.05f);
+		move(90, 4.0f * deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		move(-90, 0.05f);
+		move(-90, 4.0f * deltaTime);
 }
