@@ -156,13 +156,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FpsCam.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="tigl.cpp" />
+    <ClCompile Include="src\FpsCam.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\tigl.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FpsCam.h" />
-    <ClInclude Include="tigl.h" />
+    <ClInclude Include="src\FpsCam.h" />
+    <ClInclude Include="src\tigl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

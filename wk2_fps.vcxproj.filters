@@ -15,21 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="tigl.cpp">
+    <ClCompile Include="src\tigl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FpsCam.cpp">
+    <ClCompile Include="src\FpsCam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="tigl.h">
+    <ClInclude Include="src\tigl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FpsCam.h">
+    <ClInclude Include="src\FpsCam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
