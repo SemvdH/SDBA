@@ -12,21 +12,34 @@ namespace shaders
 	in vec3 position;
 	// Coordinates of the texture
 	in vec2 texture_coords;
+	// The normal of the vertex
+	in vec3 normal;
 
 	// Equal to the texture_coords
 	out vec2 pass_texture_coords;
+	out vec3 surface_normal;
+	out vec3 to_light_vector;
+	out vec3 to_camera_vector;
 
 	uniform mat4 model_matrix;
 	uniform mat4 projection_matrix;
 	uniform mat4 view_matrix;
+	uniform vec3 light_position;
 
 	void main(void)
 	{
+		// Calculate the real position of the vertex (after rotation and scaling)
+		vec4 world_position = model_matrix * vec4(position, 1.0);
+	
 		// Tell OpenGL where to render the vertex
-		gl_Position = projection_matrix * view_matrix * model_matrix * vec4(position, 1.0);
+		gl_Position = projection_matrix * view_matrix * world_position;
 
-		// Pass the texture_coords directly to the fragment shader
+		// Pass the textureCoords directly to the fragment shader
 		pass_texture_coords = texture_coords;
+
+		surface_normal = (model_matrix * vec4(normal, 0.0)).xyz;
+		to_light_vector = light_position - world_position.xyz;
+		to_camera_vector = (inverse(view_matrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - world_position.xyz;
 	}
 	)";
 	
@@ -39,15 +52,40 @@ namespace shaders
 	// Interpolated textureCoordinates of the vertex (relative to the distance to each vertex)
 	in vec2 pass_texture_coords;
 
+	in vec3 surface_normal;
+	in vec3 to_light_vector;
+	in vec3 to_camera_vector;
+
 	// Final color of the pixel
 	out vec4 out_color;
 
 	// The texture of the model
 	uniform sampler2D texture_sampler;
 
+	uniform vec3 light_color;
+	uniform float shine_damper;
+	uniform float reflectivity;
+	
 	void main(void)
 	{
-		out_color = texture(texture_sampler, pass_texture_coords);
+		vec3 unit_normal = normalize(surface_normal);
+		vec3 unit_light_vector = normalize(to_light_vector);
+		vec3 unit_camera_vector = normalize(to_camera_vector); 
+
+		// Calculate the diffuse lighting
+		float dot_diffuse = dot(unit_normal, unit_light_vector);
+		float brightness = max(dot_diffuse, 0.1);
+		vec3 diffuse = brightness * light_color;
+
+		// Calculate the specular lighting
+		vec3 light_direction = -unit_light_vector;
+		vec3 reflected_light_direction = reflect(light_direction, unit_normal);
+		float dot_specular = dot(reflected_light_direction, unit_camera_vector);
+		dot_specular = max(dot_specular, 0.0);
+		float damped_specular = pow(dot_specular, shine_damper);
+		vec3 specular = damped_specular * reflectivity * light_color;
+		
+		out_color = vec4(diffuse, 1.0) * texture(texture_sampler, pass_texture_coords) + vec4(specular, 1.0);
 	}
 	)";
 	
@@ -72,16 +110,35 @@ namespace shaders
 		LoadMatrix(location_view_matrix, view_matrix);
 	}
 
+	void StaticShader::LoadLight(entities::Light& light) const
+	{
+		LoadVector(location_light_position, light.GetPosition());
+		LoadVector(location_light_color, light.GetColor());
+	}
+
+	void StaticShader::LoadShineVariables(float shine_damper, float reflectivity) const
+	{
+		LoadFloat(location_shine_damper, shine_damper);
+		LoadFloat(location_reflectivity, reflectivity);
+	}
+
 	void StaticShader::SetAttributes() const
 	{
+		// Load the position VBO and textureCoords VBO from the VAO into the shader "in" variables
 		SetAttribute(0, "position");
 		SetAttribute(1, "texture_coords");
+		SetAttribute(2, "normal");
 	}
 
 	void StaticShader::GetAllUniformLocations()
 	{
+		// Get the locations from the uniform variables from the shaders
 		location_model_matrix = GetUniformLocation("model_matrix");
 		location_projection_matrix = GetUniformLocation("projection_matrix");
 		location_view_matrix = GetUniformLocation("view_matrix");
+		location_light_position = GetUniformLocation("light_position");
+		location_light_color = GetUniformLocation("light_color");
+		location_shine_damper = GetUniformLocation("shine_damper");
+		location_reflectivity = GetUniformLocation("reflectivity");
 	}
 }

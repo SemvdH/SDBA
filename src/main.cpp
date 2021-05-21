@@ -48,8 +48,12 @@ int main(void)
 	
     models::RawModel raw_model = LoadObjModel("res/Tree.obj");
     models::ModelTexture texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
+    texture.shine_damper = 10;
+    texture.reflectivity = 1;
     models::TexturedModel model = { raw_model, texture };
-    entities::Entity entity(model, glm::vec3(0, -5, -20), glm::vec3(0, 0, 0), 1);
+    entities::Entity entity(model, glm::vec3(0, -25, -50), glm::vec3(0, 0, 0), 1);
+
+    entities::Light light(glm::vec3(0, 0, -30), glm::vec3(1, 1, 1));
 	
     shaders::StaticShader shader;
     shader.Init();
@@ -68,6 +72,7 @@ int main(void)
 		// Render
         render_engine::renderer::Prepare();
         shader.Start();
+        shader.LoadLight(light);
         shader.LoadViewMatrix(camera);
 		
         render_engine::renderer::Render(entity, shader);

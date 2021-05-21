@@ -125,5 +125,5 @@ models::RawModel LoadObjModel(std::string file_name)
         vertex_array[p++] = vertex.z;
     }
 
-    return render_engine::loader::LoadToVAO( vertex_array, texture_array, indices);
+    return render_engine::loader::LoadToVAO( vertex_array, texture_array, normal_array, indices);
 }

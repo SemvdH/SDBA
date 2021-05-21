@@ -19,10 +19,15 @@ namespace models
 
 	/*
 		Structure for storing a texture (texture_id) to apply to a RawModel.
+
+		shine_damper = A damper for the angle the model needs to be look at to see reflections
+		reflectivity = The amount of light the model reflects
 	*/
 	struct ModelTexture
 	{
 		GLuint texture_id;
+		float shine_damper = 1;
+		float reflectivity = 0;
 	};
 	
 	/*

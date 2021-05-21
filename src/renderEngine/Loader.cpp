@@ -17,12 +17,13 @@ namespace render_engine
 		/*
 			This function will generate a Model from vertex positions, textureCoordinates and indices.
 		*/
-		struct models::RawModel LoadToVAO(std::vector<float>& positions, std::vector<float>& texture_coords, std::vector<unsigned int>& indices)
+		models::RawModel LoadToVAO(std::vector<float>& positions, std::vector<float>& texture_coords, std::vector<float>& normals, std::vector<unsigned int>& indices)
 		{
 			GLuint vao_id = CreateVao();
 			BindIndicesBuffer(indices);
 			StoreDataInAttributeList(0, 3, positions);
 			StoreDataInAttributeList(1, 2, texture_coords);
+			StoreDataInAttributeList(2, 3, normals);
 			glBindVertexArray(0);
 			return { vao_id, static_cast<int>(indices.size()) };
 		}

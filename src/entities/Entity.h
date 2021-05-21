@@ -5,6 +5,10 @@
 
 namespace entities
 {
+	/*
+	 * This class represents a movable model in the game
+	 */
+	
 	class Entity
 	{
 	private:

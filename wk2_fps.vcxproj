@@ -32,6 +32,7 @@
   <ItemGroup>
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\entity.h" />
+    <ClInclude Include="src\entities\light.h" />
     <ClInclude Include="src\models\model.h" />
     <ClInclude Include="src\renderEngine\loader.h" />
     <ClInclude Include="src\renderEngine\obj_loader.h" />
