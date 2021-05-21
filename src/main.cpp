@@ -57,6 +57,7 @@ int main(void)
 
     entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
+    // create object detection object instance
     computervision::ObjectDetection objDetect;
     
     
