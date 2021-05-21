@@ -1,6 +1,13 @@
+#include "opencv2/opencv.hpp"
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/imgproc.hpp"
+#include "opencv2/videoio.hpp"
+#include <opencv2/highgui.hpp>
+#include <opencv2/video.hpp>
+
 #include "ObjectDetection.h"
 #include "ObjectDetection.h"
-//#include "BackgroundRemover.h"
+#include "BackgroundRemover.h"
 #include "SkinDetector.h"
 #include "FaceDetector.h"
 #include "FingerCount.h"
@@ -8,10 +15,11 @@
 namespace computervision
 {
 	cv::VideoCapture cap(0);
+
 	cv::Mat img, imgGray, img2, img2Gray, img3, img4;
 
 	Mat frame, frameOut, handMask, foreground, fingerCountDebug;
-	//BackgroundRemover backgroundRemover;
+	BackgroundRemover backgroundRemover;
 	SkinDetector skinDetector;
 	FaceDetector faceDetector;
 	FingerCount fingerCount;
@@ -21,15 +29,24 @@ namespace computervision
 	{
 	}
 
-	void ObjectDetection::Init() 
+	bool ObjectDetection::Init() 
 	{
+		if (!cap.isOpened()) {
+			cout << "Can't find camera!" << endl;
+			return false;
+		}
+
 		cap.read(frame);
+		frameOut = frame.clone();
+
 		skinDetector.drawSkinColorSampler(frameOut);
 
 		foreground = backgroundRemover.getForeground(frame);
 
 		faceDetector.removeFaces(frame, foreground);
 		handMask = skinDetector.getSkinMask(foreground);
+
+		return true;
 	}
 
 	void ObjectDetection::readWebcam()

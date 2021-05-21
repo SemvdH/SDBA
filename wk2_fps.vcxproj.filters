@@ -101,7 +101,7 @@
     <ClInclude Include="src\computervision\FaceDetector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\computervision\Header.h">
+    <ClInclude Include="src\computervision\BackgroundRemover.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

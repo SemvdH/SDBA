@@ -37,7 +37,7 @@
   <ItemGroup>
     <ClInclude Include="src\computervision\FaceDetector.h" />
     <ClInclude Include="src\computervision\FingerCount.h" />
-    <ClInclude Include="src\computervision\Header.h" />
+    <ClInclude Include="src\computervision\BackgroundRemover.h" />
     <ClInclude Include="src\computervision\SkinDetector.h" />
     <ClInclude Include="src\computervision\ObjectDetection.h" />
     <ClInclude Include="src\entities\camera.h" />

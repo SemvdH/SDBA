@@ -17,6 +17,7 @@ namespace computervision
 
 	public:
 		ObjectDetection();
+		bool Init();
 		void readWebcam();
 		void showWebcam();
 		void calculateDifference();
