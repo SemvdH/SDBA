@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 #include "shader_program.h"
 #include "../entities/camera.h"
 #include "../entities/light.h"
@@ -14,11 +15,14 @@ namespace shaders
 	class EntityShader : public ShaderProgram
 	{
 	private:
+		const static int MAX_LIGHTS = 4;
+		
 		GLuint location_model_matrix;
 		GLuint location_projection_matrix;
 		GLuint location_view_matrix;
-		GLuint location_light_position;
-		GLuint location_light_color;
+		GLuint location_light_position[MAX_LIGHTS];
+		GLuint location_light_color[MAX_LIGHTS];
+		GLuint location_light_attenuation[MAX_LIGHTS];
 		GLuint location_shine_damper;
 		GLuint location_reflectivity;
 		GLuint location_sky_color;
@@ -48,11 +52,11 @@ namespace shaders
 		void LoadViewMatrix(entities::Camera& camera) const;
 
 		/*
-		 * @brief: A method to load a light into the shader
+		 * @brief: A method to load some lights into the shader
 		 *
-		 * @param light: The light
+		 * @param lights: The lights
 		 */
-		void LoadLight(entities::Light& light) const;
+		void LoadLights(std::vector<entities::Light>& lights) const;
 
 		/*
 		 * @brief: A method to load the the shine variables from a model into the shader

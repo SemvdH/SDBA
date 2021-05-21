@@ -63,9 +63,12 @@ int main(void)
         z += (raw_model.model_size.x * 20);
     }
 
-    entities::Light light(glm::vec3(0, 0, -30), glm::vec3(1, 1, 1));
-	
-    shaders::EntityShader shader;
+    std::vector<entities::Light> lights;
+    lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5)));
+    lights.push_back(entities::Light(glm::vec3(0, 0, -30), glm::vec3(2, 0, 2), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
+    lights.push_back(entities::Light(glm::vec3(0, 0, -200), glm::vec3(0, 2, 0), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
+
+	shaders::EntityShader shader;
     shader.Init();
     render_engine::renderer::Init(shader);
 
@@ -82,7 +85,7 @@ int main(void)
         render_engine::renderer::Prepare();
         shader.Start();
         shader.LoadSkyColor(render_engine::renderer::SKY_COLOR);
-        shader.LoadLight(light);
+        shader.LoadLights(lights);
         shader.LoadViewMatrix(camera);
 		
         /**
