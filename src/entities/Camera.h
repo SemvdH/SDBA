@@ -5,6 +5,10 @@
 
 namespace entities
 {
+	/*
+	 * This class represents the viewport of the game. The whole game is seen through this class
+	 */
+	
 	class Camera
 	{
 	private:

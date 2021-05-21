@@ -15,7 +15,7 @@ namespace render_engine
 		/*
 			This function will load the projectionMatrix into the shader
 		 */
-		void Init(shaders::StaticShader& shader)
+		void Init(shaders::EntityShader& shader)
 		{
 			// Faces which are not facing the camera are not rendered
 			glEnable(GL_CULL_FACE);
@@ -43,7 +43,7 @@ namespace render_engine
 		/*
 			This function will Render a Model on the screen.
 		*/
-		void Render(entities::Entity& entity, shaders::StaticShader& shader)
+		void Render(entities::Entity& entity, shaders::EntityShader& shader)
 		{
 			const models::TexturedModel model = entity.GetModel();
 			const models::RawModel raw_model = model.raw_model;

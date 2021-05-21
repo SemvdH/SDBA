@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../entities/entity.h"
-#include "../shaders/static_shader.h"
+#include "../shaders/entity_shader.h"
 
 namespace render_engine
 {
@@ -10,7 +10,7 @@ namespace render_engine
 		/*
 			Call this function when starting the program
 		 */
-		void Init(shaders::StaticShader& shader);
+		void Init(shaders::EntityShader& shader);
 		
 		/*
 			Call this function before rendering. 
@@ -20,6 +20,6 @@ namespace render_engine
 		/*
 			Call this function when wanting to Render a mesh to the screen.
 		*/
-		void Render(entities::Entity& entity, shaders::StaticShader& shader);
+		void Render(entities::Entity& entity, shaders::EntityShader& shader);
 	}
 }

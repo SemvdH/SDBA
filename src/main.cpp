@@ -11,7 +11,7 @@
 #include "renderEngine/loader.h"
 #include "renderEngine/obj_loader.h"
 #include "renderEngine/renderer.h"
-#include "shaders/static_shader.h"
+#include "shaders/entity_shader.h"
 #include "toolbox/toolbox.h"
 
 #pragma comment(lib, "glfw3.lib")
@@ -46,7 +46,7 @@ int main(void)
     });
 	
 	
-    models::RawModel raw_model = LoadObjModel("res/Tree.obj");
+    models::RawModel raw_model = render_engine::LoadObjModel("res/Tree.obj");
     models::ModelTexture texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
     texture.shine_damper = 10;
     texture.reflectivity = 1;
@@ -55,7 +55,7 @@ int main(void)
 
     entities::Light light(glm::vec3(0, 0, -30), glm::vec3(1, 1, 1));
 	
-    shaders::StaticShader shader;
+    shaders::EntityShader shader;
     shader.Init();
     render_engine::renderer::Init(shader);
 

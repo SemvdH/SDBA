@@ -6,12 +6,12 @@
 #include "../entities/light.h"
 
 /*
-	This class does represents the shaders for the models.
+	This class handles the shaders for the entities.
  */
 
 namespace shaders
 {	
-	class StaticShader : public ShaderProgram
+	class EntityShader : public ShaderProgram
 	{
 	private:
 		GLuint location_model_matrix;
@@ -23,7 +23,7 @@ namespace shaders
 		GLuint location_reflectivity;
 		
 	public:
-		StaticShader();
+		EntityShader();
 
 		void LoadModelMatrix(const glm::mat4& matrix) const;
 		void LoadProjectionMatrix(const glm::mat4& projection) const;

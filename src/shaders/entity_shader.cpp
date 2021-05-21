@@ -1,4 +1,4 @@
-#include "static_shader.h"
+#include "entity_shader.h"
 #include "../toolbox/toolbox.h"
 
 namespace shaders
@@ -90,39 +90,39 @@ namespace shaders
 	)";
 	
 	
-	StaticShader::StaticShader(): ShaderProgram(vertex_shader, fragment_shader)
+	EntityShader::EntityShader(): ShaderProgram(vertex_shader, fragment_shader)
 	{
 	}
 
-	void StaticShader::LoadModelMatrix(const glm::mat4& matrix) const
+	void EntityShader::LoadModelMatrix(const glm::mat4& matrix) const
 	{
 		LoadMatrix(location_model_matrix, matrix);
 	}
 
-	void StaticShader::LoadProjectionMatrix(const glm::mat4& projection) const
+	void EntityShader::LoadProjectionMatrix(const glm::mat4& projection) const
 	{
 		LoadMatrix(location_projection_matrix, projection);
 	}
 
-	void StaticShader::LoadViewMatrix(entities::Camera& camera) const
+	void EntityShader::LoadViewMatrix(entities::Camera& camera) const
 	{
 		const glm::mat4 view_matrix = toolbox::CreateViewMatrix(camera);
 		LoadMatrix(location_view_matrix, view_matrix);
 	}
 
-	void StaticShader::LoadLight(entities::Light& light) const
+	void EntityShader::LoadLight(entities::Light& light) const
 	{
 		LoadVector(location_light_position, light.GetPosition());
 		LoadVector(location_light_color, light.GetColor());
 	}
 
-	void StaticShader::LoadShineVariables(float shine_damper, float reflectivity) const
+	void EntityShader::LoadShineVariables(float shine_damper, float reflectivity) const
 	{
 		LoadFloat(location_shine_damper, shine_damper);
 		LoadFloat(location_reflectivity, reflectivity);
 	}
 
-	void StaticShader::SetAttributes() const
+	void EntityShader::SetAttributes() const
 	{
 		// Load the position VBO and textureCoords VBO from the VAO into the shader "in" variables
 		SetAttribute(0, "position");
@@ -130,7 +130,7 @@ namespace shaders
 		SetAttribute(2, "normal");
 	}
 
-	void StaticShader::GetAllUniformLocations()
+	void EntityShader::GetAllUniformLocations()
 	{
 		// Get the locations from the uniform variables from the shaders
 		location_model_matrix = GetUniformLocation("model_matrix");
