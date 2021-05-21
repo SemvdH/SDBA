@@ -19,7 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\computervision\FaceDetector.cpp" />
     <ClCompile Include="src\computervision\ObjectDetection.cpp" />
+    <ClCompile Include="src\computervision\SkinDetector.cpp" />
+    <ClCompile Include="src\computervision\FingerCount.cpp" />
+    <ClCompile Include="src\computervision\BackgroundRemover.cpp" />
     <ClCompile Include="src\entities\camera.cpp" />
     <ClCompile Include="src\entities\entity.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -31,6 +35,10 @@
     <ClCompile Include="src\toolbox\toolbox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\computervision\FaceDetector.h" />
+    <ClInclude Include="src\computervision\FingerCount.h" />
+    <ClInclude Include="src\computervision\Header.h" />
+    <ClInclude Include="src\computervision\SkinDetector.h" />
     <ClInclude Include="src\computervision\ObjectDetection.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\entity.h" />

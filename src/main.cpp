@@ -12,8 +12,6 @@
 #include "shaders/static_shader.h"
 #include "toolbox/toolbox.h"
 
-#include "computervision/ObjectDetection.h"
-
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")

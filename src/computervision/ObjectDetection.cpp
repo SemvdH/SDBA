@@ -1,11 +1,35 @@
 #include "ObjectDetection.h"
+#include "ObjectDetection.h"
+//#include "BackgroundRemover.h"
+#include "SkinDetector.h"
+#include "FaceDetector.h"
+#include "FingerCount.h"
+
 namespace computervision
 {
 	cv::VideoCapture cap(0);
 	cv::Mat img, imgGray, img2, img2Gray, img3, img4;
 
+	Mat frame, frameOut, handMask, foreground, fingerCountDebug;
+	//BackgroundRemover backgroundRemover;
+	SkinDetector skinDetector;
+	FaceDetector faceDetector;
+	FingerCount fingerCount;
+
+
 	ObjectDetection::ObjectDetection()
 	{
+	}
+
+	void ObjectDetection::Init() 
+	{
+		cap.read(frame);
+		skinDetector.drawSkinColorSampler(frameOut);
+
+		foreground = backgroundRemover.getForeground(frame);
+
+		faceDetector.removeFaces(frame, foreground);
+		handMask = skinDetector.getSkinMask(foreground);
 	}
 
 	void ObjectDetection::readWebcam()
