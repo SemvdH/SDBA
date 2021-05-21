@@ -1,11 +1,4 @@
-#include "opencv2/opencv.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
-#include "opencv2/videoio.hpp"
-#include <opencv2/highgui.hpp>
-#include <opencv2/video.hpp>
 
-#include "ObjectDetection.h"
 #include "ObjectDetection.h"
 #include "BackgroundRemover.h"
 #include "SkinDetector.h"
@@ -29,7 +22,7 @@ namespace computervision
 	{
 	}
 
-	bool ObjectDetection::Init() 
+	bool ObjectDetection::setup() 
 	{
 		if (!cap.isOpened()) {
 			cout << "Can't find camera!" << endl;
@@ -45,6 +38,22 @@ namespace computervision
 
 		faceDetector.removeFaces(frame, foreground);
 		handMask = skinDetector.getSkinMask(foreground);
+		fingerCountDebug = fingerCount.findFingersCount(handMask, frameOut);
+
+		//backgroundRemover.calibrate(frame);
+
+
+		imshow("output", frameOut);
+		imshow("foreground", foreground);
+		imshow("handMask", handMask);
+		imshow("handDetection", fingerCountDebug);
+
+		int key = waitKey(1);
+
+		if (key == 98) // b
+			backgroundRemover.calibrate(frame);
+		else if (key == 115) // s
+			skinDetector.calibrate(frame);
 
 		return true;
 	}
@@ -66,6 +75,16 @@ namespace computervision
 		cv::threshold(img3, img4, 50, 170, cv::THRESH_BINARY);
 
 		imshow("threshold", img4);
+	}
+
+	void ObjectDetection::detect()
+	{
+
+
+		int key = waitKey(1);
+			
+		if (key == 115)
+			skinDetector.calibrate(frame);
 	}
 
 	void ObjectDetection::showWebcam()

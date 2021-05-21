@@ -8,7 +8,7 @@ namespace computervision
 {
 	Rect getFaceRect(Mat input);
 
-	String faceClassifierFileName = "../res/haarcascade_frontalface_alt.xml";
+	String faceClassifierFileName = "res/haarcascade_frontalface_alt.xml";
 	CascadeClassifier faceCascadeClassifier;
 
 	FaceDetector::FaceDetector(void) {
@@ -23,7 +23,7 @@ namespace computervision
 		cvtColor(input, frameGray, CV_BGR2GRAY);
 		equalizeHist(frameGray, frameGray);
 
-		faceCascadeClassifier.detectMultiScale(frameGray, faces, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE, Size(120, 120));
+		faceCascadeClassifier.detectMultiScale(frameGray, faces, 1.1, 2, 0 | 2, Size(120, 120)); // HAAR_SCALE_IMAGE is 2
 
 		for (size_t i = 0; i < faces.size(); i++) {
 			rectangle(
@@ -43,7 +43,7 @@ namespace computervision
 		cvtColor(input, inputGray, CV_BGR2GRAY);
 		equalizeHist(inputGray, inputGray);
 
-		faceCascadeClassifier.detectMultiScale(inputGray, faceRectangles, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE, Size(120, 120));
+		faceCascadeClassifier.detectMultiScale(inputGray, faceRectangles, 1.1, 2, 0 | 2, Size(120, 120)); // HAAR_SCALE_IMAGE is 2
 
 		if (faceRectangles.size() > 0)
 			return faceRectangles[0];

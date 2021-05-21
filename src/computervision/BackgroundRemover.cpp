@@ -42,7 +42,7 @@ namespace computervision
 	}
 
 	void BackgroundRemover::removeBackground(Mat input, Mat background) {
-		int thresholdOffset = 10;
+		int thresholdOffset = 25;
 
 		for (int i = 0; i < input.rows; i++) {
 			for (int j = 0; j < input.cols; j++) {

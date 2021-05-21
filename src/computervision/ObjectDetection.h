@@ -9,6 +9,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+
 namespace computervision
 {
 	class ObjectDetection
@@ -17,10 +18,11 @@ namespace computervision
 
 	public:
 		ObjectDetection();
-		bool Init();
+		bool setup();
 		void readWebcam();
 		void showWebcam();
 		void calculateDifference();
+		void detect();
 
 	};
 

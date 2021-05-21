@@ -51,6 +51,9 @@
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\toolbox\toolbox.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="res\haarcascade_frontalface_alt.xml" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{A7ECF1BE-DB22-4BF7-BFF6-E3BF72691EE6}</ProjectGuid>

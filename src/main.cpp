@@ -12,6 +12,8 @@
 #include "shaders/static_shader.h"
 #include "toolbox/toolbox.h"
 
+#include "computervision/ObjectDetection.h"
+
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
@@ -58,8 +60,8 @@ int main(void)
     computervision::ObjectDetection objDetect;
     
     
-
-
+    // set up object detection
+    //objDetect.setup();
 	
 	// Main game loop
 	while (!glfwWindowShouldClose(window))
@@ -75,8 +77,8 @@ int main(void)
         shader.LoadViewMatrix(camera);
 		
         render_engine::renderer::Render(entity, shader);
-        
-        objDetect.calculateDifference();
+
+        objDetect.setup();
 
 		// Finish up
         shader.Stop();
