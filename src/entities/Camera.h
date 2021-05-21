@@ -12,6 +12,7 @@ namespace entities
 	class Camera
 	{
 	private:
+		// The movement speed of the camera
 		const float SPEED = 0.52f;
 		
 		glm::vec3 position;
@@ -20,6 +21,11 @@ namespace entities
 	public:
 		Camera(const ::glm::vec3& position, const ::glm::vec3& rotation);
 
+		/*
+		 * @brief: This funtion moves the camera's position from the inputs of the keyboard
+		 *
+		 * @param window: The OpenGL window
+		 */
 		void Move(GLFWwindow* window);
 		
 		inline glm::vec3 GetPosition() const{ return position; }

@@ -26,13 +26,47 @@ namespace shaders
 	public:
 		EntityShader();
 
+		/*
+		 * @brief: A method to load the model matrix into the shader
+		 *
+		 * @param matrix: The model matrix
+		 */
 		void LoadModelMatrix(const glm::mat4& matrix) const;
+
+		/*
+		 * @brief: A method to load the projection matrix into the shader
+		 *
+		 * @param projection: The projection matrix
+		 */
 		void LoadProjectionMatrix(const glm::mat4& projection) const;
+
+		/*
+		 * @brief: A method to load the view matrix (camera) into the shader
+		 *
+		 * @param camera: The camera which the scene needs to be rendered from
+		 */
 		void LoadViewMatrix(entities::Camera& camera) const;
 
+		/*
+		 * @brief: A method to load a light into the shader
+		 *
+		 * @param light: The light
+		 */
 		void LoadLight(entities::Light& light) const;
+
+		/*
+		 * @brief: A method to load the the shine variables from a model into the shader
+		 *
+		 * @param shine_damper: The dampening of the angle from when to render reflectivity on the vertex
+		 * @param reflectivity: The amount the model reflects
+		 */
 		void LoadShineVariables(float shine_damper, float reflectivity) const;
 
+		/*
+		 * @brief: A method to load the sky color into the shader. This color will be used for the fog
+		 *
+		 * @param sky_color: The color of the sky
+		 */
 		void LoadSkyColor(glm::vec3 sky_color) const;
 			
 	protected:

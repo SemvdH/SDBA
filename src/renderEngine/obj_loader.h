@@ -6,7 +6,9 @@
 namespace render_engine
 {
 	/*
-	 * This function retrieves an .obj file, loads it into the VBO and returns a RawModel
+	 * @brief: This function retrieves an .obj file, loads it into the VBO and returns a RawModel
+	 *
+	 * @param file_name: The path to the .obj file
 	 */
 	models::RawModel LoadObjModel(std::string file_name);
 }
