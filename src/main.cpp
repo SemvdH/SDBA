@@ -52,6 +52,9 @@ int main(void)
     texture.reflectivity = 0;
     models::TexturedModel model = { raw_model, texture };
 
+    /**
+    * load and add some models (in this case some level sections) to the entities list.
+    * */
     std::vector<entities::Entity> entities;
     int z = 0;
     for (int i = 0; i < 5; ++i)
@@ -82,6 +85,9 @@ int main(void)
         shader.LoadLight(light);
         shader.LoadViewMatrix(camera);
 		
+        /**
+        * renders eacht entitie in the entities list
+        **/
 		for (entities::Entity& entity : entities)
 		{
             render_engine::renderer::Render(entity, shader);

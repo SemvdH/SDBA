@@ -10,6 +10,8 @@ namespace models
 		This structure represents a Bare bones Model (A mesh without a texture).
 		The vao_id, points to an ID stored by openGL and the
 		vertex_count is how many triangles in the mesh there are.
+
+		model_size is a vec3 that contains the size of the loaded model.
 	*/
 	struct RawModel
 	{
