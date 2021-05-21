@@ -15,6 +15,7 @@ namespace models
 	{
 		GLuint vao_id;
 		int vertex_count;
+		glm::vec3 model_size;
 	};
 
 	/*

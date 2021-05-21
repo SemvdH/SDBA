@@ -20,19 +20,25 @@ namespace shaders
 	out vec3 surface_normal;
 	out vec3 to_light_vector;
 	out vec3 to_camera_vector;
+	out float visibility;
 
 	uniform mat4 model_matrix;
 	uniform mat4 projection_matrix;
 	uniform mat4 view_matrix;
 	uniform vec3 light_position;
 
+	const float density = 0.0017;
+	const float gradient = 4;
+	
 	void main(void)
 	{
 		// Calculate the real position of the vertex (after rotation and scaling)
 		vec4 world_position = model_matrix * vec4(position, 1.0);
+
+		vec4 position_rel_to_cam = view_matrix * world_position;
 	
 		// Tell OpenGL where to render the vertex
-		gl_Position = projection_matrix * view_matrix * world_position;
+		gl_Position = projection_matrix * position_rel_to_cam;
 
 		// Pass the textureCoords directly to the fragment shader
 		pass_texture_coords = texture_coords;
@@ -40,6 +46,11 @@ namespace shaders
 		surface_normal = (model_matrix * vec4(normal, 0.0)).xyz;
 		to_light_vector = light_position - world_position.xyz;
 		to_camera_vector = (inverse(view_matrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - world_position.xyz;
+
+		// Calculate the density/visibility of the vertex with the fog
+		float distance = length(position_rel_to_cam.xyz);
+		visibility = exp(-pow((distance * density), gradient));
+		visibility = clamp(visibility, 0.0, 1.0);
 	}
 	)";
 	
@@ -55,6 +66,7 @@ namespace shaders
 	in vec3 surface_normal;
 	in vec3 to_light_vector;
 	in vec3 to_camera_vector;
+	in float visibility;
 
 	// Final color of the pixel
 	out vec4 out_color;
@@ -65,6 +77,7 @@ namespace shaders
 	uniform vec3 light_color;
 	uniform float shine_damper;
 	uniform float reflectivity;
+	uniform vec3 sky_color;
 	
 	void main(void)
 	{
@@ -86,6 +99,7 @@ namespace shaders
 		vec3 specular = damped_specular * reflectivity * light_color;
 		
 		out_color = vec4(diffuse, 1.0) * texture(texture_sampler, pass_texture_coords) + vec4(specular, 1.0);
+		out_color = mix(vec4(sky_color, 1.0), out_color, visibility);
 	}
 	)";
 	
@@ -122,6 +136,11 @@ namespace shaders
 		LoadFloat(location_reflectivity, reflectivity);
 	}
 
+	void EntityShader::LoadSkyColor(glm::vec3 sky_color) const
+	{
+		LoadVector(location_sky_color, sky_color);
+	}
+
 	void EntityShader::SetAttributes() const
 	{
 		// Load the position VBO and textureCoords VBO from the VAO into the shader "in" variables
@@ -140,5 +159,6 @@ namespace shaders
 		location_light_color = GetUniformLocation("light_color");
 		location_shine_damper = GetUniformLocation("shine_damper");
 		location_reflectivity = GetUniformLocation("reflectivity");
+		location_sky_color = GetUniformLocation("sky_color");
 	}
 }

@@ -46,12 +46,19 @@ int main(void)
     });
 	
 	
-    models::RawModel raw_model = render_engine::LoadObjModel("res/Tree.obj");
-    models::ModelTexture texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
+    models::RawModel raw_model = render_engine::LoadObjModel("res/House.obj");
+    models::ModelTexture texture = { render_engine::loader::LoadTexture("res/Texture.png") };
     texture.shine_damper = 10;
-    texture.reflectivity = 1;
+    texture.reflectivity = 0;
     models::TexturedModel model = { raw_model, texture };
-    entities::Entity entity(model, glm::vec3(0, -25, -50), glm::vec3(0, 0, 0), 1);
+
+    std::vector<entities::Entity> entities;
+    int z = 0;
+    for (int i = 0; i < 5; ++i)
+    {
+        entities.push_back(entities::Entity(model, glm::vec3(0, -50, -50 - z), glm::vec3(0, 90, 0), 20));
+        z += (raw_model.model_size.x * 20);
+    }
 
     entities::Light light(glm::vec3(0, 0, -30), glm::vec3(1, 1, 1));
 	
@@ -66,16 +73,19 @@ int main(void)
 	{
         // Update
         const double delta = UpdateDelta();
-        entity.IncreaseRotation(glm::vec3(0, 1, 0));
         camera.Move(window);
 
 		// Render
         render_engine::renderer::Prepare();
         shader.Start();
+        shader.LoadSkyColor(render_engine::renderer::SKY_COLOR);
         shader.LoadLight(light);
         shader.LoadViewMatrix(camera);
 		
-        render_engine::renderer::Render(entity, shader);
+		for (entities::Entity& entity : entities)
+		{
+            render_engine::renderer::Render(entity, shader);
+		}
 
 		// Finish up
         shader.Stop();

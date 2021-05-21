@@ -12,7 +12,7 @@ namespace entities
 	class Camera
 	{
 	private:
-		const float SPEED = 0.02f;
+		const float SPEED = 0.52f;
 		
 		glm::vec3 position;
 		glm::vec3 rotation;
