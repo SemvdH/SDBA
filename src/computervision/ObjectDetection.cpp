@@ -58,11 +58,6 @@ namespace computervision
 		return true;
 	}
 
-	void ObjectDetection::readWebcam()
-	{
-		cap.read(img);
-	}
-
 	void ObjectDetection::calculateDifference()
 	{
 		cap.read(img);
@@ -79,11 +74,11 @@ namespace computervision
 
 	void ObjectDetection::detect()
 	{
-
-
 		int key = waitKey(1);
 			
-		if (key == 115)
+		if (key == 98) // b
+			backgroundRemover.calibrate(frame);
+		else if (key == 115) // s
 			skinDetector.calibrate(frame);
 	}
 

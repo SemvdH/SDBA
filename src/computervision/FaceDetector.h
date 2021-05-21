@@ -15,7 +15,17 @@ namespace computervision
 {
 	class FaceDetector {
 	public:
+		/**
+		 * @brief Constructor for the class FaceDetector, loads training data from a file
+		 * 
+		 */
 		FaceDetector(void);
+		/**
+		 * @brief Detects faces on an image and blocks them with a black rectangle
+		 * 
+		 * @param input Input image
+		 * @param output Output image
+		 */
 		void removeFaces(Mat input, Mat output);
 	};
 }
