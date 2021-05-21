@@ -128,6 +128,11 @@ namespace render_engine
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), &indices[0], GL_STATIC_DRAW);
 		}
 
+		/**
+		* @brief gets the width, height and depth of a model
+		* @param positions all the points of a model
+		* @returns vec3<float> the size values of a model (width, height and depth)
+		**/
 		static glm::vec3 GetSizeModel(std::vector<float>& positions)
 		{
 			float minX = 100;
