@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\computervision\ObjectDetection.cpp" />
     <ClCompile Include="src\entities\camera.cpp" />
     <ClCompile Include="src\entities\entity.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="src\toolbox\toolbox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\computervision\ObjectDetection.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\entity.h" />
     <ClInclude Include="src\models\model.h" />

@@ -42,6 +42,9 @@
     <ClCompile Include="src\toolbox\toolbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\computervision\ObjectDetection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entities\Camera.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\toolbox\toolbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\computervision\ObjectDetection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
