@@ -40,6 +40,8 @@ namespace computervision
 		Mat getSkinMask(Mat input);
 
 	private:
+
+		// thresholds for hsv calculation
 		int hLowThreshold = 0;
 		int hHighThreshold = 0;
 		int sLowThreshold = 0;
@@ -47,6 +49,7 @@ namespace computervision
 		int vLowThreshold = 0;
 		int vHighThreshold = 0;
 
+		// wether or not the skindetector has calibrated yet.
 		bool calibrated = false;
 
 		// rectangles that get drawn to show where the skin color will be sampled
