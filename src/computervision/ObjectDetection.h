@@ -46,6 +46,21 @@ namespace computervision
 		 */
 		void detect();
 
+		/**
+		 * @brief generates the square that will hold the mask in which the hand will be detected.
+		 * 
+		 * @param img the current camear frame
+		 * @return a matrix containing the mask
+		 */
+		cv::Mat generateHandMaskSquare(cv::Mat img);
+
+		/**
+		 * @brief reads the camera and returns it in a matrix.
+		 * 
+		 * @return the camera frame in a matrix
+		 */
+		cv::Mat readCamera();
+
 	};
 
 

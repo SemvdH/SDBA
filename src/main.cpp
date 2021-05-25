@@ -67,6 +67,7 @@ int main(void)
     
     // set up object detection
     //objDetect.setup();
+    
 
 	// Main game loop
 	while (!glfwWindowShouldClose(window))
@@ -83,8 +84,7 @@ int main(void)
 		
         render_engine::renderer::Render(entity, shader);
 
-        //objDetect.setup();
-        objDetect.calculateDifference();
+        objDetect.generateHandMaskSquare(objDetect.readCamera());
 
 		// Finish up
         shader.Stop();

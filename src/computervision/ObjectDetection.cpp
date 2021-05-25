@@ -1,4 +1,8 @@
 
+#include <opencv2/videoio.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/video.hpp>
+
 #include "ObjectDetection.h"
 #include "BackgroundRemover.h"
 #include "SkinDetector.h"
@@ -22,7 +26,12 @@ namespace computervision
 	{
 	}
 
-	bool ObjectDetection::setup() 
+	cv::Mat ObjectDetection::readCamera() {
+		cap.read(img);
+		return img;
+	}
+
+	bool ObjectDetection::setup()
 	{
 		if (!cap.isOpened()) {
 			cout << "Can't find camera!" << endl;
@@ -72,10 +81,29 @@ namespace computervision
 		imshow("threshold", img4);
 	}
 
+
+	cv::Mat ObjectDetection::generateHandMaskSquare(cv::Mat img)
+	{
+
+		cv::Mat mask = cv::Mat::zeros(img.size(), img.type());
+		cv::Mat dstImg = cv::Mat::zeros(img.size(), img.type());
+
+		cv::rectangle(mask, Rect(0, img.rows * 0.2, img.cols / 3, img.cols / 3), Scalar(255, 255, 255), -1);
+		//cv::circle(mask, cv::Point(mask.cols / 2, mask.rows / 2), 50, cv::Scalar(255, 0, 0), -1, 8, 0);
+
+
+		img.copyTo(dstImg, mask);
+
+		rectangle(img, Rect(0, img.rows * 0.2, img.cols / 3, img.cols / 3), Scalar(0, 255, 255, 255));
+
+		return dstImg;
+
+	}
+
 	void ObjectDetection::detect()
 	{
 		int key = waitKey(1);
-			
+
 		if (key == 98) // b
 			backgroundRemover.calibrate(frame);
 		else if (key == 115) // s

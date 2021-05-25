@@ -18,7 +18,7 @@ namespace render_engine
 		void Init(shaders::StaticShader& shader)
 		{
 			const glm::mat4 projectionMatrix = 
-				glm::perspective(glm::radians(FOV), (WINDOW_WIDTH / WINDOW_HEIGT), NEAR_PLANE, FAR_PLANE);
+				glm::perspective(glm::radians(FOV), (float)(WINDOW_WIDTH / WINDOW_HEIGT), NEAR_PLANE, FAR_PLANE);
 			
 			shader.Start();
 			shader.LoadProjectionMatrix(projectionMatrix);
