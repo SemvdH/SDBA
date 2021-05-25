@@ -6,6 +6,8 @@
 #include <ostream>
 
 #include <opencv2/core.hpp>
+#include <opencv2/videoio.hpp>
+#include <opencv2/video.hpp>
 
 #include "models/model.h"
 #include "renderEngine/loader.h"
@@ -65,7 +67,7 @@ int main(void)
     
     // set up object detection
     //objDetect.setup();
-	
+
 	// Main game loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -81,7 +83,8 @@ int main(void)
 		
         render_engine::renderer::Render(entity, shader);
 
-        objDetect.setup();
+        //objDetect.setup();
+        objDetect.calculateDifference();
 
 		// Finish up
         shader.Stop();
