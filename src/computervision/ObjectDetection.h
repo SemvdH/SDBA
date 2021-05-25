@@ -22,13 +22,7 @@ namespace computervision
 		 * 
 		 */
 		ObjectDetection();
-		/**
-		 * @brief Initializes the object detection, captures a frame and modifies it
-		 *  so it is ready to use for object detection
-		 * 
-		 * @return return true if webcam is connected, returns false if it isn't
-		 */
-		bool setup();
+
 		/**
 		 * @brief Displays an image of the current webcam-footage
 		 * 
@@ -40,11 +34,6 @@ namespace computervision
 		 * 
 		 */
 		void calculateDifference();
-		/**
-		 * @brief Listens for keypresses and handles them
-		 * 
-		 */
-		void detect();
 
 		/**
 		 * @brief generates the square that will hold the mask in which the hand will be detected.
@@ -65,7 +54,7 @@ namespace computervision
 		 * @brief detects a hand based on the given hand mask input frame.
 		 * 
 		 * @param inputFrame the input frame from the camera
-		 * @return true if the webcam is connected, false if not.
+		 * @return true if hand is open, false if hand is closed
 		 */
 		bool detectHand(cv::Mat cameraFrame);
 

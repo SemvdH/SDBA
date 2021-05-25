@@ -36,42 +36,6 @@ namespace computervision
 		return img;
 	}
 
-	bool ObjectDetection::setup()
-	{
-		if (!cap.isOpened()) {
-			cout << "Can't find camera!" << endl;
-			return false;
-		}
-
-		cap.read(frame);
-		frameOut = frame.clone();
-
-		skinDetector.drawSkinColorSampler(frameOut);
-
-		foreground = backgroundRemover.getForeground(frame);
-
-		faceDetector.removeFaces(frame, foreground);
-		handMask = skinDetector.getSkinMask(foreground);
-		fingerCountDebug = fingerCount.findFingersCount(handMask, frameOut);
-
-		//backgroundRemover.calibrate(frame);
-
-
-		imshow("output", frameOut);
-		imshow("foreground", foreground);
-		imshow("handMask", handMask);
-		imshow("handDetection", fingerCountDebug);
-
-		int key = waitKey(1);
-
-		if (key == 98) // b
-			backgroundRemover.calibrate(frame);
-		else if (key == 115) // s
-			skinDetector.calibrate(frame);
-
-		return true;
-	}
-
 	bool ObjectDetection::detectHand(Mat cameraFrame)
 	{
 		Mat inputFrame = generateHandMaskSquare(cameraFrame);
@@ -104,7 +68,7 @@ namespace computervision
 		else if (key == 115) // s
 			skinDetector.calibrate(inputFrame);
 
-		return true;
+		return fingers_amount > 0;
 	}
 
 	void ObjectDetection::calculateDifference()
