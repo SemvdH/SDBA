@@ -99,12 +99,12 @@ int main(void)
         // Update
         const double delta = UpdateDelta();
         camera.Move(window);
-
         button.Update(window);
 
 		// Render
         render_engine::renderer::Prepare();
 		
+		// Start rendering the entities
         shader.Start();
         shader.LoadSkyColor(render_engine::renderer::SKY_COLOR);
         shader.LoadLights(lights);
@@ -119,7 +119,6 @@ int main(void)
 		// Stop rendering the entities
         shader.Stop();
 
-		
         // Render GUI items
         render_engine::renderer::Render(guis, gui_shader);
 

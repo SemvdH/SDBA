@@ -14,6 +14,7 @@ namespace entities
 	private:
 		// The movement speed of the camera
 		const float SPEED = 0.52f;
+		const float ROT_SPEED = 1.0f;
 		
 		glm::vec3 position;
 		glm::vec3 rotation;

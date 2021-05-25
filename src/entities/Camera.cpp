@@ -9,24 +9,42 @@ namespace entities
 
 	void Camera::Move(GLFWwindow* window)
 	{
+		float movement_speed = 0;
+		
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			position.z -= SPEED;
+			movement_speed -= SPEED;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			position.z += SPEED;
+			movement_speed += SPEED;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		{
-			position.x += SPEED;
+			rotation.y += ROT_SPEED;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		{
-			position.x -= SPEED;
+			rotation.y -= ROT_SPEED;
 		}
+
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		{
+			rotation.x -= ROT_SPEED;
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		{
+			rotation.x += ROT_SPEED;
+		}
+
+		float dx = glm::cos(glm::radians(rotation.y + 90)) * movement_speed;
+		float dz = glm::sin(glm::radians(rotation.y + 90)) * movement_speed;
+
+		position.x += dx;
+		position.z += dz;
 	}
 }
