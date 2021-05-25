@@ -151,7 +151,14 @@ namespace computervision
 		drawVectorPoints(frame, filtered_finger_points, color_yellow, false);
 		putText(frame, to_string(filtered_finger_points.size()), center_bounding_rect, FONT_HERSHEY_PLAIN, 3, color_purple);
 
+		amount_of_fingers = filtered_finger_points.size();
+
 		return contours_image;
+	}
+
+	int FingerCount::getAmountOfFingers()
+	{
+		return amount_of_fingers;
 	}
 
 	double FingerCount::findPointsDistance(Point a, Point b) {

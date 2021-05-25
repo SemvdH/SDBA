@@ -72,8 +72,9 @@ namespace computervision
 		return true;
 	}
 
-	bool ObjectDetection::detectHand(Mat inputFrame)
+	bool ObjectDetection::detectHand(Mat cameraFrame)
 	{
+		Mat inputFrame = generateHandMaskSquare(cameraFrame);
 		frameOut = inputFrame.clone();
 
 		skinDetector.drawSkinColorSampler(frameOut);
@@ -84,13 +85,17 @@ namespace computervision
 		handMask = skinDetector.getSkinMask(foreground);
 		fingerCountDebug = fingerCount.findFingersCount(handMask, frameOut);
 
+		int fingers_amount = fingerCount.getAmountOfFingers();
 		//backgroundRemover.calibrate(frame);
+		drawHandMaskRect(&cameraFrame);
+		string hand_text = fingers_amount > 0 ? "open" : "closed";
+		putText(cameraFrame,hand_text, Point(10, 75), FONT_HERSHEY_PLAIN, 2.0, Scalar(255, 0, 255),3);
+		imshow("camera", cameraFrame);
 
-
-		imshow("output", frameOut);
+	/*	imshow("output", frameOut);
 		imshow("foreground", foreground);
 		imshow("handMask", handMask);
-		imshow("handDetection", fingerCountDebug);
+		imshow("handDetection", fingerCountDebug);*/
 
 		int key = waitKey(1);
 

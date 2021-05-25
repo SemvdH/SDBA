@@ -24,6 +24,13 @@ namespace computervision
 		 */
 		Mat findFingersCount(Mat input_image, Mat frame);
 
+		/**
+		 * @brief gets the currently held-up finger count.
+		 * 
+		 * @return the currently held-up finger count
+		 */
+		int getAmountOfFingers();
+
 	private:
 		// colors to use
 		Scalar color_blue;
@@ -33,6 +40,8 @@ namespace computervision
 		Scalar color_white;
 		Scalar color_yellow;
 		Scalar color_purple;
+
+		int amount_of_fingers;
 
 		/**
 		 * @brief finds the distance between 2 points.

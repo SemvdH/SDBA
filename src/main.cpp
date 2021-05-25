@@ -87,9 +87,7 @@ int main(void)
 		render_engine::renderer::Render(entity, shader);
 
 		cameraFrame = objDetect.readCamera();
-		objDetect.detectHand(objDetect.generateHandMaskSquare(cameraFrame));
-		objDetect.drawHandMaskRect(&cameraFrame);
-		cv::imshow("camera",cameraFrame);
+		objDetect.detectHand(cameraFrame);
 
 
 		// Finish up
