@@ -5,8 +5,8 @@
 
 namespace toolbox
 {
-	#define WINDOW_WIDTH 1400.0f
-	#define WINDOW_HEIGT 800.0f
+	#define WINDOW_WIDTH 1400
+	#define WINDOW_HEIGT 800
 	
 	glm::mat4 CreateModelMatrix(glm::vec3 translation, glm::vec3 rotation, float scale);
 
