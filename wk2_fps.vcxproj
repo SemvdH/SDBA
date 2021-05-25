@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\entities\camera.cpp" />
     <ClCompile Include="src\entities\entity.cpp" />
+    <ClCompile Include="src\gui\gui_element.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\renderEngine\loader.cpp" />
     <ClCompile Include="src\renderEngine\obj_loader.cpp" />
@@ -34,7 +35,7 @@
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\entity.h" />
     <ClInclude Include="src\entities\light.h" />
-    <ClInclude Include="src\gui\gui_texture.h" />
+    <ClInclude Include="src\gui\gui_element.h" />
     <ClInclude Include="src\models\model.h" />
     <ClInclude Include="src\renderEngine\loader.h" />
     <ClInclude Include="src\renderEngine\obj_loader.h" />

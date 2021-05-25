@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 #define STB_IMAGE_IMPLEMENTATION
+#include <iostream>
+
 #include "stb_image.h"
 #include <ostream>
 
@@ -79,9 +81,11 @@ int main(void)
     shaders::GuiShader gui_shader;
     gui_shader.Init();
 	
-    std::vector<gui::GuiTexture> guis;
-    gui::GuiTexture gui = { render_engine::loader::LoadTexture("res/Mayo.png"), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f, 0.25f) };
-    guis.push_back(gui);
+    std::vector<gui::GuiTexture*> guis;
+    gui::Button button(render_engine::loader::LoadTexture("res/Mayo.png"), glm::vec2(0.5f, 0.0f), glm::vec2(0.25f, 0.25f));
+    button.SetHoverTexture(render_engine::loader::LoadTexture("res/Texture.png"));
+    button.SetClickedTexture(render_engine::loader::LoadTexture("res/Mayo.png"));
+    guis.push_back(&button);
 	
 	
 	// Main game loop
@@ -90,6 +94,8 @@ int main(void)
         // Update
         const double delta = UpdateDelta();
         camera.Move(window);
+
+        button.Update(window);
 
 		// Render
         render_engine::renderer::Prepare();

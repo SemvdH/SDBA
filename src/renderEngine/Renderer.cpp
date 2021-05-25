@@ -82,7 +82,7 @@ namespace render_engine
 			glBindVertexArray(0);
 		}
 
-		void Render(std::vector<gui::GuiTexture>& guis, shaders::GuiShader& shader)
+		void Render(std::vector<gui::GuiTexture*>& guis, shaders::GuiShader& shader)
 		{
 			shader.Start();
 			
@@ -98,13 +98,13 @@ namespace render_engine
 			glDisable(GL_DEPTH_TEST);
 			
 			// Render each gui to the screen
-			for (gui::GuiTexture& gui : guis)
-			{
+			for (gui::GuiTexture* gui : guis)
+			{				
 				// Bind the texture of the gui to the shader
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gui.texture);
+				glBindTexture(GL_TEXTURE_2D, gui->texture);
 
-				glm::mat4 matrix = toolbox::CreateModelMatrix(gui.position, gui.scale);
+				glm::mat4 matrix = toolbox::CreateModelMatrix(gui->position, gui->scale);
 				shader.LoadModelMatrix(matrix);
 				
 				glDrawArrays(GL_TRIANGLE_STRIP, 0, quad.vertex_count);

@@ -45,6 +45,9 @@
     <ClCompile Include="src\shaders\gui_shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\gui_element.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entities\Camera.h">
@@ -80,10 +83,10 @@
     <ClInclude Include="src\shaders\entity_shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\gui_texture.h">
+    <ClInclude Include="src\shaders\gui_shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\shaders\gui_shader.h">
+    <ClInclude Include="src\gui\gui_element.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

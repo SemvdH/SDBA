@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../gui/gui_texture.h"
+#include "../gui/gui_element.h"
 #include "../entities/entity.h"
 #include "../shaders/entity_shader.h"
 #include "../shaders/gui_shader.h"
@@ -38,6 +38,6 @@ namespace render_engine
 			@param guis:  A list with all the GUI textures you want to render
 			@param shade: The shader the GUI textures need to be rendered with
 		 */
-		void Render(std::vector<gui::GuiTexture>& guis, shaders::GuiShader& shader);
+		void Render(std::vector<gui::GuiTexture*>& guis, shaders::GuiShader& shader);
 	}
 }

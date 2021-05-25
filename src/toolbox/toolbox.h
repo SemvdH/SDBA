@@ -5,9 +5,18 @@
 
 namespace toolbox
 {
-	#define WINDOW_WIDTH 1400.0f
-	#define WINDOW_HEIGT 800.0f
+	// Window macro's
+	    #define DEFAULT_WIDTH 1920
+		#define DEFAULT_HEIGHT 1080
 
+		// Change these macros to change the window size
+		#define WINDOW_WIDTH 1400.0f
+		#define WINDOW_HEIGT 800.0f
+
+		#define SCALED_WIDTH (WINDOW_WIDTH/DEFAULT_WIDTH)
+		#define SCALED_HEIGHT (WINDOW_HEIGT/DEFAULT_HEIGHT)
+	//
+	
 	/*
 	 * @brief: This function will create a model matrix
 	 *
