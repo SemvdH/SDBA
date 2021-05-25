@@ -4,6 +4,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <ostream>
+#include <stdlib.h>
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
@@ -29,81 +30,86 @@ static GLFWwindow* window;
 
 int main(void)
 {
-	#pragma region OPENGL_SETTINGS
-    if (!glfwInit())
-        throw "Could not inditialize glwf";
-    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGT, "SDBA", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        throw "Could not initialize glwf";
-    }
-    glfwMakeContextCurrent(window);
-    glewInit();
-    glGetError();
-	#pragma endregion
+#pragma region OPENGL_SETTINGS
+	if (!glfwInit())
+		throw "Could not inditialize glwf";
+	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGT, "SDBA", NULL, NULL);
+	if (!window)
+	{
+		glfwTerminate();
+		throw "Could not initialize glwf";
+	}
+	glfwMakeContextCurrent(window);
+	glewInit();
+	glGetError();
+#pragma endregion
 
-    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
-    {
-	    if (key == GLFW_KEY_ESCAPE)
-	        glfwSetWindowShouldClose(window, true);
-    });
-	
-	
-    models::RawModel raw_model = LoadObjModel("res/Tree.obj");
-    models::ModelTexture texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
-    models::TexturedModel model = { raw_model, texture };
-    entities::Entity entity(model, glm::vec3(0, -5, -20), glm::vec3(0, 0, 0), 1);
-	
-    shaders::StaticShader shader;
-    shader.Init();
-    render_engine::renderer::Init(shader);
+	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+		{
+			if (key == GLFW_KEY_ESCAPE)
+				glfwSetWindowShouldClose(window, true);
+		});
 
-    entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
-    // create object detection object instance
-    computervision::ObjectDetection objDetect;
-    
-    
-    // set up object detection
-    //objDetect.setup();
-    
+	models::RawModel raw_model = LoadObjModel("res/Tree.obj");
+	models::ModelTexture texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
+	models::TexturedModel model = { raw_model, texture };
+	entities::Entity entity(model, glm::vec3(0, -5, -20), glm::vec3(0, 0, 0), 1);
+
+	shaders::StaticShader shader;
+	shader.Init();
+	render_engine::renderer::Init(shader);
+
+	entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+
+	// create object detection object instance
+	computervision::ObjectDetection objDetect;
+
+
+	// set up object detection
+	//objDetect.setup();
+	cv::Mat cameraFrame;
 
 	// Main game loop
 	while (!glfwWindowShouldClose(window))
 	{
-        // Update
-        const double delta = UpdateDelta();
-        entity.IncreaseRotation(glm::vec3(0, 1, 0));
-        camera.Move(window);
+		// Update
+		const double delta = UpdateDelta();
+		entity.IncreaseRotation(glm::vec3(0, 1, 0));
+		camera.Move(window);
 
 		// Render
-        render_engine::renderer::Prepare();
-        shader.Start();
-        shader.LoadViewMatrix(camera);
-		
-        render_engine::renderer::Render(entity, shader);
+		render_engine::renderer::Prepare();
+		shader.Start();
+		shader.LoadViewMatrix(camera);
 
-        objDetect.generateHandMaskSquare(objDetect.readCamera());
+
+		render_engine::renderer::Render(entity, shader);
+
+		cameraFrame = objDetect.readCamera();
+		objDetect.detectHand(objDetect.generateHandMaskSquare(cameraFrame));
+		objDetect.drawHandMaskRect(&cameraFrame);
+		cv::imshow("camera",cameraFrame);
+
 
 		// Finish up
-        shader.Stop();
+		shader.Stop();
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
 	// Clean up
-    shader.CleanUp();
-    render_engine::loader::CleanUp();
+	shader.CleanUp();
+	render_engine::loader::CleanUp();
 	glfwTerminate();
-    return 0;
+	return 0;
 }
 
 static double UpdateDelta()
 {
-    double current_time = glfwGetTime();
-    static double last_frame_time = current_time;
-    double delt_time = current_time - last_frame_time;
-    last_frame_time = current_time;
-    return delt_time;
+	double current_time = glfwGetTime();
+	static double last_frame_time = current_time;
+	double delt_time = current_time - last_frame_time;
+	last_frame_time = current_time;
+	return delt_time;
 }

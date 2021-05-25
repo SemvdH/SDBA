@@ -22,7 +22,7 @@ namespace computervision
 	void SkinDetector::drawSkinColorSampler(Mat input) {
 		int frameWidth = input.size().width, frameHeight = input.size().height;
 
-		int rectangleSize = 20;
+		int rectangleSize = 25;
 		Scalar rectangleColor = Scalar(255, 0, 255);
 
 		skinColorSamplerRectangle1 = Rect(frameWidth / 5, frameHeight / 2, rectangleSize, rectangleSize);

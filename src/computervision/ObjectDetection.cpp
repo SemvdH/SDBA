@@ -15,11 +15,16 @@ namespace computervision
 
 	cv::Mat img, imgGray, img2, img2Gray, img3, img4;
 
+	int handMaskStartXPos, handMaskStartYPos, handMaskWidth, handMaskHeight;
+	bool handMaskGenerated = false;
+
 	Mat frame, frameOut, handMask, foreground, fingerCountDebug;
 	BackgroundRemover backgroundRemover;
 	SkinDetector skinDetector;
 	FaceDetector faceDetector;
 	FingerCount fingerCount;
+
+
 
 
 	ObjectDetection::ObjectDetection()
@@ -67,6 +72,36 @@ namespace computervision
 		return true;
 	}
 
+	bool ObjectDetection::detectHand(Mat inputFrame)
+	{
+		frameOut = inputFrame.clone();
+
+		skinDetector.drawSkinColorSampler(frameOut);
+
+		foreground = backgroundRemover.getForeground(inputFrame);
+
+		//faceDetector.removeFaces(inputFrame, foreground);
+		handMask = skinDetector.getSkinMask(foreground);
+		fingerCountDebug = fingerCount.findFingersCount(handMask, frameOut);
+
+		//backgroundRemover.calibrate(frame);
+
+
+		imshow("output", frameOut);
+		imshow("foreground", foreground);
+		imshow("handMask", handMask);
+		imshow("handDetection", fingerCountDebug);
+
+		int key = waitKey(1);
+
+		if (key == 98) // b
+			backgroundRemover.calibrate(inputFrame);
+		else if (key == 115) // s
+			skinDetector.calibrate(inputFrame);
+
+		return true;
+	}
+
 	void ObjectDetection::calculateDifference()
 	{
 		cap.read(img);
@@ -84,20 +119,29 @@ namespace computervision
 
 	cv::Mat ObjectDetection::generateHandMaskSquare(cv::Mat img)
 	{
+		handMaskStartXPos = 20;
+		handMaskStartYPos = img.rows / 5;
+		handMaskWidth = img.cols / 3;
+		handMaskHeight = img.cols / 3;
+
 
 		cv::Mat mask = cv::Mat::zeros(img.size(), img.type());
 		cv::Mat dstImg = cv::Mat::zeros(img.size(), img.type());
 
-		cv::rectangle(mask, Rect(0, img.rows * 0.2, img.cols / 3, img.cols / 3), Scalar(255, 255, 255), -1);
-		//cv::circle(mask, cv::Point(mask.cols / 2, mask.rows / 2), 50, cv::Scalar(255, 0, 0), -1, 8, 0);
-
+		cv::rectangle(mask, Rect(handMaskStartXPos, handMaskStartYPos, handMaskWidth, handMaskHeight), Scalar(255, 255, 255), -1);
 
 		img.copyTo(dstImg, mask);
 
-		rectangle(img, Rect(0, img.rows * 0.2, img.cols / 3, img.cols / 3), Scalar(0, 255, 255, 255));
-
+		handMaskGenerated = true;
 		return dstImg;
 
+	}
+
+	bool ObjectDetection::drawHandMaskRect(cv::Mat* input)
+	{
+		if (!handMaskGenerated) return false;
+		rectangle(*input, Rect(handMaskStartXPos, handMaskStartYPos, handMaskWidth, handMaskHeight), Scalar(255, 255, 255));
+		return true;
 	}
 
 	void ObjectDetection::detect()
