@@ -24,9 +24,6 @@ namespace computervision
 	FaceDetector faceDetector;
 	FingerCount fingerCount;
 
-
-
-
 	ObjectDetection::ObjectDetection()
 	{
 	}
@@ -41,16 +38,22 @@ namespace computervision
 		Mat inputFrame = generateHandMaskSquare(cameraFrame);
 		frameOut = inputFrame.clone();
 
+		// detect skin color
 		skinDetector.drawSkinColorSampler(frameOut);
 
+		// remove background from image
 		foreground = backgroundRemover.getForeground(inputFrame);
 
-		//faceDetector.removeFaces(inputFrame, foreground);
+		// detect the hand contours
 		handMask = skinDetector.getSkinMask(foreground);
+
+		// count the amount of fingers and put the info on the matrix
 		fingerCountDebug = fingerCount.findFingersCount(handMask, frameOut);
 
+		// get the amount of fingers
 		int fingers_amount = fingerCount.getAmountOfFingers();
-		//backgroundRemover.calibrate(frame);
+
+		// draw the hand rectangle on the camera input, and draw text showing if the hand is open or closed.
 		drawHandMaskRect(&cameraFrame);
 		string hand_text = fingers_amount > 0 ? "open" : "closed";
 		putText(cameraFrame,hand_text, Point(10, 75), FONT_HERSHEY_PLAIN, 2.0, Scalar(255, 0, 255),3);
@@ -63,9 +66,9 @@ namespace computervision
 
 		int key = waitKey(1);
 
-		if (key == 98) // b
+		if (key == 98) // b, calibrate the background
 			backgroundRemover.calibrate(inputFrame);
-		else if (key == 115) // s
+		else if (key == 115) // s, calibrate the skin color
 			skinDetector.calibrate(inputFrame);
 
 		return fingers_amount > 0;
@@ -111,16 +114,6 @@ namespace computervision
 		if (!handMaskGenerated) return false;
 		rectangle(*input, Rect(handMaskStartXPos, handMaskStartYPos, handMaskWidth, handMaskHeight), Scalar(255, 255, 255));
 		return true;
-	}
-
-	void ObjectDetection::detect()
-	{
-		int key = waitKey(1);
-
-		if (key == 98) // b
-			backgroundRemover.calibrate(frame);
-		else if (key == 115) // s
-			skinDetector.calibrate(frame);
 	}
 
 	void ObjectDetection::showWebcam()
