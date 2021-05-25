@@ -2,6 +2,14 @@
 
 namespace toolbox
 {
+	glm::mat4 CreateModelMatrix(glm::vec2 translation, glm::vec2 scale)
+	{
+		glm::mat4 matrix(1.0f);
+		matrix = glm::translate(matrix, glm::vec3(translation.x, translation.y, 0));
+		matrix = glm::scale(matrix, glm::vec3(scale.x, scale.y, 0));
+		return matrix;
+	}
+
 	glm::mat4 CreateModelMatrix(glm::vec3 translation, glm::vec3 rotation, float scale)
 	{
 		glm::mat4 matrix(1.0f);

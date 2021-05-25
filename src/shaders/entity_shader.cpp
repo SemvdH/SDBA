@@ -124,8 +124,7 @@ namespace shaders
 	
 	
 	EntityShader::EntityShader(): ShaderProgram(vertex_shader, fragment_shader)
-	{
-	}
+	{ }
 
 	void EntityShader::LoadModelMatrix(const glm::mat4& matrix) const
 	{

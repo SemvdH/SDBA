@@ -12,6 +12,16 @@ namespace toolbox
 	 * @brief: This function will create a model matrix
 	 *
 	 * @param translation: The position of the model
+	 * @param scale: The scale of the model
+	 *
+	 * @return: The model matrix of the model
+	 */
+	glm::mat4 CreateModelMatrix(glm::vec2 translation, glm::vec2 scale);
+	
+	/*
+	 * @brief: This function will create a model matrix
+	 *
+	 * @param translation: The position of the model
 	 * @param rotation: The rotation of the model
 	 * @param scale: The scale of the model
 	 *

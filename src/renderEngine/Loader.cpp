@@ -19,7 +19,7 @@ namespace render_engine
 		static std::vector<GLuint> textures;
 
 		/*
-			This function will generate a Model from vertex positions, textureCoordinates and indices.
+			This function will generate a Model from vertex positions, textureCoordinates normals and indices.
 		*/
 		models::RawModel LoadToVAO(std::vector<float>& positions, std::vector<float>& texture_coords, std::vector<float>& normals, std::vector<unsigned int>& indices)
 		{
@@ -33,6 +33,17 @@ namespace render_engine
 			const glm::vec3 model_size = GetSizeModel(positions);
 			
 			return { vao_id, static_cast<int>(indices.size()), model_size };
+		}
+
+		/*
+			This function will generate a Model from vertex positions.
+		*/
+		models::RawModel LoadToVAO(std::vector<float>& positions)
+		{
+			const GLuint vao_id = CreateVao();
+			StoreDataInAttributeList(0, 2, positions);
+			glBindVertexArray(0);
+			return { vao_id, static_cast<int>(positions.size()) / 2 };
 		}
 
 		/*

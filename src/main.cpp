@@ -73,6 +73,16 @@ int main(void)
     render_engine::renderer::Init(shader);
 
     entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+
+
+	// GUI stuff
+    shaders::GuiShader gui_shader;
+    gui_shader.Init();
+	
+    std::vector<gui::GuiTexture> guis;
+    gui::GuiTexture gui = { render_engine::loader::LoadTexture("res/Mayo.png"), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f, 0.25f) };
+    guis.push_back(gui);
+	
 	
 	// Main game loop
 	while (!glfwWindowShouldClose(window))
@@ -83,27 +93,33 @@ int main(void)
 
 		// Render
         render_engine::renderer::Prepare();
+		
         shader.Start();
         shader.LoadSkyColor(render_engine::renderer::SKY_COLOR);
         shader.LoadLights(lights);
         shader.LoadViewMatrix(camera);
 		
-        /**
-        * renders eacht entitie in the entities list
-        **/
+        // Renders each entity in the entities list
 		for (entities::Entity& entity : entities)
 		{
             render_engine::renderer::Render(entity, shader);
 		}
 
-		// Finish up
+		// Stop rendering the entities
         shader.Stop();
+
+		
+        // Render GUI items
+        render_engine::renderer::Render(guis, gui_shader);
+
+        // Finish up
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
 	// Clean up
     shader.CleanUp();
+    gui_shader.CleanUp();
     render_engine::loader::CleanUp();
 	glfwTerminate();
     return 0;

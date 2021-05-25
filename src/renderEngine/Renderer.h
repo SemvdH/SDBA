@@ -1,7 +1,9 @@
 #pragma once
 
+#include "../gui/gui_texture.h"
 #include "../entities/entity.h"
 #include "../shaders/entity_shader.h"
+#include "../shaders/gui_shader.h"
 
 namespace render_engine
 {
@@ -29,5 +31,13 @@ namespace render_engine
 			@param shader: The shader the entity needs to be rendered with
 		*/
 		void Render(entities::Entity& entity, shaders::EntityShader& shader);
+
+		/*
+			@brief: Call this function to render gui_textures on the screen
+
+			@param guis:  A list with all the GUI textures you want to render
+			@param shade: The shader the GUI textures need to be rendered with
+		 */
+		void Render(std::vector<gui::GuiTexture>& guis, shaders::GuiShader& shader);
 	}
 }

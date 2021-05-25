@@ -25,6 +25,7 @@
     <ClCompile Include="src\renderEngine\loader.cpp" />
     <ClCompile Include="src\renderEngine\obj_loader.cpp" />
     <ClCompile Include="src\renderEngine\renderer.cpp" />
+    <ClCompile Include="src\shaders\gui_shader.cpp" />
     <ClCompile Include="src\shaders\shader_program.cpp" />
     <ClCompile Include="src\shaders\entity_shader.cpp" />
     <ClCompile Include="src\toolbox\toolbox.cpp" />
@@ -33,10 +34,12 @@
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\entity.h" />
     <ClInclude Include="src\entities\light.h" />
+    <ClInclude Include="src\gui\gui_texture.h" />
     <ClInclude Include="src\models\model.h" />
     <ClInclude Include="src\renderEngine\loader.h" />
     <ClInclude Include="src\renderEngine\obj_loader.h" />
     <ClInclude Include="src\renderEngine\renderer.h" />
+    <ClInclude Include="src\shaders\gui_shader.h" />
     <ClInclude Include="src\shaders\shader_program.h" />
     <ClInclude Include="src\shaders\entity_shader.h" />
     <ClInclude Include="src\stb_image.h" />
