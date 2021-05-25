@@ -45,7 +45,7 @@
     <ClCompile Include="src\shaders\gui_shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\gui_element.cpp">
+    <ClCompile Include="src\gui\gui_interactable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -87,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\gui_element.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\gui_interactable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

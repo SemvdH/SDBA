@@ -1,7 +1,5 @@
 #include <GLFW/glfw3.h>
-#include "gui_element.h"
-
-#include <iostream>
+#include "gui_interactable.h"
 
 namespace gui
 {
@@ -17,11 +15,12 @@ namespace gui
 	void InteractableGui::Update(GLFWwindow* window)
 	{
 		if (IsHoveringAbove(window) && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-		{	
+		{
 			if (clicked_texture != 0)
 			{
 				texture = clicked_texture;
-			} else
+			}
+			else
 			{
 				texture = default_texture;
 			}
@@ -31,7 +30,8 @@ namespace gui
 				OnClick();
 				is_clicking = true;
 			}
-		} else
+		}
+		else
 		{
 			if (is_clicking)
 			{
@@ -47,14 +47,15 @@ namespace gui
 
 		const float x_rel = (x_pos / SCALED_WIDTH / DEFAULT_WIDTH) * 2.0f - 1.0f;
 		const float y_rel = -((y_pos / SCALED_HEIGHT / DEFAULT_HEIGHT) * 2.0f - 1.0f);
-		
+
 		if (x_rel >= minXY.x && x_rel <= maxXY.x &&
 			y_rel >= minXY.y && y_rel <= maxXY.y)
 		{
 			if (hover_texture != 0)
 			{
 				texture = hover_texture;
-			} else
+			}
+			else
 			{
 				texture = default_texture;
 			}

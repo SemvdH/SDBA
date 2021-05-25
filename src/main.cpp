@@ -9,6 +9,7 @@
 
 #include <opencv2/core.hpp>
 
+#include "gui/gui_interactable.h"
 #include "models/model.h"
 #include "renderEngine/loader.h"
 #include "renderEngine/obj_loader.h"
@@ -85,6 +86,10 @@ int main(void)
     gui::Button button(render_engine::loader::LoadTexture("res/Mayo.png"), glm::vec2(0.5f, 0.0f), glm::vec2(0.25f, 0.25f));
     button.SetHoverTexture(render_engine::loader::LoadTexture("res/Texture.png"));
     button.SetClickedTexture(render_engine::loader::LoadTexture("res/Mayo.png"));
+    button.SetOnClickAction([]()
+        {
+            std::cout << "I got clicked on!" << std::endl;
+        });
     guis.push_back(&button);
 	
 	
