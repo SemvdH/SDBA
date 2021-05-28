@@ -1,6 +1,9 @@
 #include <GL/glew.h>
+#include <glm/vec3.hpp>
 #include "../stb_image.h"
 #include "loader.h"
+
+#include <iostream>
 
 namespace render_engine
 {
@@ -9,22 +12,38 @@ namespace render_engine
 		static GLuint CreateVao();
 		static void StoreDataInAttributeList(int attribute_number, int coordinate_size, std::vector<float>& data);
 		static void BindIndicesBuffer(std::vector<unsigned int>& indices);
+		static glm::vec3 GetSizeModel(std::vector<float>& positions);
 
 		static std::vector<GLuint> vaos;
 		static std::vector<GLuint> vbos;
 		static std::vector<GLuint> textures;
 
 		/*
-			This function will generate a Model from vertex positions, textureCoordinates and indices.
+			This function will generate a Model from vertex positions, textureCoordinates normals and indices.
 		*/
-		struct models::RawModel LoadToVAO(std::vector<float>& positions, std::vector<float>& texture_coords, std::vector<unsigned int>& indices)
+		models::RawModel LoadToVAO(std::vector<float>& positions, std::vector<float>& texture_coords, std::vector<float>& normals, std::vector<unsigned int>& indices)
 		{
-			GLuint vao_id = CreateVao();
+			const GLuint vao_id = CreateVao();
 			BindIndicesBuffer(indices);
 			StoreDataInAttributeList(0, 3, positions);
 			StoreDataInAttributeList(1, 2, texture_coords);
+			StoreDataInAttributeList(2, 3, normals);
 			glBindVertexArray(0);
-			return { vao_id, static_cast<int>(indices.size()) };
+			
+			const glm::vec3 model_size = GetSizeModel(positions);
+			
+			return { vao_id, static_cast<int>(indices.size()), model_size };
+		}
+
+		/*
+			This function will generate a Model from vertex positions.
+		*/
+		models::RawModel LoadToVAO(std::vector<float>& positions)
+		{
+			const GLuint vao_id = CreateVao();
+			StoreDataInAttributeList(0, 2, positions);
+			glBindVertexArray(0);
+			return { vao_id, static_cast<int>(positions.size()) / 2 };
 		}
 
 		/*
@@ -40,6 +59,12 @@ namespace render_engine
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, texture_id);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData);
+
+			// Set mipmapping with a constant LOD
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
+
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			
@@ -112,6 +137,73 @@ namespace render_engine
 			vbos.push_back(vbo_id);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo_id);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), &indices[0], GL_STATIC_DRAW);
+		}
+
+		/**
+		* @brief gets the width, height and depth of a model
+		* @param positions all the points of a model
+		* @returns vec3<float> the size values of a model (width, height and depth)
+		**/
+		static glm::vec3 GetSizeModel(std::vector<float>& positions)
+		{
+			float minX = 100;
+			float maxX = -100;
+
+			float minY = 100;
+			float maxY = -100;
+
+			float minZ = 100;
+			float maxZ = -100;
+			
+			for (int i = 0; i < positions.size(); ++i)
+			{
+				const int index = i % 3;
+				const float value = positions[i];
+				
+				switch (index)
+				{
+				case 0: // x
+					{
+						if (value < minX)
+						{
+							minX = value;
+						} else if (value > maxX)
+						{
+							maxX = value;
+						}
+						break;
+					}
+				case 1: // y
+					{
+						if (value < minY)
+						{
+							minY = value;
+						}
+						else if (value > maxY)
+						{
+							maxY = value;
+						}
+						break;
+					}
+				case 2: // z
+				{
+					if (value < minZ)
+					{
+						minZ = value;
+					}
+					else if (value > maxZ)
+					{
+						maxZ = value;
+					}
+					break;
+				}
+				}
+			}
+
+			const float sizeX = maxX - minX;
+			const float sizeY = maxY - minY;
+			const float sizeZ = maxZ - minZ;
+			return { sizeX, sizeY, sizeZ };
 		}
 	}
 }

@@ -5,10 +5,15 @@
 
 namespace entities
 {
+	/*
+	 * This class represents a movable model in the game
+	 */
+	
 	class Entity
 	{
-	private:
+	protected:
 		models::TexturedModel model;
+		
 		glm::vec3 position;
 		glm::vec3 rotation;
 		float scale;
@@ -16,7 +21,18 @@ namespace entities
 	public:
 		Entity(const models::TexturedModel& model, const glm::vec3& position, const glm::vec3& rotation, float scale);
 
+		/*
+		 * @brief: This function increases the position of the entity
+		 *
+		 * @param distance: The amount of distance in each axis the entity needs to move
+		 */
 		void IncreasePosition(const glm::vec3& distance);
+
+		/*
+		 * @brief: This function increases the rotation of the entity
+		 *
+		 * @param rotation: The angle of each axis the entity needs to rotate
+		 */
 		void IncreaseRotation(const glm::vec3& rotation);
 		
 		inline models::TexturedModel GetModel() const{return model;}
