@@ -13,6 +13,7 @@ namespace entities
 	{
 	private:
 		models::TexturedModel model;
+		
 		glm::vec3 position;
 		glm::vec3 rotation;
 		float scale;
