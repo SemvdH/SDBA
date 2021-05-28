@@ -1,17 +1,15 @@
-
-#include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
-#include <opencv2/video.hpp>
 
 #include "ObjectDetection.h"
 #include "BackgroundRemover.h"
 #include "SkinDetector.h"
 #include "FaceDetector.h"
 #include "FingerCount.h"
+#include "VideoCapture.h"
 
+using namespace videocapture;
 namespace computervision
 {
-	cv::VideoCapture cap(0);
 
 	cv::Mat img, imgGray, img2, img2Gray, img3, img4;
 
@@ -29,13 +27,8 @@ namespace computervision
 	}
 
 	cv::Mat ObjectDetection::readCamera() {
-		cap.read(img);
+		videocapture::getCap().read(img);
 		return img;
-	}
-
-	cv::VideoCapture ObjectDetection::getCap()
-	{
-		return cap;
 	}
 
 	bool ObjectDetection::detectHand(Mat cameraFrame)
@@ -81,8 +74,8 @@ namespace computervision
 
 	void ObjectDetection::calculateDifference()
 	{
-		cap.read(img);
-		cap.read(img2);
+		videocapture::getCap().read(img);
+		videocapture::getCap().read(img2);
 
 		cv::cvtColor(img, imgGray, cv::COLOR_RGBA2GRAY);
 		cv::cvtColor(img2, img2Gray, cv::COLOR_RGBA2GRAY);

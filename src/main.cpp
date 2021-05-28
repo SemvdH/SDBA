@@ -88,7 +88,7 @@ int main(void)
 	//openPoseVideo.setup();
 
 	computervision::AsyncArmDetection as;
-	as.start(retrieve_points, objDetect.getCap(),openPoseVideo);
+	as.start(retrieve_points, openPoseVideo);
 	
 
 	// Main game loop

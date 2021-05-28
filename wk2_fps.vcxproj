@@ -26,6 +26,7 @@
     <ClCompile Include="src\computervision\SkinDetector.cpp" />
     <ClCompile Include="src\computervision\FingerCount.cpp" />
     <ClCompile Include="src\computervision\BackgroundRemover.cpp" />
+    <ClCompile Include="src\computervision\VideoCapture.cpp" />
     <ClCompile Include="src\entities\camera.cpp" />
     <ClCompile Include="src\entities\entity.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="src\computervision\OpenPoseVideo.h" />
     <ClInclude Include="src\computervision\SkinDetector.h" />
     <ClInclude Include="src\computervision\ObjectDetection.h" />
+    <ClInclude Include="src\computervision\VideoCapture.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\entity.h" />
     <ClInclude Include="src\models\model.h" />
