@@ -19,6 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\scenes\inGameScene.cpp" />
+    <ClCompile Include="src\scenes\scene.cpp" />
+    <ClCompile Include="src\computervision\FaceDetector.cpp" />
+    <ClCompile Include="src\computervision\ObjectDetection.cpp" />
+    <ClCompile Include="src\computervision\SkinDetector.cpp" />
+    <ClCompile Include="src\computervision\FingerCount.cpp" />
+    <ClCompile Include="src\computervision\BackgroundRemover.cpp" />
     <ClCompile Include="src\entities\camera.cpp" />
     <ClCompile Include="src\entities\entity.cpp" />
     <ClCompile Include="src\gui\gui_interactable.cpp" />
@@ -30,8 +37,16 @@
     <ClCompile Include="src\shaders\shader_program.cpp" />
     <ClCompile Include="src\shaders\entity_shader.cpp" />
     <ClCompile Include="src\toolbox\toolbox.cpp" />
+    <ClCompile Include="src\scenes\startupScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\scenes\inGameScene.h" />
+    <ClInclude Include="src\scenes\scene.h" />
+    <ClInclude Include="src\computervision\FaceDetector.h" />
+    <ClInclude Include="src\computervision\FingerCount.h" />
+    <ClInclude Include="src\computervision\BackgroundRemover.h" />
+    <ClInclude Include="src\computervision\SkinDetector.h" />
+    <ClInclude Include="src\computervision\ObjectDetection.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\entity.h" />
     <ClInclude Include="src\entities\light.h" />
@@ -46,6 +61,10 @@
     <ClInclude Include="src\shaders\entity_shader.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\toolbox\toolbox.h" />
+    <ClInclude Include="src\scenes\startupScene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="res\haarcascade_frontalface_alt.xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

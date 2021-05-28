@@ -6,8 +6,11 @@
 
 #include "stb_image.h"
 #include <ostream>
+#include <map>
 
 #include <opencv2/core.hpp>
+#include <opencv2/videoio.hpp>
+#include <opencv2/video.hpp>
 
 #include "gui/gui_interactable.h"
 #include "models/model.h"
@@ -17,6 +20,12 @@
 #include "shaders/entity_shader.h"
 #include "toolbox/toolbox.h"
 
+#include "scenes/scene.h"
+#include "scenes/startupScene.h"
+#include "scenes/inGameScene.h"
+
+#include "computervision/ObjectDetection.h"
+
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
@@ -24,6 +33,10 @@
 static double UpdateDelta();
 
 static GLFWwindow* window;
+
+//Scene management variables
+std::map<Scenes, Scene*> scenes;
+Scene* current_scene = nullptr;
 
 
 int main(void)
@@ -43,11 +56,14 @@ int main(void)
 	#pragma endregion
 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
-    {
-	    if (key == GLFW_KEY_ESCAPE)
-	        glfwSetWindowShouldClose(window, true);
-    });
+        {
+            current_scene->onKey(key, scancode, action, mods);
+	        if (key == GLFW_KEY_ESCAPE)
+	            glfwSetWindowShouldClose(window, true);
+        });
 	
+    scenes[Scenes::STARTUP] = new StartupScene();
+    scenes[Scenes::INGAME] = new InGameScene();
 	
     models::RawModel raw_model = render_engine::LoadObjModel("res/House.obj");
     models::ModelTexture texture = { render_engine::loader::LoadTexture("res/Texture.png") };
@@ -131,6 +147,7 @@ int main(void)
     shader.CleanUp();
     gui_shader.CleanUp();
     render_engine::loader::CleanUp();
+    current_scene->stop();
 	glfwTerminate();
     return 0;
 }
