@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\scenes\in_Game_Scene.cpp" />
+    <ClCompile Include="src\scenes\scene.cpp" />
     <ClCompile Include="src\entities\camera.cpp" />
     <ClCompile Include="src\entities\entity.cpp" />
     <ClCompile Include="src\gui\gui_interactable.cpp" />
@@ -30,8 +32,11 @@
     <ClCompile Include="src\shaders\shader_program.cpp" />
     <ClCompile Include="src\shaders\entity_shader.cpp" />
     <ClCompile Include="src\toolbox\toolbox.cpp" />
+    <ClCompile Include="src\scenes\startup_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\scenes\in_Game_Scene.h" />
+    <ClInclude Include="src\scenes\scene.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\entity.h" />
     <ClInclude Include="src\entities\light.h" />
@@ -46,6 +51,7 @@
     <ClInclude Include="src\shaders\entity_shader.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\toolbox\toolbox.h" />
+    <ClInclude Include="src\scenes\startup_Scene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
