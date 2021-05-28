@@ -11,7 +11,7 @@ namespace entities
 	
 	class Entity
 	{
-	private:
+	protected:
 		models::TexturedModel model;
 		
 		glm::vec3 position;

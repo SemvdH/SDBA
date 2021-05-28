@@ -7,11 +7,7 @@ namespace entities
 		: Entity(model, position, rotation, scale),
 		bounding_box(bounding_box)
 	{
-		const glm::vec3& center = bounding_box.center_pos;
-		const glm::vec3& size = bounding_box.size;
-
-		min_xyz = glm::vec3(center.x - size.x, center.y - size.y, center.z - size.z);
-		max_xyz = glm::vec3(center.x + size.x, center.y + size.y, center.z + size.z);
+		MoveCollisionBox();
 	}
 
 	void CollisionEntity::OnCollide(const collision::Collision& collision)
@@ -34,5 +30,15 @@ namespace entities
 		return (min_xyz.x <= e.max_xyz.x && max_xyz.x >= e.min_xyz.x) &&
 			(min_xyz.y <= e.max_xyz.y && max_xyz.y >= e.min_xyz.y) &&
 			(min_xyz.z <= e.max_xyz.z && max_xyz.z >= e.min_xyz.z);
+	}
+
+	void CollisionEntity::MoveCollisionBox()
+	{
+		bounding_box.center_pos = position;
+		
+		const glm::vec3 size = bounding_box.size;
+
+		min_xyz = bounding_box.center_pos;
+		max_xyz = glm::vec3(min_xyz.x + size.x, min_xyz.y + size.y, min_xyz.z + size.z);
 	}
 }

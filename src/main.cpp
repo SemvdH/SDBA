@@ -16,6 +16,9 @@
 #include "renderEngine/renderer.h"
 #include "shaders/entity_shader.h"
 #include "toolbox/toolbox.h"
+#include "entities/collision_entity.h"
+#include "entities/player.h"
+#include "collision/collision_handler.h"
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
@@ -55,42 +58,41 @@ int main(void)
     texture.reflectivity = 0;
     models::TexturedModel model = { raw_model, texture };
 
-    /**
-    * load and add some models (in this case some level sections) to the entities list.
-    * */
-    std::vector<entities::Entity> entities;
-    int z = 0;
-    for (int i = 0; i < 5; ++i)
-    {
-        entities.push_back(entities::Entity(model, glm::vec3(0, -50, -50 - z), glm::vec3(0, 90, 0), 20));
-        z += (raw_model.model_size.x * 20);
-    }
+    
+    // load and add some models (in this case some level sections) to the entities list. 
+    std::vector<entities::Entity*> entities;
+    std::vector<entities::CollisionEntity*> collision_entities;
+	
+    // int z = 0;
+    // for (int i = 0; i < 5; ++i)
+    // {
+    //     entities.push_back(entities::Entity(model, glm::vec3(0, -50, -50 - z), glm::vec3(0, 90, 0), 20));
+    //     z += (raw_model.model_size.x * 20);
+    // }
 
     std::vector<entities::Light> lights;
     lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5)));
     lights.push_back(entities::Light(glm::vec3(0, 0, -30), glm::vec3(2, 0, 2), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
     lights.push_back(entities::Light(glm::vec3(0, 0, -200), glm::vec3(0, 2, 0), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
 
+
+    // Collision testing
+    entities::Player player(model, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 1, { {0, 0, 0}, raw_model.model_size });
+    entities.push_back(&player);
+    collision_entities.push_back(&player);
+	
+    entities::Player2 player2(model, glm::vec3(50, 0, 0), glm::vec3(0, 0, 0), 1, { {50, 0, 0}, raw_model.model_size });
+    entities.push_back(&player2);
+    collision_entities.push_back(&player2);
+	
+	
 	shaders::EntityShader shader;
     shader.Init();
     render_engine::renderer::Init(shader);
 
-    entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+    entities::Camera camera(glm::vec3(40, 10, 80), glm::vec3(0, 0, 0));
 
 
-	// GUI stuff
-    shaders::GuiShader gui_shader;
-    gui_shader.Init();
-	
-    std::vector<gui::GuiTexture*> guis;
-    gui::Button button(render_engine::loader::LoadTexture("res/Mayo.png"), glm::vec2(0.5f, 0.0f), glm::vec2(0.25f, 0.25f));
-    button.SetHoverTexture(render_engine::loader::LoadTexture("res/Texture.png"));
-    button.SetClickedTexture(render_engine::loader::LoadTexture("res/Mayo.png"));
-    button.SetOnClickAction([]()
-        {
-            std::cout << "I got clicked on!" << std::endl;
-        });
-    guis.push_back(&button);
 	
 	
 	// Main game loop
@@ -99,7 +101,13 @@ int main(void)
         // Update
         const double delta = UpdateDelta();
         camera.Move(window);
-        button.Update(window);
+
+
+        player.Update();
+        player2.Update();
+
+        collision::CheckCollisions(collision_entities);
+		
 
 		// Render
         render_engine::renderer::Prepare();
@@ -111,16 +119,13 @@ int main(void)
         shader.LoadViewMatrix(camera);
 		
         // Renders each entity in the entities list
-		for (entities::Entity& entity : entities)
+		for (entities::Entity* entity : entities)
 		{
-            render_engine::renderer::Render(entity, shader);
+            render_engine::renderer::Render(*entity, shader);
 		}
 
 		// Stop rendering the entities
         shader.Stop();
-
-        // Render GUI items
-        render_engine::renderer::Render(guis, gui_shader);
 
         // Finish up
 		glfwSwapBuffers(window);
@@ -129,7 +134,6 @@ int main(void)
 
 	// Clean up
     shader.CleanUp();
-    gui_shader.CleanUp();
     render_engine::loader::CleanUp();
 	glfwTerminate();
     return 0;

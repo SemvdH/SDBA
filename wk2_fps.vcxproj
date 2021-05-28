@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\collision\collision_handler.cpp" />
     <ClCompile Include="src\entities\camera.cpp" />
     <ClCompile Include="src\entities\collision_entity.cpp" />
     <ClCompile Include="src\entities\entity.cpp" />
@@ -34,10 +35,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\collision\collision.h" />
+    <ClInclude Include="src\collision\collision_handler.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\collision_entity.h" />
     <ClInclude Include="src\entities\entity.h" />
     <ClInclude Include="src\entities\light.h" />
+    <ClInclude Include="src\entities\player.h" />
     <ClInclude Include="src\gui\gui_element.h" />
     <ClInclude Include="src\gui\gui_interactable.h" />
     <ClInclude Include="src\models\model.h" />

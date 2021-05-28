@@ -10,7 +10,7 @@ namespace entities
 	 */
 	class CollisionEntity : public Entity
 	{
-	private:
+	public:
 		collision::Box bounding_box;
 
 		glm::vec3 min_xyz;
@@ -54,5 +54,12 @@ namespace entities
 		 */
 		void SetCollisionBehaviour(void (*function)(const collision::Collision& collision))
 		{ if (function != nullptr) { on_collide = function; } }
+
+	protected:
+
+		/*
+		 * @brief: This method moves the collision to the center of the entity
+		 */
+		void MoveCollisionBox();
 	};
 }
