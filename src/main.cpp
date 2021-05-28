@@ -27,9 +27,8 @@
 
 static double UpdateDelta();
 
-GLFWwindow* window;
-std::map<scene::Scenes, scene::Scene*> scenes;
-scene::Scene* current_scene = nullptr;
+static GLFWwindow* window;
+scene::Scene* current_scene;
 
 int main(void)
 {
@@ -47,103 +46,51 @@ int main(void)
     glGetError();
 	#pragma endregion
 
+    
+    current_scene = new scene::Startup_Scene();
+
+
+	
+
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
-    {
-            current_scene->onKey(key, scancode, action, mods);
-	    if (key == GLFW_KEY_ESCAPE)
-	        glfwSetWindowShouldClose(window, true);
-    });
-
-
-    scenes[scene::Scenes::STARTUP] = new scene::Startup_Scene();
-    scenes[scene::Scenes::INGAME] = new scene::In_Game_Scene();
-    current_scene = scenes[scene::Scenes::STARTUP];
-	
-	
-   /* models::RawModel raw_model = render_engine::LoadObjModel("res/House.obj");
-    models::ModelTexture texture = { render_engine::loader::LoadTexture("res/Texture.png") };
-    texture.shine_damper = 10;
-    texture.reflectivity = 0;
-    models::TexturedModel model = { raw_model, texture };*/
-
-    /**
-    * load and add some models (in this case some level sections) to the entities list.
-    * */
-    /*std::vector<entities::Entity> entities;
-    int z = 0;
-    for (int i = 0; i < 5; ++i)
-    {
-        entities.push_back(entities::Entity(model, glm::vec3(0, -50, -50 - z), glm::vec3(0, 90, 0), 20));
-        z += (raw_model.model_size.x * 20);
-    }*/
-
-   /* std::vector<entities::Light> lights;
-    lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5)));
-    lights.push_back(entities::Light(glm::vec3(0, 0, -30), glm::vec3(2, 0, 2), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
-    lights.push_back(entities::Light(glm::vec3(0, 0, -200), glm::vec3(0, 2, 0), glm::vec3(0.0001f, 0.0001f, 0.0001f)));*/
-
-	/*shaders::EntityShader shader;
-    shader.Init();
-    render_engine::renderer::Init(shader);*/
-
-    //entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
-
-
-	// GUI stuff
-   /* shaders::GuiShader gui_shader;
-    gui_shader.Init();
-	
-    std::vector<gui::GuiTexture*> guis;
-    gui::Button button(render_engine::loader::LoadTexture("res/Mayo.png"), glm::vec2(0.5f, 0.0f), glm::vec2(0.25f, 0.25f));
-    button.SetHoverTexture(render_engine::loader::LoadTexture("res/Texture.png"));
-    button.SetClickedTexture(render_engine::loader::LoadTexture("res/Mayo.png"));
-    button.SetOnClickAction([]()
         {
-            std::cout << "I got clicked on!" << std::endl;
+            current_scene->onKey(window, key, scancode, action, mods);
+            if (key == GLFW_KEY_ESCAPE)
+                glfwSetWindowShouldClose(window, true);
         });
-    guis.push_back(&button);
-	*/
-	
+
+    bool window_open = true;
 	// Main game loop
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(window) && window_open)
 	{
-        // Update
+        //Update
         const double delta = UpdateDelta();
-        //camera.Move(window);
-        current_scene->update();
-       // button.Update(window);
 
-        current_scene->render();
-		// Render
-        //render_engine::renderer::Prepare();
-		
-		// Start rendering the entities
-        //shader.Start();
-        //shader.LoadSkyColor(render_engine::renderer::SKY_COLOR);
-        //shader.LoadLights(lights);
-        //shader.LoadViewMatrix(camera);
-		
-        // Renders each entity in the entities list
-	/*	for (entities::Entity& entity : entities)
-		{
-            render_engine::renderer::Render(entity, shader);
-		}*/
+        scene::Scenes return_value = current_scene->start(window);
+        delete current_scene;
 
-		// Stop rendering the entities
-        //shader.Stop();
+        switch (return_value) {
+            case scene::Scenes::STOP:
+                window_open = false;
+                break;
 
-        // Render GUI items
-        //render_engine::renderer::Render(guis, gui_shader);
+            case scene::Scenes::STARTUP:
+                current_scene = new scene::Startup_Scene();
+                break;
 
-        // Finish up
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+            case scene::Scenes::INGAME:
+                current_scene = new scene::In_Game_Scene();
+                break;
+
+            default:
+                std::cout << "Wrong return value!!! ->" << std::endl;
+                break;
+        }
 	}
 
-	// Clean up
-    //shader.CleanUp();
-   // gui_shader.CleanUp();
-    render_engine::loader::CleanUp();
+	// Clean up -> preventing memory leaks!!!
+    std::cout << "ending..." << std::endl;
+    delete current_scene;
 	glfwTerminate();
     return 0;
 }

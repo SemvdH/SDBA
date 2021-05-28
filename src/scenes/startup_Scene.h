@@ -4,16 +4,18 @@
 
 namespace scene
 {
+	extern GLFWwindow* window;
+
 	class Startup_Scene : public scene::Scene
 	{
 	private:
-
+		scene::Scenes return_value = scene::Scenes::STARTUP;
 
 	public:
-		virtual void start() override;
-		virtual void render() override;
-		virtual void update() override;
-		virtual void onKey(int key, int scancode, int action, int mods) override;
+		Scenes start(GLFWwindow* window) override;
+		void render() override;
+		void update(GLFWwindow* window) override;
+		void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) override;
 	};
 }
 
