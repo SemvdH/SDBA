@@ -1,30 +1,29 @@
 #include "inGameScene.h"
 #include <GLFW/glfw3.h>
 
-void start()
+void InGameScene::start()
 {
 
 }
 
-void stop()
+void InGameScene::stop()
 {
 
 }
 
-void render()
+void InGameScene::render()
 {
 
 }
 
-void update(GLFWwindow* window)
+void InGameScene::update(GLFWwindow* window)
 {
 
 }
 
-void onKey(int key, int scancode, int action, int mods)
+void InGameScene::onKey(int key, int scancode, int action, int mods)
 {
 	/**
 	* misschien iets van als niet in settings dan hoeft alleen escape een knop zijn als reserve optie. Als wel in settings, dan heb je hetzelfde hoe je in het in het begin scherm hebt.
 	**/
 }
-
