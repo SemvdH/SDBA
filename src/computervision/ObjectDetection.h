@@ -65,6 +65,8 @@ namespace computervision
 		 */
 		bool drawHandMaskRect(cv::Mat *input);
 
+		cv::VideoCapture getCap();
+
 	};
 
 

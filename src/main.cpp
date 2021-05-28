@@ -1,6 +1,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <functional>
+#include <vector>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <ostream>
@@ -21,6 +23,8 @@
 //#include "computervision/OpenPoseImage.h"
 #include "computervision/OpenPoseVideo.h"
 
+#include "computervision/async/async_arm_detection.h"
+
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
@@ -29,6 +33,11 @@ static double UpdateDelta();
 
 static GLFWwindow* window;
 
+void retrieve_points(std::vector<Point> arm_points)
+{
+	std::cout << "got points!!" << std::endl;
+	std::cout << "points: " << arm_points << std::endl;
+}
 
 int main(void)
 {
@@ -68,6 +77,7 @@ int main(void)
 	computervision::ObjectDetection objDetect;
 	//computervision::OpenPoseImage openPoseImage;
 	computervision::OpenPoseVideo openPoseVideo;
+	openPoseVideo.setup();
 
 
 	// set up object detection
@@ -75,7 +85,11 @@ int main(void)
 	cv::Mat cameraFrame;
 
 
-	openPoseVideo.setup();
+	//openPoseVideo.setup();
+
+	computervision::AsyncArmDetection as;
+	as.start(retrieve_points, objDetect.getCap(),openPoseVideo);
+	
 
 	// Main game loop
 	while (!glfwWindowShouldClose(window))
@@ -95,7 +109,6 @@ int main(void)
 
 		cameraFrame = objDetect.readCamera();
 		//objDetect.detectHand(cameraFrame);
-		openPoseVideo.movementSkeleton(cameraFrame);
 
 		// Finish up
 		shader.Stop();

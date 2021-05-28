@@ -13,7 +13,7 @@ namespace computervision
 	private:
 
 	public:
-		void movementSkeleton(Mat inputImage);
+		void movementSkeleton(Mat inputImage,std::function<void(std::vector<Point>)> f);
 		void setup();
 	};
 }

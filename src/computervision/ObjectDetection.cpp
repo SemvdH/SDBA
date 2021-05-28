@@ -11,7 +11,7 @@
 
 namespace computervision
 {
-	cv::VideoCapture cap(1);
+	cv::VideoCapture cap(0);
 
 	cv::Mat img, imgGray, img2, img2Gray, img3, img4;
 
@@ -31,6 +31,11 @@ namespace computervision
 	cv::Mat ObjectDetection::readCamera() {
 		cap.read(img);
 		return img;
+	}
+
+	cv::VideoCapture ObjectDetection::getCap()
+	{
+		return cap;
 	}
 
 	bool ObjectDetection::detectHand(Mat cameraFrame)

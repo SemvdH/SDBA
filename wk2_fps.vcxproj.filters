@@ -60,6 +60,9 @@
     <ClCompile Include="src\computervision\OpenPoseVideo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\computervision\async\async_arm_detection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entities\Camera.h">
@@ -110,8 +113,16 @@
     <ClInclude Include="src\computervision\OpenPoseVideo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\computervision\async\async_arm_detection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\haarcascade_frontalface_alt.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\pose\coco\pose_deploy_linevec.prototxt" />
+    <None Include="res\pose\mpi\pose_deploy_linevec_faster_4_stages.prototxt" />
+    <None Include="res\pose\mpi\pose_iter_160000.caffemodel" />
   </ItemGroup>
 </Project>

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\computervision\async\async_arm_detection.cpp" />
     <ClCompile Include="src\computervision\FaceDetector.cpp" />
     <ClCompile Include="src\computervision\ObjectDetection.cpp" />
     <ClCompile Include="src\computervision\OpenPoseVideo.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="src\toolbox\toolbox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\computervision\async\async_arm_detection.h" />
     <ClInclude Include="src\computervision\FaceDetector.h" />
     <ClInclude Include="src\computervision\FingerCount.h" />
     <ClInclude Include="src\computervision\BackgroundRemover.h" />
@@ -55,6 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\haarcascade_frontalface_alt.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\pose\coco\pose_deploy_linevec.prototxt" />
+    <None Include="res\pose\mpi\pose_deploy_linevec_faster_4_stages.prototxt" />
+    <None Include="res\pose\mpi\pose_iter_160000.caffemodel" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
