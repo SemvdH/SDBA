@@ -49,14 +49,9 @@ int main(void)
     
     current_scene = new scene::Startup_Scene();
 
-
-	
-
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {
             current_scene->onKey(window, key, scancode, action, mods);
-            if (key == GLFW_KEY_ESCAPE)
-                glfwSetWindowShouldClose(window, true);
         });
 
     bool window_open = true;
@@ -90,7 +85,6 @@ int main(void)
 
 	// Clean up -> preventing memory leaks!!!
     std::cout << "ending..." << std::endl;
-    delete current_scene;
 	glfwTerminate();
     return 0;
 }
