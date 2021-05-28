@@ -18,6 +18,8 @@
 #include "toolbox/toolbox.h"
 
 #include "computervision/ObjectDetection.h"
+//#include "computervision/OpenPoseImage.h"
+#include "computervision/OpenPoseVideo.h"
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
@@ -64,11 +66,16 @@ int main(void)
 
 	// create object detection object instance
 	computervision::ObjectDetection objDetect;
+	//computervision::OpenPoseImage openPoseImage;
+	computervision::OpenPoseVideo openPoseVideo;
 
 
 	// set up object detection
 	//objDetect.setup();
 	cv::Mat cameraFrame;
+
+
+	openPoseVideo.setup();
 
 	// Main game loop
 	while (!glfwWindowShouldClose(window))
@@ -87,8 +94,8 @@ int main(void)
 		render_engine::renderer::Render(entity, shader);
 
 		cameraFrame = objDetect.readCamera();
-		objDetect.detectHand(cameraFrame);
-
+		//objDetect.detectHand(cameraFrame);
+		openPoseVideo.movementSkeleton(cameraFrame);
 
 		// Finish up
 		shader.Stop();
