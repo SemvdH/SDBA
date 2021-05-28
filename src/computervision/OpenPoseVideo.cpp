@@ -46,48 +46,17 @@ namespace computervision
 
 	void OpenPoseVideo::movementSkeleton(Mat inputImage) {
 
-		//string device = "cpu";
-		//string videoFile = "sample_video.mp4";
-
-		// Take arguments from commmand line
-		/*if (argc == 2)
-		{
-			if ((string)argv[1] == "gpu")
-				device = "gpu";
-			else
-				videoFile = argv[1];
-		}
-		else if (argc == 3)
-		{
-			videoFile = argv[1];
-			if ((string)argv[2] == "gpu")
-				device = "gpu";
-		}*/
-
 		int inWidth = 368;
 		int inHeight = 368;
 		float thresh = 0.01;
 
-		Mat frame, frameCopy;
+		Mat frame;
 		int frameWidth = inputImage.size().width;
 		int frameHeight = inputImage.size().height;
-
-		/*if (device == "cpu")
-		{
-			cout << "Using CPU device" << endl;
-			net.setPreferableBackend(DNN_TARGET_CPU);
-		}
-		else if (device == "gpu")
-		{
-			cout << "Using GPU device" << endl;
-			net.setPreferableBackend(DNN_BACKEND_CUDA);
-			net.setPreferableTarget(DNN_TARGET_CUDA);
-		}*/
 
 		double t = (double)cv::getTickCount();
 
 		frame = inputImage;
-		frameCopy = frame.clone();
 		Mat inpBlob = blobFromImage(frame, 1.0 / 255, Size(inWidth, inHeight), Scalar(0, 0, 0), false, false);
 
 		net.setInput(inpBlob);
@@ -114,31 +83,13 @@ namespace computervision
 				p.x *= (float)frameWidth / W;
 				p.y *= (float)frameHeight / H;
 
-				circle(frameCopy, cv::Point((int)p.x, (int)p.y), 8, Scalar(0, 255, 255), -1);
-				cv::putText(frameCopy, cv::format("%d", n), cv::Point((int)p.x, (int)p.y), cv::FONT_HERSHEY_COMPLEX, 1.1, cv::Scalar(0, 0, 255), 2);
+				circle(frame, cv::Point((int)p.x, (int)p.y), 8, Scalar(0, 255, 255), -1);
+				cv::putText(frame, cv::format("%d", n), cv::Point((int)p.x, (int)p.y), cv::FONT_HERSHEY_COMPLEX, 1.1, cv::Scalar(0, 0, 255), 2);
 			}
 			points[n] = p;
 		}
 
-		int nPairs = sizeof(POSE_PAIRS) / sizeof(POSE_PAIRS[0]);
+		imshow("Output-Keypoints", frame);
 
-		for (int n = 0; n < nPairs; n++)
-		{
-			// lookup 2 connected body/hand parts
-			Point2f partA = points[POSE_PAIRS[n][0]];
-			Point2f partB = points[POSE_PAIRS[n][1]];
-
-			if (partA.x <= 0 || partA.y <= 0 || partB.x <= 0 || partB.y <= 0)
-				continue;
-
-			line(frame, partA, partB, Scalar(0, 255, 255), 8);
-			circle(frame, partA, 8, Scalar(0, 0, 255), -1);
-			circle(frame, partB, 8, Scalar(0, 0, 255), -1);
-		}
-
-		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		cv::putText(frame, cv::format("time taken = %.2f sec", t), cv::Point(50, 50), cv::FONT_HERSHEY_COMPLEX, .8, cv::Scalar(255, 50, 0), 2);
-		// imshow("Output-Keypoints", frameCopy);
-		imshow("Output-Skeleton", frame);
 	}
 }
