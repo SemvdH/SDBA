@@ -7,7 +7,6 @@
 
 #include "stb_image.h"
 #include <ostream>
-#include <stdlib.h>
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
