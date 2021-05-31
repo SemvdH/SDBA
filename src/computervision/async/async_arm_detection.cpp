@@ -3,6 +3,9 @@
 #include "../OpenPoseVideo.h"
 #include <thread>
 #include "../VideoCapture.h"
+#include <opencv2/dnn.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
 
 
 namespace computervision
@@ -20,31 +23,19 @@ namespace computervision
 	void AsyncArmDetection::start(std::function<void(std::vector<Point>)> points_ready_func, OpenPoseVideo op)
 	{
 
-		auto lambda = [](std::function<void(std::vector<Point>)> f, OpenPoseVideo op) {
+		auto lambda = [](cv::Mat img, std::function<void(std::vector<Point>)> f, OpenPoseVideo op, cv::Mat inpBlob) {
 			std::cout << "STARTING THREAD LAMBDA" << std::endl;
 
-			videocapture::getMutex()->lock();
-			if (!videocapture::getCap().isOpened())
-			{
-				std::cout << "error opening video" << std::endl;
-				videocapture::getCap().open(1);
-				return;
-			}
-			videocapture::getMutex()->unlock();
-			Mat img;
-			while (true)
-			{
-				videocapture::getMutex()->lock();
-
-				videocapture::getCap().read(img);
-				imshow("image", img);
-
-				videocapture::getMutex()->unlock();
-				op.movementSkeleton(img, f);
-			}
+			//imshow("image", img); 255, Size(368, 368), Scalar(0, 0, 0), false, false);
+			op.movementSkeleton(img, inpBlob, f);
+			//}
 		};
 
+		cv::Mat img = videocapture::readFrame();
 		std::cout << "starting function" << std::endl;
-		std::thread async_arm_detect_thread(lambda, points_ready_func, op);
+		cv::Mat inpBlob = op.getBlobFromImage(videocapture::readFrame());
+
+
+		std::thread async_arm_detect_thread(lambda, img, points_ready_func, op, inpBlob);
 	}
 }

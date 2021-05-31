@@ -32,11 +32,14 @@
 static double UpdateDelta();
 
 static GLFWwindow* window;
+computervision::AsyncArmDetection as;
+computervision::OpenPoseVideo openPoseVideo;
 
 void retrieve_points(std::vector<Point> arm_points)
 {
 	std::cout << "got points!!" << std::endl;
 	std::cout << "points: " << arm_points << std::endl;
+	as.start(retrieve_points, openPoseVideo);
 }
 
 int main(void)
@@ -76,7 +79,7 @@ int main(void)
 	// create object detection object instance
 	computervision::ObjectDetection objDetect;
 	//computervision::OpenPoseImage openPoseImage;
-	computervision::OpenPoseVideo openPoseVideo;
+	
 	openPoseVideo.setup();
 
 
@@ -87,7 +90,7 @@ int main(void)
 
 	//openPoseVideo.setup();
 
-	computervision::AsyncArmDetection as;
+	
 	as.start(retrieve_points, openPoseVideo);
 	
 

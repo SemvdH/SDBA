@@ -13,7 +13,8 @@ namespace computervision
 	private:
 
 	public:
-		void movementSkeleton(Mat inputImage,std::function<void(std::vector<Point>)> f);
+		cv::Mat getBlobFromImage(cv::Mat inputImage);
+		void movementSkeleton(Mat inputImage, Mat inpBlob, std::function<void(std::vector<Point>)> f);
 		void setup();
 	};
 }

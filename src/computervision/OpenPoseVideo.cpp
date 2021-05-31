@@ -39,18 +39,16 @@ namespace computervision
 	int nPoints = 18;
 #endif
 	Net net;
+	int inWidth = 368;
+	int inHeight = 368;
+	float thresh = 0.01;
 
 	void OpenPoseVideo::setup() {
 		net = readNetFromCaffe(protoFile, weightsFile);
 	}
 
-	void OpenPoseVideo::movementSkeleton(Mat inputImage, std::function<void(std::vector<Point>)> f) {
-		std::cout << "movement skeleton start" << std::endl;
-
-		int inWidth = 368;
-		int inHeight = 368;
-		float thresh = 0.01;
-
+	cv::Mat OpenPoseVideo::getBlobFromImage(cv::Mat inputImage)
+	{
 		Mat frame;
 		int frameWidth = inputImage.size().width;
 		int frameHeight = inputImage.size().height;
@@ -58,15 +56,24 @@ namespace computervision
 		double t = (double)cv::getTickCount();
 		std::cout << "reading input image and blob" << std::endl;
 
-		frame = inputImage;
+		frame = inputImage.clone();
 		Mat inpBlob = blobFromImage(frame, 1.0 / 255, Size(inWidth, inHeight), Scalar(0, 0, 0), false, false);
+		return inpBlob;
+	}
+
+	void OpenPoseVideo::movementSkeleton(Mat inputImage, Mat inpBlob, std::function<void(std::vector<Point>)> f) {
+		std::cout << "movement skeleton start" << std::endl;
 		
+		int frameWidth = inputImage.size().width;
+		int frameHeight = inputImage.size().height;
+
 		std::cout << "done reading image and blob" << std::endl;
 
 		net.setInput(inpBlob);
 
 		std::cout << "done setting input to net" << std::endl;
 		Mat output = net.forward();
+
 
 		int H = output.size[2];
 		int W = output.size[3];
@@ -89,15 +96,15 @@ namespace computervision
 				p.x *= (float)frameWidth / W;
 				p.y *= (float)frameHeight / H;
 
-				circle(frame, cv::Point((int)p.x, (int)p.y), 8, Scalar(0, 255, 255), -1);
-				cv::putText(frame, cv::format("%d", n), cv::Point((int)p.x, (int)p.y), cv::FONT_HERSHEY_COMPLEX, 1.1, cv::Scalar(0, 0, 255), 2);
+				/*circle(frame, cv::Point((int)p.x, (int)p.y), 8, Scalar(0, 255, 255), -1);
+				cv::putText(frame, cv::format("%d", n), cv::Point((int)p.x, (int)p.y), cv::FONT_HERSHEY_COMPLEX, 1.1, cv::Scalar(0, 0, 255), 2);*/
 			}
 			points[n] = p;
 		}
 
-		cv::putText(frame, cv::format("time taken = %.2f sec", t), cv::Point(50, 50), cv::FONT_HERSHEY_COMPLEX, .8, cv::Scalar(255, 50, 0), 2);
+		//cv::putText(frame, cv::format("time taken = %.2f sec", t), cv::Point(50, 50), cv::FONT_HERSHEY_COMPLEX, .8, cv::Scalar(255, 50, 0), 2);
 		// imshow("Output-Keypoints", frameCopy);
-		imshow("Output-Skeleton", frame);
+		/*imshow("Output-Skeleton", frame);*/
 		std::cout << "about to call points receiving method" << std::endl;
 		f(points);
 	}

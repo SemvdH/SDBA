@@ -7,5 +7,6 @@
 namespace videocapture {
 	cv::VideoCapture getCap();
 	std::mutex* getMutex();
+	cv::Mat readFrame();
 
 }

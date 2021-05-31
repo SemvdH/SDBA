@@ -27,11 +27,12 @@ namespace computervision
 	}
 
 	cv::Mat ObjectDetection::readCamera() {
-		videocapture::getMutex()->lock();
+		/*videocapture::getMutex()->lock();
 
 		videocapture::getCap().read(img);
 
-		videocapture::getMutex()->unlock();
+		videocapture::getMutex()->unlock();*/
+		img = videocapture::readFrame();
 		return img;
 	}
 
@@ -78,10 +79,13 @@ namespace computervision
 
 	void ObjectDetection::calculateDifference()
 	{
-		videocapture::getMutex()->lock();
-		videocapture::getCap().read(img);
-		videocapture::getCap().read(img2);
-		videocapture::getMutex()->unlock();
+		//videocapture::getMutex()->lock();
+		//videocapture::getCap().read(img);
+		//videocapture::getCap().read(img2);
+		//videocapture::getMutex()->unlock()
+
+		img = videocapture::readFrame();
+		img2 = videocapture::readFrame();
 
 		cv::cvtColor(img, imgGray, cv::COLOR_RGBA2GRAY);
 		cv::cvtColor(img2, img2Gray, cv::COLOR_RGBA2GRAY);
