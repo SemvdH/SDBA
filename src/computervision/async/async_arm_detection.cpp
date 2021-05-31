@@ -23,17 +23,23 @@ namespace computervision
 		auto lambda = [](std::function<void(std::vector<Point>)> f, OpenPoseVideo op) {
 			std::cout << "STARTING THREAD LAMBDA" << std::endl;
 
+			videocapture::getMutex()->lock();
 			if (!videocapture::getCap().isOpened())
 			{
 				std::cout << "error opening video" << std::endl;
 				videocapture::getCap().open(1);
 				return;
 			}
+			videocapture::getMutex()->unlock();
 			Mat img;
 			while (true)
 			{
+				videocapture::getMutex()->lock();
+
 				videocapture::getCap().read(img);
 				imshow("image", img);
+
+				videocapture::getMutex()->unlock();
 				op.movementSkeleton(img, f);
 			}
 		};
