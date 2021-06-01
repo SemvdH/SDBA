@@ -57,9 +57,6 @@
     <ClCompile Include="src\computervision\FingerCount.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\computervision\FaceDetector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\computervision\BackgroundRemover.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -123,9 +120,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\computervision\FingerCount.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\computervision\FaceDetector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\computervision\BackgroundRemover.h">

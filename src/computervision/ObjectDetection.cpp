@@ -2,7 +2,6 @@
 #include "ObjectDetection.h"
 #include "BackgroundRemover.h"
 #include "SkinDetector.h"
-#include "FaceDetector.h"
 #include "FingerCount.h"
 
 namespace computervision
@@ -14,7 +13,6 @@ namespace computervision
 	Mat frame, frameOut, handMask, foreground, fingerCountDebug;
 	BackgroundRemover backgroundRemover;
 	SkinDetector skinDetector;
-	FaceDetector faceDetector;
 	FingerCount fingerCount;
 
 
@@ -35,8 +33,6 @@ namespace computervision
 		skinDetector.drawSkinColorSampler(frameOut);
 
 		foreground = backgroundRemover.getForeground(frame);
-
-		faceDetector.removeFaces(frame, foreground);
 		handMask = skinDetector.getSkinMask(foreground);
 		fingerCountDebug = fingerCount.findFingersCount(handMask, frameOut);
 

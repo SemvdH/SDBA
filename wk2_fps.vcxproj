@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="src\scenes\inGameScene.cpp" />
     <ClCompile Include="src\scenes\scene.cpp" />
-    <ClCompile Include="src\computervision\FaceDetector.cpp" />
     <ClCompile Include="src\computervision\ObjectDetection.cpp" />
     <ClCompile Include="src\computervision\SkinDetector.cpp" />
     <ClCompile Include="src\computervision\FingerCount.cpp" />
@@ -42,7 +41,6 @@
   <ItemGroup>
     <ClInclude Include="src\scenes\inGameScene.h" />
     <ClInclude Include="src\scenes\scene.h" />
-    <ClInclude Include="src\computervision\FaceDetector.h" />
     <ClInclude Include="src\computervision\FingerCount.h" />
     <ClInclude Include="src\computervision\BackgroundRemover.h" />
     <ClInclude Include="src\computervision\SkinDetector.h" />
