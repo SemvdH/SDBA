@@ -5,6 +5,8 @@
 #include "stb_image.h"
 #include <ostream>
 #include <stdlib.h>
+#include <iostream>
+#include <Windows.h>
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
@@ -17,6 +19,7 @@
 #include "shaders/static_shader.h"
 #include "toolbox/toolbox.h"
 
+#include "computervision/MenuTest.h"
 #include "computervision/ObjectDetection.h"
 
 #pragma comment(lib, "glfw3.lib")
@@ -26,7 +29,7 @@
 static double UpdateDelta();
 
 static GLFWwindow* window;
-
+int chosen_item = 0;
 
 int main(void)
 {
@@ -87,8 +90,54 @@ int main(void)
 		render_engine::renderer::Render(entity, shader);
 
 		cameraFrame = objDetect.readCamera();
-		objDetect.detectHand(cameraFrame);
 
+		////////////////////////// KIMS SHIT ////////////////////////////////////
+		computervision::MenuTest menu_test;
+
+		//Get hand state from camera
+		bool hand_detection = objDetect.detectHand(cameraFrame);
+		
+		if (hand_detection) 
+		{
+			std::cout << "hand is opened" << std::endl;
+			
+			//Loop through menu items
+			chosen_item = menu_test.GetMenuItem(true);
+
+			//For debug only, to see if chosen item is selected properly when hand is opened
+			std::cout << "chosen item: " << chosen_item << std::endl;
+			
+		}
+		else if (!hand_detection) 
+		{
+			//for debug only, to see if the chosen item is selected properly when hand is closed
+			std::cout << "hand is closed" << std::endl;
+			//std::cout << "item to start: " << chosen_item << std::endl;
+
+			//TODO link chosen item to the correct game states
+			switch (chosen_item)
+			{
+				case 1:
+					//Game state 0
+					std::cout << "in case: " << chosen_item << std::endl;
+					break;
+				case 2:
+					//Game state 1
+					std::cout << "in case: " << chosen_item << std::endl;
+					break;
+				case 3:
+					//Game state 2
+					std::cout << "in case: " << chosen_item << std::endl;
+					break;
+				case 4:
+					//Game state 3
+					std::cout << "in case: " << chosen_item << std::endl;
+				default:
+				break;
+			}
+		}
+
+		///////////////////////// END OF KIMS SHIT ///////////////////////////////
 
 		// Finish up
 		shader.Stop();
