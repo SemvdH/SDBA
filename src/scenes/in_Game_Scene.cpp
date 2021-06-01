@@ -18,7 +18,7 @@
 
 namespace scene
 {
-	std::deque<entities::Entity> entites;
+	std::deque<entities::Entity> house_models;
 	std::deque<entities::Light> lights;
 
 	models::RawModel raw_model;
@@ -41,15 +41,21 @@ namespace scene
 		gui_shader->Init();
 	}
 
+	/**
+	 * @brief loads a new chunk in front of the camera, and deletes the chunk behind the camera.
+	 * 
+	 * @param model_pos the amount of models the camera has passed already. This is the rounded result of (z position of camera) / (size of model)
+	 * 
+	 */
 	void load_chunk(int model_pos)
 	{
 		std::cout << "loading model chunk" << std::endl;
-		if (entites.size() >= MAX_MODEL_DEQUE_SIZE)
+		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE)
 		{
-			entites.pop_back();
+			house_models.pop_back();
 		}
 		int z_offset = model_pos * (model.raw_model.model_size.x * 20); // how much "in the distance" we should load the model
-		entites.push_front(entities::Entity(model, glm::vec3(0, -50, -50 - z_offset), glm::vec3(0, 90, 0), 20));
+		house_models.push_front(entities::Entity(model, glm::vec3(0, -50, -50 - z_offset), glm::vec3(0, 90, 0), 20));
 	}
 
 
@@ -61,13 +67,7 @@ namespace scene
 		texture.reflectivity = 0;
 		model = { raw_model, texture };
 
-		/*int z = 0;
-
-		for (int i = 0; i < 5; ++i)
-		{
-			entities.push_back(entities::Entity(model, glm::vec3(0, -50, -50 - z), glm::vec3(0, 90, 0), 20));
-			z += (raw_model.model_size.x * 20);
-		}*/
+		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
 			load_chunk(i);
@@ -113,7 +113,7 @@ namespace scene
 		shader->LoadLights(lights);
 		shader->LoadViewMatrix(camera);
 
-		for (entities::Entity& model_entity : entites)
+		for (entities::Entity& model_entity : house_models)
 		{
 			render_engine::renderer::Render(model_entity, *shader);
 		}
