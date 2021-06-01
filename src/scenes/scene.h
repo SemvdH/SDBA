@@ -18,14 +18,12 @@ namespace scene {
 	class Scene
 	{
 	public:
+		virtual ~Scene() = 0;
 		virtual Scenes start(GLFWwindow* window) = 0;
 		virtual void render() = 0;
 		virtual void update(GLFWwindow* window) = 0;
 		virtual void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) {};
-
 	};
-
-	
 }
 
 

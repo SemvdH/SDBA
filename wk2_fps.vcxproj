@@ -34,6 +34,7 @@
     <ClCompile Include="src\renderEngine\loader.cpp" />
     <ClCompile Include="src\renderEngine\obj_loader.cpp" />
     <ClCompile Include="src\renderEngine\renderer.cpp" />
+    <ClCompile Include="src\scenes\scene.cpp" />
     <ClCompile Include="src\shaders\gui_shader.cpp" />
     <ClCompile Include="src\shaders\shader_program.cpp" />
     <ClCompile Include="src\shaders\entity_shader.cpp" />

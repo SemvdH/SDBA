@@ -12,6 +12,7 @@ namespace scene
 		scene::Scenes return_value = scene::Scenes::STARTUP;
 
 	public:
+		~Startup_Scene();
 		Scenes start(GLFWwindow* window) override;
 		void render() override;
 		void update(GLFWwindow* window) override;

@@ -62,7 +62,7 @@ int main(void)
     	
             current_scene->onKey(window, key, scancode, action, mods);
         });
-
+    
     bool window_open = true;
 	// Main game loop
 	while (!glfwWindowShouldClose(window) && window_open)

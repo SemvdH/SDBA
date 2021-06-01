@@ -75,6 +75,9 @@
     <ClCompile Include="src\computervision\BackgroundRemover.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\scenes\scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entities\Camera.h">

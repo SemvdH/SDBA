@@ -1,3 +1,4 @@
+#include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <map>
@@ -5,6 +6,10 @@
 
 namespace scene
 {
+	Startup_Scene::~Startup_Scene()
+	{
+		std::cout << "startup scene gone!" << std::endl;
+	}
 
 	scene::Scenes scene::Startup_Scene::start(GLFWwindow *window)
 	{
