@@ -20,7 +20,6 @@ namespace scene
 {
 	std::deque<entities::Entity> entites;
 	std::deque<entities::Light> lights;
-	entities::Light sun;
 
 	models::RawModel raw_model;
 	models::ModelTexture texture;
@@ -51,8 +50,6 @@ namespace scene
 		}
 		int z_offset = model_pos * (model.raw_model.model_size.x * 20); // how much "in the distance" we should load the model
 		entites.push_front(entities::Entity(model, glm::vec3(0, -50, -50 - z_offset), glm::vec3(0, 90, 0), 20));
-
-
 	}
 
 
@@ -76,7 +73,7 @@ namespace scene
 			load_chunk(i);
 		}
 
-		sun = entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5));
+		lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5)));
 		lights.push_back(entities::Light(glm::vec3(0, 0, -30), glm::vec3(2, 0, 2), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
 		lights.push_back(entities::Light(glm::vec3(0, 0, -200), glm::vec3(0, 2, 0), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
 
@@ -115,12 +112,6 @@ namespace scene
 		shader->LoadSkyColor(render_engine::renderer::SKY_COLOR);
 		shader->LoadLights(lights);
 		shader->LoadViewMatrix(camera);
-
-		// Renders each entity in the entities list
-		/*for (entities::Entity& entity : entities)
-		{
-			render_engine::renderer::Render(entity, *shader);
-		}*/
 
 		for (entities::Entity& model_entity : entites)
 		{

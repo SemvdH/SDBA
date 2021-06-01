@@ -2,6 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include <deque>
 #include "shader_program.h"
 #include "../entities/camera.h"
 #include "../entities/light.h"
