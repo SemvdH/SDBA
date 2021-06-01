@@ -428,4 +428,6 @@ FodyWeavers.xsd
 **/docs/*
 **/doc/*
 
+**/pose_iter_160000.caffemodel
+
 # End of https://www.toptal.com/developers/gitignore/api/c++,visualstudio,visualstudiocode,opencv
