@@ -104,6 +104,10 @@ namespace gui
 		 */
 		void SetOnExitAction(void (*fun)()) { on_exit_action = fun; }
 
+		GuiType GetType() override {
+			return GuiType::BUTTON;
+		}
+
 	protected:
 		void OnClick() override { if (on_click_action != nullptr) on_click_action(); }
 		void OnEnter() override { if (on_enter_action != nullptr) on_enter_action(); }
