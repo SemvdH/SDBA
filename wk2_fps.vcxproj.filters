@@ -124,5 +124,6 @@
     <None Include="res\pose\coco\pose_deploy_linevec.prototxt" />
     <None Include="res\pose\mpi\pose_deploy_linevec_faster_4_stages.prototxt" />
     <None Include="res\pose\mpi\pose_iter_160000.caffemodel" />
+    <None Include="..\..\Avans Hogeschool\Kim Veldhoen - Proftaak 2.4\pose_iter_160000.caffemodel" />
   </ItemGroup>
 </Project>
