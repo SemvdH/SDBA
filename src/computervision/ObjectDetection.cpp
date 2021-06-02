@@ -8,10 +8,10 @@
 #include "SkinDetector.h"
 #include "FaceDetector.h"
 #include "FingerCount.h"
+#include "async/StaticCameraInstance.h"
 
 namespace computervision
 {
-	cv::VideoCapture cap(0);
 
 	cv::Mat img, imgGray, img2, img2Gray, img3, img4;
 
@@ -23,6 +23,8 @@ namespace computervision
 	SkinDetector skinDetector;
 	FaceDetector faceDetector;
 	FingerCount fingerCount;
+
+	cv::VideoCapture cap = computervision_async::getCap();
 
 	ObjectDetection::ObjectDetection()
 	{

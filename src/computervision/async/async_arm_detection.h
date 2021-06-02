@@ -4,6 +4,7 @@
 #include <opencv2/videoio.hpp>
 #include <functional>
 #include "../OpenPoseVideo.h"
+#include "StaticCameraInstance.h"
 
 
 namespace computervision

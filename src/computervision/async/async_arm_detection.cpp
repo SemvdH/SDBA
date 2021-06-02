@@ -21,12 +21,12 @@ namespace computervision
 
 		auto lambda = [](std::function<void(std::vector<Point>)> f, cv::VideoCapture c, OpenPoseVideo op) {
 			std::cout << "STARTING THREAD LAMBDA" << std::endl;
-			cv::VideoCapture cap(0);
+			cv::VideoCapture cap = computervision_async::getCap();
 
 			if (!cap.isOpened())
 			{
-				std::cout << "error opening video" << std::endl;
-				return;
+				std::cout << "capture was closed, opening..." << std::endl;
+				cap.open(0);
 			}
 
 			while (true)

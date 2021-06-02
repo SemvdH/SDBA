@@ -85,8 +85,6 @@ int main(void)
 	cv::Mat cameraFrame;
 
 
-	//openPoseVideo.setup();
-
 	computervision::AsyncArmDetection as;
 	as.start(retrieve_points, objDetect.getCap(),openPoseVideo);
 	
