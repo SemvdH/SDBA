@@ -17,7 +17,7 @@ namespace computervision
 		
 		void start(std::function<void(std::vector<cv::Point>)>, cv::VideoCapture cap, computervision::OpenPoseVideo op);
 	private:
-		void run_arm_detection();
+		void run_arm_detection(std::function<void(std::vector<Point>)> points_ready_func, cv::VideoCapture cap, OpenPoseVideo op);
 	};
 
 }

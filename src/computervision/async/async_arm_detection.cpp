@@ -11,33 +11,33 @@ namespace computervision
 
 	}
 
-	void AsyncArmDetection::run_arm_detection()
+	void AsyncArmDetection::run_arm_detection(std::function<void(std::vector<Point>)> points_ready_func, cv::VideoCapture cap, OpenPoseVideo op)
 	{
+		std::cout << "STARTING THREAD LAMBDA" << std::endl;
+		/*cv::VideoCapture cap = static_camera::getCap();*/
 
+		if (!cap.isOpened())
+		{
+			std::cout << "capture was closed, opening..." << std::endl;
+			cap.open(0);
+		}
+
+		while (true)
+		{
+			Mat img;
+			cap.read(img);
+			op.movementSkeleton(img, points_ready_func);
+		}
 	}
 
 	void AsyncArmDetection::start(std::function<void(std::vector<Point>)> points_ready_func, cv::VideoCapture cap, OpenPoseVideo op)
 	{
 
-		auto lambda = [](std::function<void(std::vector<Point>)> f, cv::VideoCapture c, OpenPoseVideo op) {
-			std::cout << "STARTING THREAD LAMBDA" << std::endl;
-			cv::VideoCapture cap = computervision_async::getCap();
-
-			if (!cap.isOpened())
-			{
-				std::cout << "capture was closed, opening..." << std::endl;
-				cap.open(0);
-			}
-
-			while (true)
-			{
-				Mat img;
-				cap.read(img);
-				op.movementSkeleton(img, f);
-			}
-		};
-
 		std::cout << "starting function" << std::endl;
-		std::thread async_arm_detect_thread(lambda, points_ready_func, cap, op);
+
+
+		std::thread async_arm_detect_thread(&AsyncArmDetection::run_arm_detection,this, points_ready_func, cap, op);
+
+		async_arm_detect_thread.detach(); // makes sure the thread is detached from the variable.
 	}
 }

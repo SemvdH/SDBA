@@ -24,7 +24,7 @@ namespace computervision
 	FaceDetector faceDetector;
 	FingerCount fingerCount;
 
-	cv::VideoCapture cap = computervision_async::getCap();
+	cv::VideoCapture cap = static_camera::getCap();
 
 	ObjectDetection::ObjectDetection()
 	{
