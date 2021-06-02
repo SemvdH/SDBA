@@ -20,6 +20,7 @@ namespace scene
 {
 	std::deque<entities::Entity> house_models;
 	std::deque<entities::Light> lights;
+	std::deque<entities::Entity> trees;
 
 	models::RawModel raw_model;
 	models::ModelTexture texture;
@@ -29,6 +30,7 @@ namespace scene
 	std::vector<gui::GuiTexture*> guis;
 
 	models::TexturedModel model;
+	models::TexturedModel tree;
 
 
 	In_Game_Scene::In_Game_Scene()
@@ -53,9 +55,12 @@ namespace scene
 		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE)
 		{
 			house_models.pop_back();
+			trees.pop_back();
 		}
 		int z_offset = model_pos * (model.raw_model.model_size.x * 20); // how much "in the distance" we should load the model
 		house_models.push_front(entities::Entity(model, glm::vec3(0, -50, -50 - z_offset), glm::vec3(0, 90, 0), 20));
+
+		trees.push_front(entities::Entity(tree, glm::vec3(0, 0, -50 - z_offset), glm::vec3(0, 90, 0), 3));
 	}
 
 
@@ -67,13 +72,18 @@ namespace scene
 		texture.reflectivity = 0;
 		model = { raw_model, texture };
 
+		models::RawModel raw_tree_model = render_engine::LoadObjModel("res/Tree.obj");
+		models::ModelTexture tree_texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
+		tree = { raw_tree_model, tree_texture };
+		
+
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
 			load_chunk(i);
 		}
 
-		lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5)));
+		lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5))); // sun
 		lights.push_back(entities::Light(glm::vec3(0, 0, -30), glm::vec3(2, 0, 2), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
 		lights.push_back(entities::Light(glm::vec3(0, 0, -200), glm::vec3(0, 2, 0), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
 
@@ -118,6 +128,11 @@ namespace scene
 			render_engine::renderer::Render(model_entity, *shader);
 		}
 
+		for (entities::Entity& tree_entity : trees)
+		{
+			render_engine::renderer::Render(tree_entity, *shader);
+		}
+
 		// Render GUI items
 		render_engine::renderer::Render(guis, *gui_shader);
 
@@ -138,6 +153,7 @@ namespace scene
 		{
 			load_chunk(model_pos + UPCOMING_MODEL_AMOUNT);
 		}
+		// remember the position at which the new model was added
 		last_model_pos = model_pos;
 	}
 
