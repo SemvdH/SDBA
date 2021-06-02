@@ -10,7 +10,7 @@
 *.slo
 *.lo
 *.o
-*.obj
+x64/**/*.obj
 
 # Precompiled Headers
 *.gch
@@ -25,7 +25,6 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -35,7 +34,6 @@
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
@@ -426,5 +424,8 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 *.tlog
+
+**/docs/*
+**/doc/*
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,visualstudio,visualstudiocode,opencv
