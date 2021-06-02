@@ -120,7 +120,7 @@ namespace scene
 
 		shader->Start();
 		shader->LoadSkyColor(render_engine::renderer::SKY_COLOR);
-		shader->LoadLights(lights);
+		shader->LoadLightsDeque(lights);
 		shader->LoadViewMatrix(camera);
 
 		for (entities::Entity& model_entity : house_models)
