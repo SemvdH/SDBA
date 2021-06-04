@@ -27,13 +27,13 @@ namespace entities
 		furniture.push_front(std::make_shared<Entity>(house_model, position, glm::vec3(0, y_rotation, 0), HOUSE_SIZE));
 		
 		// Add furniture
-		models::TexturedModel couch = GetFurnitureModel(Furniture::COUCH);		
-		furniture.push_back(std::make_shared<Entity>(couch, glm::vec3(position.x, position.y + 20, position.z + 10), glm::vec3(0, 0, 0), 1));
+		models::TexturedModel couch = GetFurnitureModel(FurnitureType::COUCH);		
+		furniture.push_back(std::make_shared<Entity>(couch, glm::vec3(position.x, position.y + 20, position.z + 10), glm::vec3(0, 0, 0), HOUSE_SIZE));
 		
 		return furniture;
 	}
 
-	models::TexturedModel HouseGenerator::GetFurnitureModel(Furniture furniture)
+	models::TexturedModel HouseGenerator::GetFurnitureModel(FurnitureType furniture)
 	{
 		const auto found = furniture_models.find(furniture);
 		if (found == furniture_models.end())
@@ -57,6 +57,6 @@ namespace entities
 		models::TexturedModel couch_inside = { couch_inside_model, default_texture };
 		couches.push_back(couch_inside);
 		
-		furniture_models.insert(std::pair<Furniture, std::deque<models::TexturedModel>>(Furniture::COUCH, couches));
+		furniture_models.insert(std::pair<FurnitureType, std::deque<models::TexturedModel>>(FurnitureType::COUCH, couches));
 	}
 }

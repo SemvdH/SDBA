@@ -8,7 +8,7 @@
 
 namespace entities
 {
-	enum class Furniture
+	enum class FurnitureType
 	{
 		COUCH
 	};
@@ -21,7 +21,7 @@ namespace entities
 		models::TexturedModel house_model;
 		models::ModelTexture default_texture;
 		
-		std::map<Furniture, std::deque<models::TexturedModel>> furniture_models;
+		std::map<FurnitureType, std::deque<models::TexturedModel>> furniture_models;
 
 	public:
 		HouseGenerator();
@@ -42,8 +42,18 @@ namespace entities
 		float GetHouseDepth() const { return house_model.raw_model.model_size.x * HOUSE_SIZE; }
 	
 	private:
+		/*
+		 * @brief: This function loads all the 3D furniture models
+		 */
 		void GenerateFurnitureModels();
 
-		models::TexturedModel GetFurnitureModel(Furniture furniture);
+		/*
+		 * @brief: This funtion chooses and returns a random furniture of the given furniture type
+		 *
+		 * @param furniture: The furniture you want to get
+		 *
+		 * @return: The model of the random furniture of the chosen furniture type
+		 */
+		models::TexturedModel GetFurnitureModel(FurnitureType furniture);
 	};
 }

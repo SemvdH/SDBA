@@ -74,8 +74,6 @@ namespace scene
 		furniture_count = furniture.size();
 		
 		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
-
-		std::cout << house_models.size() << std::endl;
 	}
 
 
