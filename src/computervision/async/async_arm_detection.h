@@ -15,9 +15,9 @@ namespace computervision
 		AsyncArmDetection(void);
 
 		
-		void start(std::function<void(std::vector<cv::Point>)>, cv::VideoCapture cap, computervision::OpenPoseVideo op);
+		void start(std::function<void(std::vector<cv::Point>, cv::Mat poinst_on_image)>, computervision::OpenPoseVideo op);
 	private:
-		void run_arm_detection(std::function<void(std::vector<Point>)> points_ready_func, cv::VideoCapture cap, OpenPoseVideo op);
+		void run_arm_detection(std::function<void(std::vector<Point>, cv::Mat poinst_on_image)> points_ready_func, OpenPoseVideo op);
 	};
 
 }

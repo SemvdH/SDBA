@@ -32,11 +32,16 @@
 static double UpdateDelta();
 
 static GLFWwindow* window;
+bool points_img_available = false;
+cv::Mat points_img;
 
-void retrieve_points(std::vector<Point> arm_points)
+void retrieve_points(std::vector<Point> arm_points, cv::Mat points_on_image)
 {
+
 	std::cout << "got points!!" << std::endl;
 	std::cout << "points: " << arm_points << std::endl;
+	points_img = points_on_image;
+	points_img_available = true;
 }
 
 int main(void)
@@ -82,11 +87,15 @@ int main(void)
 
 	// set up object detection
 	//objDetect.setup();
-	cv::Mat cameraFrame;
+	cv::VideoCapture cam = objDetect.getCap();
+	cv::Mat img;
+	cam.read(img);
+	imshow("camera in main loop", img);
 
 
 	computervision::AsyncArmDetection as;
-	as.start(retrieve_points, objDetect.getCap(),openPoseVideo);
+
+	as.start(retrieve_points,openPoseVideo);
 	
 
 	// Main game loop
@@ -105,8 +114,12 @@ int main(void)
 
 		render_engine::renderer::Render(entity, shader);
 
-		cameraFrame = objDetect.readCamera();
 		//objDetect.detectHand(cameraFrame);
+		if (points_img_available)
+		{
+			imshow("points", points_img);
+			points_img_available = false;
+		}
 
 		// Finish up
 		shader.Stop();

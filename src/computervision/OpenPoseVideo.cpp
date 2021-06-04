@@ -44,7 +44,7 @@ namespace computervision
 		net = readNetFromCaffe(protoFile, weightsFile);
 	}
 
-	void OpenPoseVideo::movementSkeleton(Mat inputImage, std::function<void(std::vector<Point>)> f) {
+	void OpenPoseVideo::movementSkeleton(Mat inputImage, std::function<void(std::vector<Point>,cv::Mat poinst_on_image)> f) {
 		std::cout << "movement skeleton start" << std::endl;
 
 		int inWidth = 368;
@@ -60,7 +60,7 @@ namespace computervision
 
 		frame = inputImage;
 		Mat inpBlob = blobFromImage(frame, 1.0 / 255, Size(inWidth, inHeight), Scalar(0, 0, 0), false, false);
-		
+
 		std::cout << "done reading image and blob" << std::endl;
 
 		net.setInput(inpBlob);
@@ -96,9 +96,10 @@ namespace computervision
 		}
 
 		cv::putText(frame, cv::format("time taken = %.2f sec", t), cv::Point(50, 50), cv::FONT_HERSHEY_COMPLEX, .8, cv::Scalar(255, 50, 0), 2);
-		// imshow("Output-Keypoints", frameCopy);
-		imshow("Output-Skeleton", frame);
+		std::cout << "time taken: " << t << std::endl;
+		//imshow("Output-Keypoints", frame);
+		//imshow("Output-Skeleton", frame);
 		std::cout << "about to call points receiving method" << std::endl;
-		f(points);
+		f(points,frame);
 	}
 }
