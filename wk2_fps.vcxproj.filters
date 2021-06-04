@@ -75,9 +75,6 @@
     <ClCompile Include="src\computervision\BackgroundRemover.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\main_character.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\entities\Camera.h">
@@ -155,7 +152,7 @@
     <ClInclude Include="src\computervision\BackgroundRemover.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\main_character.h">
+    <ClInclude Include="src\toolbox\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
