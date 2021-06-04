@@ -68,6 +68,10 @@ int main(void)
         });
 
     bool window_open = true;
+
+	computervision::ObjectDetection objDetect;
+	cv::Mat cameraFrame;
+
 	// Main game loop
 	while (!glfwWindowShouldClose(window) && window_open)
 	{
@@ -95,8 +99,10 @@ int main(void)
                 std::cout << "Wrong return value!!! ->" << std::endl;
                 break;
         }
-cameraFrame = objDetect.readCamera();
+        
+		
 		////////////////////////// KIMS SHIT ////////////////////////////////////
+		cameraFrame = objDetect.readCamera();
 		computervision::MenuTest menu_test;
 
 		//Get hand state from camera
@@ -145,7 +151,7 @@ cameraFrame = objDetect.readCamera();
 		///////////////////////// END OF KIMS SHIT ///////////////////////////////
 
 		// Finish up
-		shader.Stop();
+		//shader.Stop();
 		glfwSwapBuffers(window);
 		glfwPollEvents();
            

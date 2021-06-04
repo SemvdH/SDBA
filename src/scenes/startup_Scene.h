@@ -1,6 +1,6 @@
 #pragma once
 #include "scene.h"
-#include "../gui/gui_interactable.h"
+#include "../gui/gui_element.h"
 
 namespace scene
 {
@@ -13,7 +13,6 @@ namespace scene
 
 	public:
 		Startup_Scene();
-		gui::Button* ConvertGuiTextureToButton(gui::GuiTexture* texture);
 		Scenes start(GLFWwindow* window) override;
 		void render() override;
 		void update(GLFWwindow* window) override;

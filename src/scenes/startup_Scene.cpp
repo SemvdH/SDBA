@@ -8,6 +8,7 @@
 #include "../renderEngine/obj_loader.h"
 #include "../renderEngine/renderer.h"
 #include "../shaders/entity_shader.h"
+#include "../gui/gui_interactable.h"
 #include "../toolbox/toolbox.h"
 
 
@@ -74,7 +75,6 @@ namespace scene
 				gui::Button* new_button = ConvertGuiTextureToButton(button);
 				if(new_button != NULL)
 				new_button->Update(window);
-				
 			}
 			
 	

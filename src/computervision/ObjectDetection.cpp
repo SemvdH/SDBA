@@ -11,7 +11,7 @@
 
 namespace computervision
 {
-	cv::VideoCapture cap(0);
+	cv::VideoCapture cap(1);
 
 	cv::Mat img, imgGray, img2, img2Gray, img3, img4;
 
