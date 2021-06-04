@@ -14,7 +14,9 @@
 
 namespace scene
 {
-	
+	/**
+	 * sets up the first things when the objects has been made
+	 */
 	In_Game_Scene::In_Game_Scene()
 	{
 		camera = new entities::Camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
@@ -26,7 +28,9 @@ namespace scene
 		gui_shader = new shaders::GuiShader();
 		gui_shader->Init();
 	}
-
+	/**
+	 * deletes certain veriables when the object will be deleted, prevents memory leaks
+	 */
 	In_Game_Scene::~In_Game_Scene()
 	{
 		delete camera;
@@ -34,7 +38,9 @@ namespace scene
 		delete gui_shader;
 	}
 
-
+	/**
+	 * starts the game scene, calls the render and update methods in a while loop
+	 */
 	scene::Scenes scene::In_Game_Scene::start(GLFWwindow* window)
 	{
 		raw_model = render_engine::LoadObjModel("res/House.obj");
@@ -87,8 +93,11 @@ namespace scene
 			});
 		pause_guis.push_back(&pause_button_quit);
 
+
+		//the scene loop, this while loop represent the scene
 		while (return_value == scene::Scenes::INGAME)
 		{
+			//checks the current game state, so it can render the correct models for each state
 			switch (game_state) 
 			{
 			/*case scene::Game_State::IDLE:
@@ -120,11 +129,14 @@ namespace scene
 		return return_value;
 	}
 
+	/**
+	 * renders the game models
+	 */
 	void scene::In_Game_Scene::render()
 	{
 		// Render
 		render_engine::renderer::Prepare();
-
+		//starts the shader and begins to render
 		shader->Start();
 		shader->LoadSkyColor(render_engine::renderer::SKY_COLOR);
 		shader->LoadLights(lights);
@@ -143,11 +155,19 @@ namespace scene
 		shader->Stop();
 	}
 
+	//updates certain variables 
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
 		camera->Move(window);
 	}
 
+	//renders the models for the pause menu
+	void In_Game_Scene::render_pause_menu()
+	{
+		render_engine::renderer::Render(pause_guis, *gui_shader);
+	}
+
+	//manages the key input in the game scene
 	void scene::In_Game_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
@@ -162,11 +182,5 @@ namespace scene
 		{
 			game_state = scene::Game_State::RUNNING;
 		}
-	}
-
-
-	void In_Game_Scene::render_pause_menu()
-	{
-		render_engine::renderer::Render(pause_guis, *gui_shader);
 	}
 }
