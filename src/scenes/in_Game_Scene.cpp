@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "in_Game_Scene.h"
 #include "startup_Scene.h"
+#include "../entities/main_character.h"
 #include "../gui/gui_interactable.h"
 #include "../models/model.h"
 #include "../renderEngine/loader.h"
@@ -19,14 +20,15 @@
 namespace scene
 {
 	std::deque<entities::Entity> house_models;
+	std::vector<entities::main_character*> main_character;
 	std::deque<entities::Light> lights;
 	std::deque<entities::Entity> trees;
 
-	models::RawModel raw_model;
+	models::RawModel raw_model, raw_model_char;
 	models::ModelTexture texture;
 	shaders::EntityShader* shader;
 	shaders::GuiShader* gui_shader;
-	entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+	entities::Camera camera(glm::vec3(0, 100, 0), glm::vec3(0, 0, 0));
 	std::vector<gui::GuiTexture*> guis;
 
 	models::TexturedModel model;
@@ -61,6 +63,7 @@ namespace scene
 		house_models.push_front(entities::Entity(model, glm::vec3(0, -50, -50 - z_offset), glm::vec3(0, 90, 0), 20));
 
 		trees.push_front(entities::Entity(tree, glm::vec3(0, 0, -50 - z_offset), glm::vec3(0, 90, 0), 3));
+		
 	}
 
 
@@ -76,12 +79,16 @@ namespace scene
 		models::ModelTexture tree_texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
 		tree = { raw_tree_model, tree_texture };
 		
+		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
+		models::TexturedModel model_char = { raw_model_char, texture };
 
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
 			load_chunk(i);
 		}
+		entities::main_character character{ model_char, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5,collision::Box() };
+		main_character.push_back(&character);
 
 		lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5))); // sun
 		lights.push_back(entities::Light(glm::vec3(0, 0, -30), glm::vec3(2, 0, 2), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
@@ -132,6 +139,10 @@ namespace scene
 		{
 			render_engine::renderer::Render(tree_entity, *shader);
 		}
+		for (entities::Entity* main_char : main_character)
+		{
+			render_engine::renderer::Render(*main_char, *shader);
+		}
 
 		// Render GUI items
 		render_engine::renderer::Render(guis, *gui_shader);
@@ -142,7 +153,13 @@ namespace scene
 
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
-		camera.Move(window);
+		//camera.Move(window);
+		entities::main_character* character = main_character[0];
+		glm::vec3 movement = character->move(window);
+		std::cout << "x: " << character->GetPosition().x << "\ny: " << character->GetPosition().y << "\nz: " << character->GetPosition().z << "\n";
+		std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
+		camera.Follow(character->GetPosition());
+
 
 		// calculate where the next house model should be loaded
 		static int last_model_pos = 0;
@@ -159,7 +176,7 @@ namespace scene
 
 	void scene::In_Game_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		{
 			return_value = scene::Scenes::STOP;
 		}

@@ -7,6 +7,10 @@ namespace entities
 		rotation(rotation)
 	{}
 
+	void Camera::Follow(glm::vec3 follow_position) {
+		position.z = follow_position.z + 200;
+	}
+
 	void Camera::Move(GLFWwindow* window)
 	{
 		float movement_speed = 0;

@@ -14,8 +14,8 @@ namespace entities
 	}
 	glm::vec3 main_character::move(GLFWwindow* window)
 	{
-		float movement_speed = 0;
-		float up_down_speed = 0;
+		float movement_speed = -1.0f;
+		float up_down_speed = -0.4f;
 		float side_speed = 0;
 
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -41,6 +41,10 @@ namespace entities
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			up_down_speed += UP_SPEED;
+		}
+		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		{
+			up_down_speed -= UP_SPEED;
 		}
 		IncreasePosition(glm::vec3(side_speed, up_down_speed, movement_speed));
 		return glm::vec3(side_speed, up_down_speed, movement_speed );

@@ -5,9 +5,8 @@
 
 namespace entities
 {
-
 	class main_character : public CollisionEntity {
-		const int SPEED = 10;
+		const float SPEED = 1.0f;
 		const float UP_SPEED = 1.0f;
 	public:
 		main_character(const models::TexturedModel& model, const glm::vec3& position,

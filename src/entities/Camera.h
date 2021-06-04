@@ -28,6 +28,8 @@ namespace entities
 		 * @param window: The OpenGL window
 		 */
 		void Move(GLFWwindow* window);
+
+		void Follow(glm::vec3 follow_position);
 		
 		inline glm::vec3 GetPosition() const{ return position; }
 		inline glm::vec3 GetRotation() const{ return rotation; }
