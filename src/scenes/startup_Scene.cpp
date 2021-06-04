@@ -2,9 +2,11 @@
 #include <GLFW/glfw3.h>
 #include <map>
 #include "startup_Scene.h"
+#include "../computervision/ObjectDetection.h"
 
 namespace scene
 {
+	computervision::ObjectDetection objDetect;
 
 	scene::Scenes scene::Startup_Scene::start(GLFWwindow *window)
 	{
@@ -27,6 +29,7 @@ namespace scene
 
 	void scene::Startup_Scene::update(GLFWwindow* window)
 	{
+		objDetect.detectHand(objDetect.readCamera());
 
 	}
 

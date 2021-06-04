@@ -37,7 +37,7 @@
 
 static double UpdateDelta();
 
-scene::Scene& current_scene;
+scene::Scene* current_scene;
 
 static GLFWwindow* window;
 bool points_img_available = false;
