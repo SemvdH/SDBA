@@ -22,6 +22,7 @@
     <ClCompile Include="src\collision\collision_handler.cpp" />
     <ClCompile Include="src\scenes\in_Game_Scene.cpp" />
     <ClCompile Include="src\computervision\FaceDetector.cpp" />
+    <ClCompile Include="src\computervision\MenuTest.cpp" />
     <ClCompile Include="src\computervision\ObjectDetection.cpp" />
     <ClCompile Include="src\computervision\SkinDetector.cpp" />
     <ClCompile Include="src\computervision\FingerCount.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="src\computervision\FaceDetector.h" />
     <ClInclude Include="src\computervision\FingerCount.h" />
     <ClInclude Include="src\computervision\BackgroundRemover.h" />
+    <ClInclude Include="src\computervision\MenuTest.h" />
     <ClInclude Include="src\computervision\SkinDetector.h" />
     <ClInclude Include="src\computervision\ObjectDetection.h" />
     <ClInclude Include="src\entities\camera.h" />

@@ -7,6 +7,8 @@
 
 #include "stb_image.h"
 #include <ostream>
+#include <stdlib.h>
+#include <iostream>
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
@@ -23,6 +25,7 @@
 #include "scenes/in_Game_Scene.h"
 #include "scenes/startup_Scene.h"
 
+#include "computervision/MenuTest.h"
 #include "computervision/ObjectDetection.h"
 
 #pragma comment(lib, "glfw3.lib")
@@ -32,6 +35,7 @@
 static double UpdateDelta();
 
 static GLFWwindow* window;
+int chosen_item = 0;
 scene::Scene* current_scene;
 
 int main(void)
@@ -82,14 +86,69 @@ int main(void)
                 current_scene = new scene::Startup_Scene();
                 break;
 
+		
             case scene::Scenes::INGAME:
                 current_scene = new scene::In_Game_Scene();
                 break;
-
+                
             default:
                 std::cout << "Wrong return value!!! ->" << std::endl;
                 break;
         }
+cameraFrame = objDetect.readCamera();
+		////////////////////////// KIMS SHIT ////////////////////////////////////
+		computervision::MenuTest menu_test;
+
+		//Get hand state from camera
+		bool hand_detection = objDetect.detectHand(cameraFrame);
+		
+		if (hand_detection) 
+		{
+			std::cout << "hand is opened" << std::endl;
+			
+			//Loop through menu items
+			chosen_item = menu_test.GetMenuItem(true);
+
+			//For debug only, to see if chosen item is selected properly when hand is opened
+			std::cout << "chosen item: " << chosen_item << std::endl;
+			
+		}
+		else if (!hand_detection) 
+		{
+			//for debug only, to see if the chosen item is selected properly when hand is closed
+			std::cout << "hand is closed" << std::endl;
+			//std::cout << "item to start: " << chosen_item << std::endl;
+
+			//TODO link chosen item to the correct game states
+			switch (chosen_item)
+			{
+				case 1:
+					//Game state 0
+					std::cout << "in case: " << chosen_item << std::endl;
+					break;
+				case 2:
+					//Game state 1
+					std::cout << "in case: " << chosen_item << std::endl;
+					break;
+				case 3:
+					//Game state 2
+					std::cout << "in case: " << chosen_item << std::endl;
+					break;
+				case 4:
+					//Game state 3
+					std::cout << "in case: " << chosen_item << std::endl;
+				default:
+				break;
+			}
+		}
+
+		///////////////////////// END OF KIMS SHIT ///////////////////////////////
+
+		// Finish up
+		shader.Stop();
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+           
 	}
 
 	// Clean up -> preventing memory leaks!!!
