@@ -6,11 +6,10 @@
 
 namespace computervision
 {
-	bool check_if_hand_present(cv::Mat inputImage)
+	bool check_if_hand_present(cv::Mat input_image)
 	{
 		std::vector<std::vector<cv::Point>> points;
-		cv::Mat imgCont;
-		cv::findContours(inputImage, points, cv::RetrievalModes::RETR_LIST, cv::ContourApproximationModes::CHAIN_APPROX_SIMPLE);
+		cv::findContours(input_image, points, cv::RetrievalModes::RETR_LIST, cv::ContourApproximationModes::CHAIN_APPROX_SIMPLE);
 
 		if (points.size() == 0) return false;
 

@@ -3,5 +3,11 @@
 #include <opencv2/core.hpp>
 namespace computervision
 {
-	bool check_if_hand_present(cv::Mat inputImage);
+	/**
+	 * @brief checks if the hand is present in the input image.
+	 * 
+	 * @param input_image the image to check
+	 * @return true if the hand was found, false if not
+	 */
+	bool CheckIfHandPresent(cv::Mat input_image);
 }
