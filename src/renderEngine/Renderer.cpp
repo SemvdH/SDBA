@@ -55,7 +55,7 @@ namespace render_engine
 			const models::TexturedModel model = entity.get()->GetModel();
 			const models::RawModel raw_model = model.raw_model;
 			const models::ModelTexture texture = model.texture;
-
+			
 			// Enable the model (VAO)
 			glBindVertexArray(raw_model.vao_id);
 

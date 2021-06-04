@@ -46,4 +46,14 @@ namespace toolbox
 	 * @return: The view matrix
 	 */
 	glm::mat4 CreateViewMatrix(entities::Camera& camera);
+
+	/*
+	 * @brief: This function will return a value between min and max
+	 *
+	 * @param min: The min value
+	 * @param max: The max value
+	 *
+	 * @return: The random number
+	 */
+	int Random(const int min, const int max);
 }

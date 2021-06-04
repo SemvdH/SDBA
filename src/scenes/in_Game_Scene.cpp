@@ -14,6 +14,7 @@
 #include <deque>
 #include <functional>
 #include <memory>
+#include <queue>
 
 #define MAX_MODEL_DEQUE_SIZE 6 // max amount of models to load at the same time
 #define UPCOMING_MODEL_AMOUNT 4 // how much models should be loaded in front of us
@@ -60,23 +61,26 @@ namespace scene
 		static unsigned int furniture_count = 0;
 		
 		std::cout << "loading model chunk" << std::endl;
-		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE)
+		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE * furniture_count)
 		{
 			for (int i = 0; i < furniture_count; i++)
 			{
-				house_models.pop_back();
+				house_models.pop_front();
 			}
 		}
 		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
 
 		std::deque<std::shared_ptr<entities::Entity>> furniture = house_generator->GenerateHouse(glm::vec3(0, -75, -50 - z_offset), 90);
 		furniture_count = furniture.size();
-		house_models.insert(house_models.begin(), furniture.begin(), furniture.end());
+		
+		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
+
+		std::cout << house_models.size() << std::endl;
 	}
 
 
 	scene::Scenes scene::In_Game_Scene::start(GLFWwindow* window)
-	{		
+	{
 		house_generator = new entities::HouseGenerator();
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
