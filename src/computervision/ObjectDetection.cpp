@@ -19,11 +19,10 @@ namespace computervision
 	int handMaskStartXPos, handMaskStartYPos, handMaskWidth, handMaskHeight;
 	bool handMaskGenerated = false;
 
-	Mat frame, frameOut, handMask, foreground, fingerCountDebug;
-	BackgroundRemover backgroundRemover;
-	SkinDetector skinDetector;
-	FaceDetector faceDetector;
-	FingerCount fingerCount;
+	Mat frame, frame_out, handMask, foreground, fingerCountDebug;
+	BackgroundRemover background_remover;
+	SkinDetector skin_detector;
+	FingerCount finger_count;
 
 	cv::VideoCapture cap = static_camera::getCap();
 
@@ -31,62 +30,62 @@ namespace computervision
 	{
 	}
 
-	cv::Mat ObjectDetection::readCamera() {
+	cv::Mat ObjectDetection::ReadCamera() {
 		cap.read(img);
 		return img;
 	}
 
-	cv::VideoCapture ObjectDetection::getCap()
+	cv::VideoCapture ObjectDetection::GetCap()
 	{
 		return cap;
 	}
 
-	bool ObjectDetection::detectHand(Mat cameraFrame, bool& hand_present)
+	bool ObjectDetection::DetectHand(Mat camera_frame, bool& hand_present)
 	{
-		Mat inputFrame = generateHandMaskSquare(cameraFrame);
-		frameOut = inputFrame.clone();
+		Mat input_frame = GenerateHandMaskSquare(camera_frame);
+		frame_out = input_frame.clone();
 
 		// detect skin color
-		skinDetector.drawSkinColorSampler(frameOut);
+		skin_detector.drawSkinColorSampler(frame_out);
 
 		// remove background from image
-		foreground = backgroundRemover.getForeground(inputFrame);
+		foreground = background_remover.getForeground(input_frame);
 
 		// detect the hand contours
-		handMask = skinDetector.getSkinMask(foreground);
+		handMask = skin_detector.getSkinMask(foreground);
 
 		// count the amount of fingers and put the info on the matrix
-		fingerCountDebug = fingerCount.findFingersCount(handMask, frameOut);
+		fingerCountDebug = finger_count.findFingersCount(handMask, frame_out);
 
 		// get the amount of fingers
-		int fingers_amount = fingerCount.getAmountOfFingers();
+		int fingers_amount = finger_count.getAmountOfFingers();
 
 		// draw the hand rectangle on the camera input, and draw text showing if the hand is open or closed.
-		drawHandMaskRect(&cameraFrame);
+		DrawHandMask(&camera_frame);
 		string hand_text = fingers_amount > 0 ? "open" : "closed";
-		putText(cameraFrame,hand_text, Point(10, 75), FONT_HERSHEY_PLAIN, 2.0, Scalar(255, 0, 255),3);
-		imshow("camera", cameraFrame);
+		putText(camera_frame,hand_text, Point(10, 75), FONT_HERSHEY_PLAIN, 2.0, Scalar(255, 0, 255),3);
+		imshow("camera", camera_frame);
 
-		//imshow("output", frameOut);
+		//imshow("output", frame_out);
 		//imshow("foreground", foreground);
 		//imshow("handMask", handMask);
 		//imshow("handDetection", fingerCountDebug);
 
-		hand_present = check_if_hand_present(handMask);
+		hand_present = CheckIfHandPresent(handMask);
 
 
 
 		int key = waitKey(1);
 
 		if (key == 98) // b, calibrate the background
-			backgroundRemover.calibrate(inputFrame);
+			background_remover.calibrate(input_frame);
 		else if (key == 115) // s, calibrate the skin color
-			skinDetector.calibrate(inputFrame);
+			skin_detector.calibrate(input_frame);
 
 		return fingers_amount > 0;
 	}
 
-	void ObjectDetection::calculateDifference()
+	void ObjectDetection::CalculateDifference()
 	{
 		cap.read(img);
 		cap.read(img2);
@@ -101,7 +100,7 @@ namespace computervision
 	}
 
 
-	cv::Mat ObjectDetection::generateHandMaskSquare(cv::Mat img)
+	cv::Mat ObjectDetection::GenerateHandMaskSquare(cv::Mat img)
 	{
 		handMaskStartXPos = 20;
 		handMaskStartYPos = img.rows / 5;
@@ -121,14 +120,14 @@ namespace computervision
 
 	}
 
-	bool ObjectDetection::drawHandMaskRect(cv::Mat* input)
+	bool ObjectDetection::DrawHandMask(cv::Mat* input)
 	{
 		if (!handMaskGenerated) return false;
 		rectangle(*input, Rect(handMaskStartXPos, handMaskStartYPos, handMaskWidth, handMaskHeight), Scalar(255, 255, 255));
 		return true;
 	}
 
-	void ObjectDetection::showWebcam()
+	void ObjectDetection::ShowWebcam()
 	{
 		imshow("Webcam image", img);
 	}
