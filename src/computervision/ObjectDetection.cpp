@@ -59,10 +59,10 @@ namespace computervision
 		putText(cameraFrame,hand_text, Point(10, 75), FONT_HERSHEY_PLAIN, 2.0, Scalar(255, 0, 255),3);
 		imshow("camera", cameraFrame);
 
-		imshow("output", frameOut);
+		//imshow("output", frameOut);
 		//imshow("foreground", foreground);
 		//imshow("handMask", handMask);
-		imshow("handDetection", fingerCountDebug);
+		//imshow("handDetection", fingerCountDebug);
 
 		int key = waitKey(1);
 

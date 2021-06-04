@@ -76,9 +76,13 @@ namespace gui
 	{
 		double x_pos, y_pos;
 		glfwGetCursorPos(window, &x_pos, &y_pos);
+		std::cout << "Cursor pos in method: " << x_pos <<"::" <<  y_pos << std::endl;
 
 		const float x_rel = (x_pos / SCALED_WIDTH / DEFAULT_WIDTH) * 2.0f - 1.0f;
 		const float y_rel = -((y_pos / SCALED_HEIGHT / DEFAULT_HEIGHT) * 2.0f - 1.0f);
+
+		std::cout << "x_rel And y_rel in method: " << x_rel << "::" << y_rel << std::endl;
+
 
 		if (x_rel >= minXY.x && x_rel <= maxXY.x &&
 			y_rel >= minXY.y && y_rel <= maxXY.y)

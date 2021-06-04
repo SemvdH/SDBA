@@ -41,7 +41,6 @@ namespace scene
 			if (texture->GetType() == gui::GuiType::BUTTON) {
 				
 				gui::Button* button = (gui::Button*)texture;
-				std::cout << button->clicked_texture << std::endl;
 				return button;
 			}
 			else {
@@ -110,6 +109,7 @@ namespace scene
 		computervision::ObjectDetection objDetect;
 		cv::Mat cameraFrame;
 		gui::GuiTexture* chosen_item = NULL;
+		bool hand_closed = false;
 		
 		while (return_value == scene::Scenes::STARTUP)
 		{
@@ -130,6 +130,8 @@ namespace scene
 
 			if (hand_detection)
 			{
+				hand_closed = false;
+
 				std::cout << "hand is opened" << std::endl;
 
 				//Loop through menu items
@@ -182,9 +184,10 @@ namespace scene
 				
 				std::cout << chosen_item->texture << std::endl;
 				gui::Button* new_button = ConvertGuiTextureToButton(chosen_item);
-				if (new_button != NULL) {
+				if (new_button != NULL && !hand_closed) {
 					//Run function click
 					new_button->ForceClick(GLFW_MOUSE_BUTTON_LEFT);
+					hand_closed = true;
 				}
 			}
 
