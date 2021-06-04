@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "in_Game_Scene.h"
 #include "startup_Scene.h"
+#include "../entities/main_character.h"
 #include "../gui/gui_interactable.h"
 #include "../models/model.h"
 #include "../renderEngine/loader.h"
@@ -15,6 +16,7 @@
 namespace scene
 {
 	std::vector<entities::Entity> entities;
+	std::vector<entities::main_character> mainCharacter;
 	std::vector<entities::Light> lights;
 	models::RawModel raw_model;
 	models::ModelTexture texture;
@@ -48,6 +50,9 @@ namespace scene
 			entities.push_back(entities::Entity(model, glm::vec3(0, -50, -50 - z), glm::vec3(0, 90, 0), 20));
 			z += (raw_model.model_size.x * 20);
 		}
+		entities::main_character character{ model, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5,collision::Box() };
+		entities.push_back(character.loadCharacter());
+		mainCharacter.push_back(character);
 
 		lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5)));
 		lights.push_back(entities::Light(glm::vec3(0, 0, -30), glm::vec3(2, 0, 2), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
@@ -94,6 +99,7 @@ namespace scene
 		{
 			render_engine::renderer::Render(entity, *shader);
 		}
+		
 
 		// Render GUI items
 		render_engine::renderer::Render(guis, *gui_shader);
@@ -104,12 +110,18 @@ namespace scene
 
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
-		camera.Move(window);
+		//camera.Move(window);
+		
+		entities::main_character character = mainCharacter[0];
+		glm::vec3 movement = character.move(window);
+		character.IncreasePosition(movement);
+		std::cout <<"x: "<< character.GetPosition().x << "\ny: " << character.GetPosition().y << "\nz: " << character.GetPosition().z << "\n";
+		std::cout <<"x get: "<< movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 	}
 
 	void scene::In_Game_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		{
 			return_value = scene::Scenes::STOP;
 		}
