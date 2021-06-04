@@ -87,10 +87,11 @@ int main(void)
 
 	// set up object detection
 	//objDetect.setup();
-	cv::VideoCapture cam = objDetect.getCap();
+	//cv::VideoCapture cam = objDetect.getCap();
 	cv::Mat img;
-	cam.read(img);
-	imshow("camera in main loop", img);
+	cv::VideoCapture cap = objDetect.getCap();
+	//cam.read(img);
+	//imshow("camera in main loop", img);
 
 
 	computervision::AsyncArmDetection as;

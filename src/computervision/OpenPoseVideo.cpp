@@ -42,9 +42,11 @@ namespace computervision
 
 	void OpenPoseVideo::setup() {
 		net = readNetFromCaffe(protoFile, weightsFile);
+
+		net.setPreferableBackend(DNN_TARGET_CPU);
 	}
 
-	void OpenPoseVideo::movementSkeleton(Mat inputImage, std::function<void(std::vector<Point>,cv::Mat poinst_on_image)> f) {
+	void OpenPoseVideo::movementSkeleton(Mat& inputImage, std::function<void(std::vector<Point>&, cv::Mat& poinst_on_image)> f) {
 		std::cout << "movement skeleton start" << std::endl;
 
 		int inWidth = 368;
@@ -67,6 +69,7 @@ namespace computervision
 
 		std::cout << "done setting input to net" << std::endl;
 		Mat output = net.forward();
+		std::cout << "time took to set input and forward: " << t << std::endl;
 
 		int H = output.size[2];
 		int W = output.size[3];
