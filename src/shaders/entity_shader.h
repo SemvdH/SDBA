@@ -64,7 +64,7 @@ namespace shaders
 		 * 
 		 * @param lights the deque containing the lights to load
 		 */
-		void LoadLights(std::deque<entities::Light>& lights) const;
+		void LoadLightsDeque(std::deque<entities::Light>& lights) const;
 
 		/*
 		 * @brief: A method to load the the shine variables from a model into the shader

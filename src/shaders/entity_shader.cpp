@@ -161,7 +161,7 @@ namespace shaders
 		}
 	}
 
-	void EntityShader::LoadLights(std::deque<entities::Light>& lights) const
+	void EntityShader::LoadLightsDeque(std::deque<entities::Light>& lights) const
 	{
 		for (int i = 0; i < MAX_LIGHTS; ++i)
 		{
