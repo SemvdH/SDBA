@@ -20,10 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\collision\collision_handler.cpp" />
-    <ClCompile Include="src\computervision\HandPresentChecker.cpp" />
+    <ClCompile Include="src\computervision\calibration\HandCalibrator.cpp" />
+    <ClCompile Include="src\computervision\calibration\HandPresentChecker.cpp" />
     <ClCompile Include="src\scenes\in_Game_Scene.cpp" />
     <ClCompile Include="src\computervision\async\async_arm_detection.cpp" />
-    <ClCompile Include="src\computervision\FaceDetector.cpp" />
     <ClCompile Include="src\computervision\ObjectDetection.cpp" />
     <ClCompile Include="src\computervision\OpenPoseVideo.cpp" />
     <ClCompile Include="src\computervision\SkinDetector.cpp" />
@@ -46,12 +46,12 @@
   <ItemGroup>
     <ClInclude Include="src\collision\collision.h" />
     <ClInclude Include="src\collision\collision_handler.h" />
-    <ClInclude Include="src\computervision\HandPresentChecker.h" />
+    <ClInclude Include="src\computervision\calibration\HandCalibrator.h" />
+    <ClInclude Include="src\computervision\calibration\HandPresentChecker.h" />
     <ClInclude Include="src\scenes\in_Game_Scene.h" />
     <ClInclude Include="src\scenes\scene.h" />
     <ClInclude Include="src\computervision\async\async_arm_detection.h" />
     <ClInclude Include="src\computervision\async\StaticCameraInstance.h" />
-    <ClInclude Include="src\computervision\FaceDetector.h" />
     <ClInclude Include="src\computervision\FingerCount.h" />
     <ClInclude Include="src\computervision\BackgroundRemover.h" />
     <ClInclude Include="src\computervision\OpenPoseVideo.h" />

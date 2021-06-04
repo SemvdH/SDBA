@@ -31,7 +31,7 @@ namespace scene
 	void scene::Startup_Scene::update(GLFWwindow* window)
 	{
 		bool hand_detected = false;
-		objDetect.detectHand(objDetect.readCamera(),hand_detected);
+		objDetect.DetectHand(objDetect.ReadCamera(),hand_detected);
 		if (hand_detected) std::cout << "there's a hand!" << std::endl;
 
 	}

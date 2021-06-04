@@ -17,7 +17,7 @@ namespace computervision
 		VideoCapture cap = static_camera::getCap();
 		
 		std::cout << "STARTING THREAD LAMBDA" << std::endl;
-		/*cv::VideoCapture cap = static_camera::getCap();*/
+		/*cv::VideoCapture cap = static_camera::GetCap();*/
 
 		if (!cap.isOpened())
 		{

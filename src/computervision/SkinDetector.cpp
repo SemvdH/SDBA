@@ -23,7 +23,7 @@ namespace computervision
 		int frameWidth = input.size().width, frameHeight = input.size().height;
 
 		int rectangleSize = 25;
-		Scalar rectangleColor = Scalar(255, 0, 255);
+		Scalar rectangleColor = Scalar(0, 255, 255);
 
 		skinColorSamplerRectangle1 = Rect(frameWidth / 5, frameHeight / 2, rectangleSize, rectangleSize);
 		skinColorSamplerRectangle2 = Rect(frameWidth / 5, frameHeight / 3, rectangleSize, rectangleSize);
