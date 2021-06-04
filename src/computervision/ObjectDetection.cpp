@@ -8,7 +8,6 @@
 #include "SkinDetector.h"
 #include "FingerCount.h"
 #include "async/StaticCameraInstance.h"
-#include "calibration/HandPresentChecker.h"
 #include "calibration/HandCalibrator.h"
 
 namespace computervision
@@ -69,10 +68,10 @@ namespace computervision
 		hand_calibrator.DrawHandCalibrationText(camera_frame);
 		imshow("camera", camera_frame);
 
-		//imshow("output", frame_out);
-		//imshow("foreground", foreground);
-		//imshow("handMask", handMask);
-		//imshow("handDetection", fingerCountDebug);
+		/*imshow("output", frame_out);
+		imshow("foreground", foreground);
+		imshow("handMask", handMask);
+		imshow("handDetection", fingerCountDebug);*/
 
 		hand_present = hand_calibrator.CheckIfHandPresent(handMask);
 		hand_calibrator.SetHandPresent(hand_present);
