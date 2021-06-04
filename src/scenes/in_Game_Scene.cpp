@@ -10,7 +10,10 @@
 #include "../renderEngine/renderer.h"
 #include "../shaders/entity_shader.h"
 #include "../toolbox/toolbox.h"
+#include "../entities/HouseGenerator.h"
 #include <deque>
+#include <functional>
+#include <memory>
 
 #define MAX_MODEL_DEQUE_SIZE 6 // max amount of models to load at the same time
 #define UPCOMING_MODEL_AMOUNT 4 // how much models should be loaded in front of us
@@ -18,9 +21,10 @@
 
 namespace scene
 {
-	std::deque<entities::Entity> house_models;
+	entities::HouseGenerator* house_generator;
+	std::deque<std::shared_ptr<entities::Entity>> house_models;
 	std::deque<entities::Light> lights;
-	std::deque<entities::Entity> trees;
+	std::deque<std::shared_ptr<entities::Entity>> trees;
 
 	models::RawModel raw_model;
 	models::ModelTexture texture;
@@ -28,9 +32,6 @@ namespace scene
 	shaders::GuiShader* gui_shader;
 	entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 	std::vector<gui::GuiTexture*> guis;
-
-	models::TexturedModel model;
-	models::TexturedModel tree;
 
 
 	In_Game_Scene::In_Game_Scene()
@@ -43,6 +44,11 @@ namespace scene
 		gui_shader->Init();
 	}
 
+	In_Game_Scene::~In_Game_Scene()
+	{
+		delete house_generator;
+	}
+
 	/**
 	 * @brief loads a new chunk in front of the camera, and deletes the chunk behind the camera.
 	 * 
@@ -51,32 +57,27 @@ namespace scene
 	 */
 	void load_chunk(int model_pos)
 	{
+		static unsigned int furniture_count = 0;
+		
 		std::cout << "loading model chunk" << std::endl;
 		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE)
 		{
-			house_models.pop_back();
-			trees.pop_back();
+			for (int i = 0; i < furniture_count; i++)
+			{
+				house_models.pop_back();
+			}
 		}
-		int z_offset = model_pos * (model.raw_model.model_size.x * 20); // how much "in the distance" we should load the model
-		house_models.push_front(entities::Entity(model, glm::vec3(0, -50, -50 - z_offset), glm::vec3(0, 90, 0), 20));
+		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
 
-		trees.push_front(entities::Entity(tree, glm::vec3(0, 0, -50 - z_offset), glm::vec3(0, 90, 0), 3));
+		std::deque<std::shared_ptr<entities::Entity>> furniture = house_generator->GenerateHouse(glm::vec3(0, -75, -50 - z_offset), 90);
+		furniture_count = furniture.size();
+		house_models.insert(house_models.begin(), furniture.begin(), furniture.end());
 	}
 
 
 	scene::Scenes scene::In_Game_Scene::start(GLFWwindow* window)
-	{
-		raw_model = render_engine::LoadObjModel("res/House.obj");
-		texture = { render_engine::loader::LoadTexture("res/Texture.png") };
-		texture.shine_damper = 10;
-		texture.reflectivity = 0;
-		model = { raw_model, texture };
-
-		models::RawModel raw_tree_model = render_engine::LoadObjModel("res/Tree.obj");
-		models::ModelTexture tree_texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
-		tree = { raw_tree_model, tree_texture };
-		
-
+	{		
+		house_generator = new entities::HouseGenerator();
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
@@ -123,12 +124,12 @@ namespace scene
 		shader->LoadLightsDeque(lights);
 		shader->LoadViewMatrix(camera);
 
-		for (entities::Entity& model_entity : house_models)
+		for (std::shared_ptr<entities::Entity> model_entity : house_models)
 		{
 			render_engine::renderer::Render(model_entity, *shader);
 		}
 
-		for (entities::Entity& tree_entity : trees)
+		for (std::shared_ptr<entities::Entity> tree_entity : trees)
 		{
 			render_engine::renderer::Render(tree_entity, *shader);
 		}
@@ -146,7 +147,7 @@ namespace scene
 
 		// calculate where the next house model should be loaded
 		static int last_model_pos = 0;
-		int model_pos = -round(camera.GetPosition().z / (model.raw_model.model_size.x * 20)); // how much models we have passed, minus because we are moving in the negative z axis
+		int model_pos = -round(camera.GetPosition().z / (house_generator->GetHouseDepth())); // how much models we have passed, minus because we are moving in the negative z axis
 
 		// if we have passed a model, load a new one and delete the one behind us
 		if (last_model_pos != model_pos)
