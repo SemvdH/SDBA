@@ -12,17 +12,6 @@ namespace entities
 		: CollisionEntity(model, position, rotation, scale, bounding_box) {
 
 	}
-
-	Entity main_character::loadCharacter()
-	{
-		models::RawModel raw_model = render_engine::LoadObjModel("res/beeTwo.obj");
-		models::ModelTexture texture = { render_engine::loader::LoadTexture("res/Texture.png") };
-		texture.shine_damper = 10;
-		texture.reflectivity = 0;
-		models::TexturedModel model = { raw_model, texture };
-		entities::Entity entity(model, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5);
-		return entity;
-	}
 	glm::vec3 main_character::move(GLFWwindow* window)
 	{
 		float movement_speed = 0;
@@ -53,7 +42,8 @@ namespace entities
 		{
 			up_down_speed += UP_SPEED;
 		}
-		return glm::vec3(side_speed, movement_speed, up_down_speed);
+		IncreasePosition(glm::vec3(side_speed, up_down_speed, movement_speed));
+		return glm::vec3(side_speed, up_down_speed, movement_speed );
 	}
 }
 

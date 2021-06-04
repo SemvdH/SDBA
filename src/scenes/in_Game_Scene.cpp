@@ -15,10 +15,10 @@
 
 namespace scene
 {
-	std::vector<entities::Entity> entities;
-	std::vector<entities::main_character> mainCharacter;
+	std::vector<entities::Entity*> entities;
+	std::vector<entities::main_character*> mainCharacter;
 	std::vector<entities::Light> lights;
-	models::RawModel raw_model;
+	models::RawModel raw_model, raw_model_char;
 	models::ModelTexture texture;
 	shaders::EntityShader *shader;
 	shaders::GuiShader *gui_shader;
@@ -43,16 +43,19 @@ namespace scene
 		texture.shine_damper = 10;
 		texture.reflectivity = 0;
 		models::TexturedModel model = { raw_model, texture };
+
+		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
+		models::TexturedModel model_char = { raw_model_char, texture };
 		
 		int z = 0;
 		for (int i = 0; i < 5; ++i)
 		{
-			entities.push_back(entities::Entity(model, glm::vec3(0, -50, -50 - z), glm::vec3(0, 90, 0), 20));
+			entities.push_back(&entities::Entity(model, glm::vec3(0, -50, -50 - z), glm::vec3(0, 90, 0), 20));
 			z += (raw_model.model_size.x * 20);
 		}
-		entities::main_character character{ model, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5,collision::Box() };
-		entities.push_back(character.loadCharacter());
-		mainCharacter.push_back(character);
+		entities::main_character character{ model_char, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5,collision::Box() };
+		entities.push_back(&character);
+		mainCharacter.push_back(&character);
 
 		lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5)));
 		lights.push_back(entities::Light(glm::vec3(0, 0, -30), glm::vec3(2, 0, 2), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
@@ -95,9 +98,9 @@ namespace scene
 		shader->LoadViewMatrix(camera);
 
 		// Renders each entity in the entities list
-		for (entities::Entity& entity : entities)
+		for (entities::Entity* entity : entities)
 		{
-			render_engine::renderer::Render(entity, *shader);
+			render_engine::renderer::Render(*entity, *shader);
 		}
 		
 
@@ -112,10 +115,10 @@ namespace scene
 	{
 		//camera.Move(window);
 		
-		entities::main_character character = mainCharacter[0];
-		glm::vec3 movement = character.move(window);
-		character.IncreasePosition(movement);
-		std::cout <<"x: "<< character.GetPosition().x << "\ny: " << character.GetPosition().y << "\nz: " << character.GetPosition().z << "\n";
+		entities::main_character *character = mainCharacter[0];
+		glm::vec3 movement = character->move(window);
+		//character->IncreasePosition(movement);
+		std::cout <<"x: "<< character->GetPosition().x << "\ny: " << character->GetPosition().y << "\nz: " << character->GetPosition().z << "\n";
 		std::cout <<"x get: "<< movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 	}
 

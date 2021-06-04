@@ -12,7 +12,6 @@ namespace entities
 	public:
 		main_character(const models::TexturedModel& model, const glm::vec3& position,
 			const glm::vec3& rotation, float scale, const collision::Box& bounding_box);
-		Entity loadCharacter();
 		glm::vec3 move(GLFWwindow* window);
 	};
 }
