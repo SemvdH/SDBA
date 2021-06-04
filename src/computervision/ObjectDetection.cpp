@@ -60,8 +60,8 @@ namespace computervision
 		imshow("camera", cameraFrame);
 
 		imshow("output", frameOut);
-		imshow("foreground", foreground);
-		imshow("handMask", handMask);
+		//imshow("foreground", foreground);
+		//imshow("handMask", handMask);
 		imshow("handDetection", fingerCountDebug);
 
 		int key = waitKey(1);

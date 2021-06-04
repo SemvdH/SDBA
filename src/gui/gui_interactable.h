@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../toolbox/toolbox.h"
 #include "gui_element.h"
@@ -33,6 +34,14 @@ namespace gui
 		void Update(GLFWwindow* window);
 
 		/*
+		 * @brief: Call this function when you want to perform a mouseclick
+		 *
+		 * @param mousebutton: mouseButton you want to perform the click on
+		 */
+		void ForceClick(int mouseButton);
+
+		
+		/*
 		 * @brief: This function gets called when the InteractabeGui is clicked
 		 */
 		virtual void OnClick() = 0;
@@ -50,7 +59,10 @@ namespace gui
 		/*
 		 * @brief: This function sets the texture of the InteractableGUI for when the InteractableGUI is clicked
 		 */
-		void SetClickedTexture(int texture) { clicked_texture = texture; }
+		void SetClickedTexture(int texture)
+		{
+			clicked_texture = texture;
+		}
 
 		/*
 		 * @brief: This function sets the texture of the InteractableGUI for when the mouse is hovering above the InteractableGUI

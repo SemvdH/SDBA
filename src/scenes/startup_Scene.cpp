@@ -3,6 +3,8 @@
 #include <map>
 #include "startup_Scene.h"
 #include <iostream>
+#include <opencv2/core/mat.hpp>
+
 #include "../models/model.h"
 #include "../renderEngine/loader.h"
 #include "../renderEngine/obj_loader.h"
@@ -10,6 +12,9 @@
 #include "../shaders/entity_shader.h"
 #include "../gui/gui_interactable.h"
 #include "../toolbox/toolbox.h"
+#include "../computervision/MenuTest.h"
+#include "../computervision/ObjectDetection.h"
+
 
 
 
@@ -17,6 +22,9 @@ namespace scene
 {
 	shaders::GuiShader* gui_shader1;
 	std::vector<gui::GuiTexture*> guis1;
+
+	float item_number = 0;
+
 
 	Startup_Scene::Startup_Scene() {
 		shaders::EntityShader shader;
@@ -29,12 +37,42 @@ namespace scene
 	}
 
 	gui::Button* ConvertGuiTextureToButton(gui::GuiTexture* texture) {
-		if (texture->GetType() == gui::GuiType::BUTTON) {
-			return (gui::Button*)texture;
+		if (texture != NULL)
+			if (texture->GetType() == gui::GuiType::BUTTON) {
+				
+				gui::Button* button = (gui::Button*)texture;
+				std::cout << button->clicked_texture << std::endl;
+				return button;
+			}
+			else {
+				return NULL;
+			}
+	}
+
+	/*gui::InteractableGui* ConvertGuiTextureToInteractableGui(gui::GuiTexture* texture) {
+		if (texture != NULL)
+			if (texture->GetType() == gui::GuiType::BUTTON) {
+				return (gui::InteractableGui*)texture;
+			}
+			else {
+				return NULL;
+			}
+
+	}*/
+
+	gui::GuiTexture* GetMenuItem(bool hand_state) {
+		if(hand_state)
+		item_number += 0.20f;
+
+		int temp_item_number = item_number;
+		
+		//If temp_item_number is equal to the size of the array, set item_number bac to zero to loop through the array again
+		if (temp_item_number == guis1.size()) {
+			item_number = 0;
+			temp_item_number = 0;
 		}
-		else {
-			return NULL;
-		}
+		std::cout << guis1[temp_item_number]->texture << std::endl;
+		return guis1[temp_item_number];
 	}
 
 	scene::Scenes scene::Startup_Scene::start(GLFWwindow *window)
@@ -46,6 +84,7 @@ namespace scene
 		button_start.SetOnClickAction([]()
 			{
 				std::cout << "Clicked on button: Start!" << std::endl;
+				
 			});
 		guis1.push_back(&button_start);
 
@@ -55,6 +94,7 @@ namespace scene
 		button_calibrate.SetOnClickAction([]()
 			{
 				std::cout << "Clicked on button: Calibrate!" << std::endl;
+
 			});
 		guis1.push_back(&button_calibrate);
 
@@ -67,6 +107,10 @@ namespace scene
 			});
 		guis1.push_back(&button_quit);
 
+		computervision::ObjectDetection objDetect;
+		cv::Mat cameraFrame;
+		gui::GuiTexture* chosen_item = NULL;
+		
 		while (return_value == scene::Scenes::STARTUP)
 		{
 			render();
@@ -77,7 +121,75 @@ namespace scene
 				new_button->Update(window);
 			}
 			
-	
+			////////////////////////// KIMS SHIT ////////////////////////////////////
+			cameraFrame = objDetect.readCamera();
+			//computervision::MenuTest menu_test;
+
+			//Get hand state from camera
+			bool hand_detection = objDetect.detectHand(cameraFrame);
+
+			if (hand_detection)
+			{
+				std::cout << "hand is opened" << std::endl;
+
+				//Loop through menu items
+				chosen_item = GetMenuItem(true);
+
+				//For debug only, to see if chosen item is selected properly when hand is opened
+				std::cout << "chosen item: " << chosen_item << std::endl;
+
+				gui::Button* new_button = ConvertGuiTextureToButton(chosen_item);
+				if (new_button != NULL) {
+					//Set hover texture of button selected
+					const float x_pos = (chosen_item->position.x + 1.0)*WINDOW_WIDTH/2;
+					const float y_pos = (1.0 - chosen_item->position.y)*WINDOW_HEIGHT/2;
+
+					glfwSetCursorPos(window, x_pos, y_pos);
+					std::cout << "Cursor pos: " << x_pos << "::" << y_pos << std::endl;
+				}
+			}
+			else if (!hand_detection)
+			{
+				//for debug only, to see if the chosen item is selected properly when hand is closed
+				std::cout << "hand is closed" << std::endl;
+				//std::cout << "item to start: " << chosen_item << std::endl;
+				/*
+				//TODO link chosen item to the correct game states
+				switch (chosen_item)
+				{
+				case 1:
+					//Game state 0
+					std::cout << "in case: " << chosen_item << std::endl;
+					break;
+				case 2:
+					//Game state 1
+					std::cout << "in case: " << chosen_item << std::endl;
+					break;
+				case 3:
+					//Game state 2
+					std::cout << "in case: " << chosen_item << std::endl;
+					break;
+				case 4:
+					//Game state 3
+					std::cout << "in case: " << chosen_item << std::endl;
+				default:
+					break;
+				}
+				*/
+				//Click on button selected in guis1
+
+				chosen_item = GetMenuItem(false);
+				
+				std::cout << chosen_item->texture << std::endl;
+				gui::Button* new_button = ConvertGuiTextureToButton(chosen_item);
+				if (new_button != NULL) {
+					//Run function click
+					new_button->ForceClick(GLFW_MOUSE_BUTTON_LEFT);
+				}
+			}
+
+			///////////////////////// END OF KIMS SHIT ///////////////////////////////
+
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}

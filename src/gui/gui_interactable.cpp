@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include "gui_interactable.h"
 
+#include <iostream>
+
 namespace gui
 {
 	InteractableGui::InteractableGui(int default_texture, glm::vec2 position, glm::vec2 scale)
@@ -41,6 +43,35 @@ namespace gui
 		}
 	}
 
+	void InteractableGui::ForceClick( int mouseButton)
+	{
+		if(mouseButton == GLFW_MOUSE_BUTTON_LEFT)
+		{
+			if (clicked_texture != 0)
+			{
+				texture = clicked_texture;
+			}
+			else
+			{
+				texture = default_texture;
+			}
+
+			if (!is_clicking)
+			{
+				OnClick();
+				is_clicking = true;
+			}
+		}
+		else
+		{
+			if (is_clicking)
+			{
+				is_clicking = false;
+			}
+		}
+		
+	}
+	
 	bool InteractableGui::IsHoveringAbove(GLFWwindow* window)
 	{
 		double x_pos, y_pos;

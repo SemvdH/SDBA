@@ -17,7 +17,6 @@ namespace gui
 	 * position = The center position of the gui
 	 * scale    = The size (scale) of the gui
 	 */
-
 	struct GuiTexture
 	{
 		int texture;
@@ -27,10 +26,9 @@ namespace gui
 		virtual GuiType GetType() {
 			return GuiType::LABEL;
 		}
-
 		GuiTexture(int texture, glm::vec2 position, glm::vec2 scale): texture(texture), position(position), scale(scale)
 		{
-			scale.x /= (WINDOW_WIDTH / WINDOW_HEIGT);
+			scale.x /= (WINDOW_WIDTH / WINDOW_HEIGHT);
 		}
 	};
 }
