@@ -54,9 +54,10 @@ namespace computervision
 		 * @brief detects a hand based on the given hand mask input frame.
 		 * 
 		 * @param inputFrame the input frame from the camera
+		 * @param hand_present boolean that will hold true if the hand is detected, false if not.
 		 * @return true if hand is open, false if hand is closed
 		 */
-		bool detectHand(cv::Mat cameraFrame);
+		bool detectHand(cv::Mat cameraFrame, bool& hand_present);
 
 		/**
 		 * @brief draws the hand mask rectangle on the given input matrix.

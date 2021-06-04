@@ -2,6 +2,7 @@
 #include <opencv2/imgproc.hpp>
 #include <iostream>
 
+#define MIN_HAND_SIZE 10000
 
 namespace computervision
 {
@@ -10,9 +11,16 @@ namespace computervision
 		std::vector<std::vector<cv::Point>> points;
 		cv::Mat imgCont;
 		cv::findContours(inputImage, points, cv::RetrievalModes::RETR_LIST, cv::ContourApproximationModes::CHAIN_APPROX_SIMPLE);
-		bool hand_present = points.size() > 0;
-		std::cout << (hand_present ? "hey a hand!" : "damn no hand") << std::endl;
-		return hand_present;
+
+		if (points.size() == 0) return false;
+
+		for (int p = 0; p < points.size(); p++)
+		{
+			int area = cv::contourArea(points[p]);
+			if (area > MIN_HAND_SIZE) return true;
+		}
+		
+		return false;
 	}
 
 }

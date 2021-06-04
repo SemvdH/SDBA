@@ -3,6 +3,7 @@
 #include <map>
 #include "startup_Scene.h"
 #include "../computervision/ObjectDetection.h"
+#include <iostream>
 
 namespace scene
 {
@@ -29,7 +30,9 @@ namespace scene
 
 	void scene::Startup_Scene::update(GLFWwindow* window)
 	{
-		objDetect.detectHand(objDetect.readCamera());
+		bool hand_detected = false;
+		objDetect.detectHand(objDetect.readCamera(),hand_detected);
+		if (hand_detected) std::cout << "there's a hand!" << std::endl;
 
 	}
 

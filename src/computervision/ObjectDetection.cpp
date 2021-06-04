@@ -41,7 +41,7 @@ namespace computervision
 		return cap;
 	}
 
-	bool ObjectDetection::detectHand(Mat cameraFrame)
+	bool ObjectDetection::detectHand(Mat cameraFrame, bool& hand_present)
 	{
 		Mat inputFrame = generateHandMaskSquare(cameraFrame);
 		frameOut = inputFrame.clone();
@@ -72,7 +72,7 @@ namespace computervision
 		//imshow("handMask", handMask);
 		//imshow("handDetection", fingerCountDebug);
 
-		check_if_hand_present(handMask);
+		hand_present = check_if_hand_present(handMask);
 
 
 
