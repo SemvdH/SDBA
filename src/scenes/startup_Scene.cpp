@@ -1,3 +1,4 @@
+#include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <map>
@@ -164,6 +165,9 @@ namespace scene
 		return return_value;
 	}
 
+	/**
+	 * renders the models in the start-up scene
+	 */
 	void scene::Startup_Scene::render() 
 	{
 		render_engine::renderer::Prepare();
@@ -172,6 +176,9 @@ namespace scene
 		render_engine::renderer::Render(guis1, *gui_shader1);
 	}
 
+	/**
+	 * updates the variables for the start-up scene
+	 */
 	void scene::Startup_Scene::update(GLFWwindow* window)
 	{
 		for (gui::GuiTexture* button : guis1) {
@@ -181,6 +188,9 @@ namespace scene
 		}
 	}
 
+	/**
+	 * manages the key input in the start-up scene
+	 */
 	void scene::Startup_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
