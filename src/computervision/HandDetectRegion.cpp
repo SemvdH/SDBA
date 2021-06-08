@@ -29,23 +29,11 @@ namespace computervision
 		// detect the hand contours
 		handMask = skin_detector.getSkinMask(foreground);
 
-		// count the amount of fingers and put the info on the matrix
-		//fingerCountDebug = finger_count.findFingersCount(handMask, frame_out);
-
-		//// get the amount of fingers
-		//int fingers_amount = finger_count.getAmountOfFingers();
-
 		// draw the hand rectangle on the camera input, and draw text showing if the hand is open or closed.
 		DrawHandMask(&camera_frame);
 
-
-		//hand_calibrator.SetAmountOfFingers(fingers_amount);
-		//finger_count.DrawHandContours(camera_frame);
-		//hand_calibrator.DrawHandCalibrationText(camera_frame);
-		//imshow("camera", camera_frame);
-
-		imshow("output" + region_id, frame_out);
-		imshow("foreground" + region_id, foreground);
+		//imshow("output" + region_id, frame_out);
+		//imshow("foreground" + region_id, foreground);
 		imshow("handMask" + region_id, handMask);
 		/*imshow("handDetection", fingerCountDebug);*/
 
@@ -83,6 +71,7 @@ namespace computervision
 
 	void HandDetectRegion::CalibrateBackground()
 	{
+		std::cout << "calibrating background " << region_id << std::endl;
 		background_remover.calibrate(frame_out);
 		hand_calibrator.SetBackGroundCalibrated(true);
 	}
@@ -94,11 +83,13 @@ namespace computervision
 
 	std::vector<int> HandDetectRegion::CalculateSkinTresholds()
 	{
+		std::cout << "calibrating skin " << region_id << std::endl;
 		return skin_detector.calibrateAndReturn(frame_out);
 	}
 
 	void HandDetectRegion::setSkinTresholds(std::vector<int>& tresholds)
 	{
+		std::cout << "setting skin " << region_id << std::endl;
 		skin_detector.setTresholds(tresholds);
 	}
 

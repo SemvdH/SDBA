@@ -7,10 +7,18 @@ namespace computervision
 {
 	namespace handcalibration
 	{
+		enum class HandDetectionType
+		{
+			MENU,
+			GAME
+		};
+
 		class HandCalibrator
 		{
 		public:
 			HandCalibrator();
+
+			
 
 			/**
 			 * @brief draws the text to show the status of the calibration on the image
@@ -45,7 +53,7 @@ namespace computervision
 			 * 
 			 * @param input_image the input image to check.
 			 */
-			bool CheckIfHandPresent(cv::Mat input_image);
+			bool CheckIfHandPresent(cv::Mat input_image, HandDetectionType type);
 
 			/**
 			 * @brief sets the amount of fingers that are currently detected.
@@ -53,6 +61,7 @@ namespace computervision
 			 * @param amount the amount of fingers.
 			 */
 			void SetAmountOfFingers(int amount);
+
 		private:
 
 			bool background_calibrated;

@@ -10,6 +10,9 @@
 #include "../renderEngine/renderer.h"
 #include "../shaders/entity_shader.h"
 #include "../toolbox/toolbox.h"
+#include <opencv2/core/base.hpp>
+#include "../computervision/HandDetectRegion.h"
+#include "../computervision/ObjectDetection.h"
 
 
 namespace scene
@@ -22,6 +25,11 @@ namespace scene
 	shaders::GuiShader *gui_shader;
 	entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 	std::vector<gui::GuiTexture*> guis;
+
+	std::vector<computervision::HandDetectRegion> regions;
+	computervision::ObjectDetection objDetect;
+	computervision::HandDetectRegion reg1("left", 20, 100, 150, 150);
+	computervision::HandDetectRegion reg2("right", 200, 200, 150, 150);
 
 	
 	In_Game_Scene::In_Game_Scene()
@@ -105,6 +113,7 @@ namespace scene
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
 		camera.Move(window);
+		update_hand_detection();
 	}
 
 	void scene::In_Game_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -113,6 +122,26 @@ namespace scene
 		{
 			return_value = scene::Scenes::STOP;
 		}
+
+		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
+		{
+			reg1.CalibrateBackground();
+			reg2.CalibrateBackground();
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		{
+			std::vector<int> tresholds = reg1.CalculateSkinTresholds();
+			reg2.setSkinTresholds(tresholds);
+		}
 	}
 
+	void scene::In_Game_Scene::update_hand_detection()
+	{
+		cv::Mat camera_frame = objDetect.ReadCamera();
+		reg1.DetectHand(camera_frame);
+		reg2.DetectHand(camera_frame);
+
+		cv::imshow("camera", camera_frame);
+	}
 }

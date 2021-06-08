@@ -1,7 +1,8 @@
 
 #include "HandCalibrator.h"
 
-#define MIN_HAND_SIZE 10000
+#define MIN_MENU_HAND_SIZE 10000
+#define MIN_GAME_HAND_SIZE 10000 // todo change
 namespace computervision
 {
 	namespace handcalibration
@@ -56,7 +57,7 @@ namespace computervision
 			fingers_amount = amount;
 		}
 
-		bool HandCalibrator::CheckIfHandPresent(cv::Mat input_image)
+		bool HandCalibrator::CheckIfHandPresent(cv::Mat input_image, HandDetectionType type)
 		{
 			std::vector<std::vector<cv::Point>> points;
 			cv::findContours(input_image, points, cv::RetrievalModes::RETR_LIST, cv::ContourApproximationModes::CHAIN_APPROX_SIMPLE);
@@ -66,7 +67,11 @@ namespace computervision
 			for (int p = 0; p < points.size(); p++)
 			{
 				int area = cv::contourArea(points[p]);
-				if (area > MIN_HAND_SIZE) return true;
+				if (type == handcalibration::HandDetectionType::MENU)
+					if (area > MIN_MENU_HAND_SIZE) return true;
+
+				if (type == handcalibration::HandDetectionType::GAME)
+					if (area > MIN_GAME_HAND_SIZE) return true;
 			}
 
 			return false;
