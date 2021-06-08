@@ -28,7 +28,6 @@ namespace scene
 
 
 	std::vector<computervision::HandDetectRegion> regions;
-	computervision::ObjectDetection objDetect;
 	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
 
 	
@@ -45,7 +44,8 @@ namespace scene
 	scene::Scenes scene::In_Game_Scene::start(GLFWwindow* window)
 	{
 		// set up squares according to size of camera input
-		cv::Mat camera_frame = objDetect.ReadCamera(); // get camera frame to know the width and heigth
+		cv::Mat camera_frame;
+		static_camera::getCap().read(camera_frame); // get camera frame to know the width and heigth
 		reg_left.SetXPos(10);
 		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight()/2);
 		reg_right.SetXPos(camera_frame.cols - 10 - reg_right.GetWidth());
@@ -151,7 +151,8 @@ namespace scene
 
 	void scene::In_Game_Scene::update_hand_detection()
 	{
-		cv::Mat camera_frame = objDetect.ReadCamera();
+		cv::Mat camera_frame;
+		static_camera::getCap().read(camera_frame);
 		reg_left.DetectHand(camera_frame);
 		reg_right.DetectHand(camera_frame);
 		reg_up.DetectHand(camera_frame);

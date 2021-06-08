@@ -47,6 +47,7 @@
     <ClInclude Include="src\collision\collision.h" />
     <ClInclude Include="src\collision\collision_handler.h" />
     <ClInclude Include="src\computervision\calibration\HandCalibrator.h" />
+    <ClInclude Include="src\computervision\calibration\StaticSkinTreshold.h" />
     <ClInclude Include="src\computervision\HandDetectRegion.h" />
     <ClInclude Include="src\scenes\in_Game_Scene.h" />
     <ClInclude Include="src\scenes\scene.h" />

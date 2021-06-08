@@ -8,7 +8,7 @@
 
 namespace scene
 {
-
+	computervision::ObjectDetection objDetect;
 	scene::Scenes scene::Startup_Scene::start(GLFWwindow *window)
 	{
 		while (return_value == scene::Scenes::STARTUP)
@@ -30,7 +30,8 @@ namespace scene
 
 	void scene::Startup_Scene::update(GLFWwindow* window)
 	{
-
+		bool hand_present;
+		objDetect.DetectHand(objDetect.ReadCamera(),hand_present);
 	}
 
 	void scene::Startup_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -38,6 +39,7 @@ namespace scene
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			return_value = scene::Scenes::INGAME;
+			cv::destroyWindow("camera");
 		}
 	}
 }

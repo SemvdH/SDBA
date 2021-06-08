@@ -56,6 +56,7 @@
     <ClInclude Include="src\scenes\startup_Scene.h" />
     <ClInclude Include="src\computervision\calibration\HandCalibrator.h" />
     <ClInclude Include="src\computervision\HandDetectRegion.h" />
+    <ClInclude Include="src\computervision\calibration\StaticSkinTreshold.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\haarcascade_frontalface_alt.xml" />
