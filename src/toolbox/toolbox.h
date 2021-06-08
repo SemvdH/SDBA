@@ -46,4 +46,8 @@ namespace toolbox
 	 * @return: The view matrix
 	 */
 	glm::mat4 CreateViewMatrix(entities::Camera& camera);
+
+	float Lerp(float from, float to, float amount);
+
+	glm::vec3 Lerp(glm::vec3 from, glm::vec3 to, float amount);
 }

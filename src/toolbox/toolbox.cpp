@@ -31,4 +31,17 @@ namespace toolbox
 		matrix = glm::translate(matrix, negative_cam_pos);
 		return matrix;
 	}
+		float Lerp(float from, float to, float amount)
+	{
+		return from + amount * (to - from);
+	}
+
+	glm::vec3 Lerp(glm::vec3 from, glm::vec3 to, float amount)
+	{
+		glm::vec3 final;
+		final.x = Lerp(from.x, to.x, amount);
+		final.y = Lerp(from.y, to.y, amount);
+		final.z = Lerp(from.z, to.z, amount);
+		return final;
+	}
 }

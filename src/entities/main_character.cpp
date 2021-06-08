@@ -15,7 +15,7 @@ namespace entities
 	glm::vec3 main_character::move(GLFWwindow* window)
 	{
 		float movement_speed = -1.0f;
-		float up_down_speed = -0.4f;
+		float up_down_speed = -0.2f;
 		float side_speed = 0;
 
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -47,6 +47,11 @@ namespace entities
 			up_down_speed -= UP_SPEED;
 		}
 		IncreasePosition(glm::vec3(side_speed, up_down_speed, movement_speed));
+		if (position.x > 190) position.x = 190;
+		else if (position.x < -190) position.x = -190;
+		if (position.y > 350) position.y = 350;
+		else if (position.y < -40) position.y = -40;
+		MoveCollisionBox();
 		return glm::vec3(side_speed, up_down_speed, movement_speed );
 	}
 }

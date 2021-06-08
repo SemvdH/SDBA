@@ -28,7 +28,7 @@ namespace scene
 	models::ModelTexture texture;
 	shaders::EntityShader* shader;
 	shaders::GuiShader* gui_shader;
-	entities::Camera camera(glm::vec3(0, 100, 0), glm::vec3(0, 0, 0));
+	entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 	std::vector<gui::GuiTexture*> guis;
 
 	models::TexturedModel model;
