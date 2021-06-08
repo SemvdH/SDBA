@@ -12,7 +12,13 @@ namespace entities
 	{
 		COUCH,
 		TABLE,
-		CHAIR
+		CHAIR,
+		PLANT,
+		GUITAR,
+		BOOKSHELF,
+		LAMP,
+		CEILING_OBJECTS,
+		MISC
 	};
 	
 	class HouseGenerator
