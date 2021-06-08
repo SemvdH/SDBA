@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 #include "../entities/collision_entity.h"
 #include "collision.h"
@@ -12,5 +13,5 @@ namespace collision
 	 *
 	 * @param entities: A list with all the collision entities.
 	 */
-	void CheckCollisions(std::vector<entities::CollisionEntity*>& entities);
+	void CheckCollisions(std::vector<std::shared_ptr<entities::CollisionEntity>> entities);
 }

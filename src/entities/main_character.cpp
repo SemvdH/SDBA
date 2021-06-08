@@ -10,11 +10,12 @@ namespace entities
 	MainCharacter::MainCharacter(const models::TexturedModel& model, const glm::vec3& position,
 		const glm::vec3& rotation, float scale, const collision::Box& bounding_box)
 		: CollisionEntity(model, position, rotation, scale, bounding_box) 
-	{}
+	{
+	}
 
 	glm::vec3 MainCharacter::Move(GLFWwindow* window)
 	{
-		float movement_speed = -1.0f;	//Forward speed adjustment, bee is moving at a standard speedrate
+		float movement_speed = -0.5f;	//Forward speed adjustment, bee is moving at a standard speedrate
 		float down_speed = -1.0f;		//Down speed adjustment, downspeed is difference between down_speed and UP_SPEED	
 		float side_speed = 0;			//Side speed adjustment
 
@@ -64,5 +65,9 @@ namespace entities
 		//Move player bounding box according to the position on screen
 		MoveCollisionBox();
 		return glm::vec3(side_speed, down_speed, movement_speed );
+	}
+
+	void MainCharacter::OnCollide(const collision::Collision& collision) {
+		std::cout << "collide" << std::endl;
 	}
 }

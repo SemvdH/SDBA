@@ -2,6 +2,8 @@
 
 #include "entity.h"
 #include "../collision/collision.h"
+#include <memory>
+#include <functional>
 
 namespace entities
 {
@@ -16,7 +18,8 @@ namespace entities
 		glm::vec3 min_xyz;
 		glm::vec3 max_xyz;
 
-		void (*on_collide)(const collision::Collision& collision);
+		//void (*on_collide)(const collision::Collision& collision);
+		std::function<void(const collision::Collision&)> on_collide;
 
 	public:
 		CollisionEntity(const models::TexturedModel& model, const glm::vec3& position, const glm::vec3& rotation,
@@ -52,7 +55,7 @@ namespace entities
 		 *
 		 * @param function: A function pointer to a function with the collision behaviour
 		 */
-		void SetCollisionBehaviour(void (*function)(const collision::Collision& collision))
+		void SetCollisionBehaviour(std::function<void(const collision::Collision&)> function)
 		{ if (function != nullptr) { on_collide = function; } }
 
 	protected:
