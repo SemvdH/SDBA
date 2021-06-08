@@ -25,6 +25,7 @@ namespace scene
 
 	float item_number = 0;
 
+	bool hand_mode = false;
 
 	Startup_Scene::Startup_Scene() {
 		shaders::EntityShader shader;
@@ -120,41 +121,42 @@ namespace scene
 				if(new_button != NULL)
 				new_button->Update(window);
 			}
-			
-			cameraFrame = objDetect.readCamera();
+			if (hand_mode) {
+				cameraFrame = objDetect.readCamera();
 
-			//Get hand state from camera
-			bool hand_detection = objDetect.detectHand(cameraFrame);
+				//Get hand state from camera
+				bool hand_detection = objDetect.detectHand(cameraFrame);
 
-			if (hand_detection)
-			{
-				hand_closed = false;
-				std::cout << "hand is opened" << std::endl;
+				if (hand_detection)
+				{
+					hand_closed = false;
+					std::cout << "hand is opened" << std::endl;
 
-				//Loop through menu items
-				chosen_item = GetMenuItem(true);
+					//Loop through menu items
+					chosen_item = GetMenuItem(true);
 
-				gui::Button* new_button = ConvertGuiTextureToButton(chosen_item);
-				if (new_button != NULL) {
-					const float x_pos = (chosen_item->position.x + 1.0)*WINDOW_WIDTH/2;
-					const float y_pos = (1.0 - chosen_item->position.y)*WINDOW_HEIGHT/2;
+					gui::Button* new_button = ConvertGuiTextureToButton(chosen_item);
+					if (new_button != NULL) {
+						const float x_pos = (chosen_item->position.x + 1.0) * WINDOW_WIDTH / 2;
+						const float y_pos = (1.0 - chosen_item->position.y) * WINDOW_HEIGHT / 2;
 
-					//Set cursor to location of selected menu_item
-					glfwSetCursorPos(window, x_pos, y_pos);
+						//Set cursor to location of selected menu_item
+						glfwSetCursorPos(window, x_pos, y_pos);
+					}
 				}
-			}
-			else if (!hand_detection)
-			{
-				std::cout << "hand is closed" << std::endl;
-				
-				//Gets selected menu_item
-				chosen_item = GetMenuItem(false);
-				gui::Button* new_button = ConvertGuiTextureToButton(chosen_item);
-				
-				if (new_button != NULL && !hand_closed) {
-					//Run function click
-					new_button->ForceClick(GLFW_MOUSE_BUTTON_LEFT);
-					hand_closed = true;
+				else if (!hand_detection)
+				{
+					std::cout << "hand is closed" << std::endl;
+
+					//Gets selected menu_item
+					chosen_item = GetMenuItem(false);
+					gui::Button* new_button = ConvertGuiTextureToButton(chosen_item);
+
+					if (new_button != NULL && !hand_closed) {
+						//Run function click
+						new_button->ForceClick(GLFW_MOUSE_BUTTON_LEFT);
+						hand_closed = true;
+					}
 				}
 			}
 
@@ -184,6 +186,9 @@ namespace scene
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			return_value = scene::Scenes::INGAME;
+		}
+		else if (glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS) {
+			hand_mode = !hand_mode;
 		}
 	}
 }
