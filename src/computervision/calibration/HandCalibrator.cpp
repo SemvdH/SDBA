@@ -1,8 +1,9 @@
 
 #include "HandCalibrator.h"
+#include <iostream>
 
 #define MIN_MENU_HAND_SIZE 10000
-#define MIN_GAME_HAND_SIZE 10000 // todo change
+#define MIN_GAME_HAND_SIZE 4000 // todo change
 namespace computervision
 {
 	namespace handcalibration
@@ -64,9 +65,11 @@ namespace computervision
 
 			if (points.size() == 0) return false;
 
+			std::cout << std::endl;
 			for (int p = 0; p < points.size(); p++)
 			{
 				int area = cv::contourArea(points[p]);
+				std::cout << area << std::endl;
 				if (type == handcalibration::HandDetectionType::MENU)
 					if (area > MIN_MENU_HAND_SIZE) return true;
 

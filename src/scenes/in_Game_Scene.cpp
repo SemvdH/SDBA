@@ -26,10 +26,10 @@ namespace scene
 	entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 	std::vector<gui::GuiTexture*> guis;
 
+
 	std::vector<computervision::HandDetectRegion> regions;
 	computervision::ObjectDetection objDetect;
-	computervision::HandDetectRegion reg1("left", 20, 100, 150, 150);
-	computervision::HandDetectRegion reg2("right", 200, 200, 150, 150);
+	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
 
 	
 	In_Game_Scene::In_Game_Scene()
@@ -44,6 +44,15 @@ namespace scene
 
 	scene::Scenes scene::In_Game_Scene::start(GLFWwindow* window)
 	{
+		cv::Mat camera_frame = objDetect.ReadCamera(); // get camera frame to know the width and heigth
+		reg_left.SetXPos(10);
+		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight()/2);
+		reg_right.SetXPos(camera_frame.cols - 10 - reg_right.GetWidth());
+		reg_right.SetYPos(camera_frame.rows / 2 - reg_right.GetHeight()/2);
+		reg_up.SetXPos(camera_frame.cols / 2 - reg_up.GetWidth() / 2);
+		reg_up.SetYPos(10);
+
+
 		raw_model = render_engine::LoadObjModel("res/House.obj");
 		texture = { render_engine::loader::LoadTexture("res/Texture.png") };
 		texture.shine_damper = 10;
@@ -125,22 +134,25 @@ namespace scene
 
 		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
 		{
-			reg1.CalibrateBackground();
-			reg2.CalibrateBackground();
+			reg_left.CalibrateBackground();
+			reg_right.CalibrateBackground();
+			reg_up.CalibrateBackground();
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			std::vector<int> tresholds = reg1.CalculateSkinTresholds();
-			reg2.setSkinTresholds(tresholds);
+			std::vector<int> tresholds = reg_left.CalculateSkinTresholds();
+			reg_right.setSkinTresholds(tresholds);
+			reg_up.setSkinTresholds(tresholds);
 		}
 	}
 
 	void scene::In_Game_Scene::update_hand_detection()
 	{
 		cv::Mat camera_frame = objDetect.ReadCamera();
-		reg1.DetectHand(camera_frame);
-		reg2.DetectHand(camera_frame);
+		reg_left.DetectHand(camera_frame);
+		reg_right.DetectHand(camera_frame);
+		reg_up.DetectHand(camera_frame);
 
 		cv::imshow("camera", camera_frame);
 	}

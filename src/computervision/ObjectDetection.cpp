@@ -74,7 +74,7 @@ namespace computervision
 		imshow("handMask", handMask);
 		imshow("handDetection", fingerCountDebug);*/
 
-		hand_present = hand_calibrator.CheckIfHandPresent(handMask);
+		hand_present = hand_calibrator.CheckIfHandPresent(handMask,handcalibration::HandDetectionType::MENU);
 		hand_calibrator.SetHandPresent(hand_present);
 
 

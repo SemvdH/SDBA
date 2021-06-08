@@ -37,7 +37,7 @@ namespace computervision
 		imshow("handMask" + region_id, handMask);
 		/*imshow("handDetection", fingerCountDebug);*/
 
-		hand_present = hand_calibrator.CheckIfHandPresent(handMask);
+		hand_present = hand_calibrator.CheckIfHandPresent(handMask,handcalibration::HandDetectionType::GAME);
 		std::string text = (hand_present ? "hand" : "no");
 		cv::putText(camera_frame, text, cv::Point(start_x_pos, start_y_pos), cv::FONT_HERSHEY_COMPLEX, 2.0, cv::Scalar(0, 255, 255), 2);
 		hand_calibrator.SetHandPresent(hand_present);

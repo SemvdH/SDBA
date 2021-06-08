@@ -14,6 +14,16 @@ namespace computervision
 	public:
 		HandDetectRegion(std::string id,int x_pos, int y_pos, int width, int height);
 
+		void SetXPos(int x) { start_x_pos = x; }
+		void SetYPos(int y) { start_y_pos = y; }
+		int GetXPos() { return start_x_pos; }
+		int GetYPos() { return start_y_pos; }
+
+		void SetWidth(int width) { region_width = width; }
+		void SetHeigth(int height) { region_height = height; }
+		int GetWidth() { return region_width; }
+		int GetHeight() { return region_height; }
+
 		cv::Mat GenerateHandMaskSquare(cv::Mat img);
 
 		void DetectHand(cv::Mat& camera_frame);
