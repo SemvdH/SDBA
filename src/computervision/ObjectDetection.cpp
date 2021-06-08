@@ -64,7 +64,7 @@ namespace computervision
 		DrawHandMask(&camera_frame);
 		string hand_text = fingers_amount > 0 ? "open" : "closed";
 		putText(camera_frame, hand_text, Point(10, 75), FONT_HERSHEY_PLAIN, 2.0, Scalar(255, 0, 255), 3);
-
+		finger_count.DrawHandContours(camera_frame);
 		hand_calibrator.DrawHandCalibrationText(camera_frame);
 		imshow("camera", camera_frame);
 

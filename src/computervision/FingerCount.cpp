@@ -14,6 +14,7 @@
 
 namespace computervision
 {
+
 	FingerCount::FingerCount(void) {
 		color_blue = Scalar(255, 0, 0);
 		color_green = Scalar(0, 255, 0);
@@ -35,9 +36,6 @@ namespace computervision
 		if (input_image.channels() != 1)
 			return contours_image;
 
-		vector<vector<Point>> contours;
-		vector<Vec4i> hierarchy;
-
 		findContours(input_image, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
 		// we need at least one contour to work
@@ -45,7 +43,7 @@ namespace computervision
 			return contours_image;
 
 		// find the biggest contour (let's suppose it's our hand)
-		int biggest_contour_index = -1;
+		biggest_contour_index = -1;
 		double biggest_area = 0.0;
 
 		for (int i = 0; i < contours.size(); i++) {
@@ -154,6 +152,11 @@ namespace computervision
 		amount_of_fingers = filtered_finger_points.size();
 
 		return contours_image;
+	}
+
+	void FingerCount::DrawHandContours(Mat& image)
+	{
+		drawContours(image, contours, biggest_contour_index, color_green, 2, 8, hierarchy);
 	}
 
 	int FingerCount::getAmountOfFingers()
