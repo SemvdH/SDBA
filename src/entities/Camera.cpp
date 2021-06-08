@@ -10,11 +10,14 @@ namespace entities
 	{}
 
 	void Camera::Follow(glm::vec3 follow_position) {
+		//set position to follow in front of the camera
 		follow_position.z += 100;
+		//set position to follow a bit lower
 		follow_position.y += 50;
+		//move position from original position to fiven position with smoothing
 		position = toolbox::Lerp(position, follow_position, 0.1);
 	}
-
+	
 	void Camera::Move(GLFWwindow* window)
 	{
 		float movement_speed = 0;
@@ -53,6 +56,5 @@ namespace entities
 		position.x += side_speed;
 		position.z += movement_speed;
 		position.y += up_down_speed;
-		std::cout <<"x= " << position.x <<"\ny= " << position.y << "\nz= " << position.z << "\n";
 	}
 }

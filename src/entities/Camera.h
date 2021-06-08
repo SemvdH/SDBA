@@ -14,12 +14,13 @@ namespace entities
 	private:
 		// The movement speed of the camera
 		const float SPEED = 0.5f;
-		const float UP_SPEED = 0.9f;
+		const float UP_SPEED = 1.0f;
 		
 		glm::vec3 position;
 		glm::vec3 rotation;
 
 	public:
+		
 		Camera(const ::glm::vec3& position, const ::glm::vec3& rotation);
 
 		/*
@@ -29,6 +30,11 @@ namespace entities
 		 */
 		void Move(GLFWwindow* window);
 
+		/*
+		 * @brief follows the given position with smoothing
+		 *
+		 * @param follow_position the position of the object the camera has to follow
+		 */
 		void Follow(glm::vec3 follow_position);
 		
 		inline glm::vec3 GetPosition() const{ return position; }
