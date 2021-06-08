@@ -6,6 +6,7 @@
 #include "../renderEngine/obj_loader.h"
 #include "../renderEngine/Loader.h"
 #include "../toolbox/toolbox.h"
+#include "collision_entity.h"
 
 namespace entities
 {
@@ -27,8 +28,11 @@ namespace entities
 		furniture.push_front(std::make_shared<Entity>(house_model, position, glm::vec3(0, y_rotation, 0), HOUSE_SIZE));
 		
 		// Add furniture
-		models::TexturedModel couch = GetFurnitureModel(FurnitureType::COUCH);		
-		furniture.push_back(std::make_shared<Entity>(couch, glm::vec3(position.x, position.y + 20, position.z + 10), glm::vec3(0, 0, 0), HOUSE_SIZE));
+		models::TexturedModel couch = GetFurnitureModel(FurnitureType::COUCH);
+		glm::vec3 couchPos = glm::vec3(position.x, position.y + 20, position.z + 10);
+		collision::Box couchBox = { couchPos, couch.raw_model.model_size };
+		couchBox.SetRotation(90);
+		furniture.push_back(std::make_shared<CollisionEntity>(couch, couchPos, glm::vec3(0, 0, 0), HOUSE_SIZE, couchBox));
 		
 		return furniture;
 	}

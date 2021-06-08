@@ -162,7 +162,7 @@ namespace scene
 
 	void scene::In_Game_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		{
 			return_value = scene::Scenes::STOP;
 		}
