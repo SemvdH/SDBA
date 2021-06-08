@@ -33,7 +33,9 @@ namespace scene
 	shaders::GuiShader* gui_shader;
 	entities::Camera camera(glm::vec3(0, -50, 0), glm::vec3(0, 0, 0));
 	std::vector<gui::GuiTexture*> guis;
-
+	
+	int furniture_count_old;
+	int score;
 
 	In_Game_Scene::In_Game_Scene()
 	{
@@ -43,6 +45,7 @@ namespace scene
 
 		gui_shader = new shaders::GuiShader();
 		gui_shader->Init();
+		score = 0;
 	}
 
 	In_Game_Scene::~In_Game_Scene()
@@ -59,7 +62,7 @@ namespace scene
 	void load_chunk(int model_pos)
 	{
 		static unsigned int furniture_count = 0;
-		
+
 		std::cout << "loading model chunk" << std::endl;
 		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE * furniture_count)
 		{
@@ -74,6 +77,8 @@ namespace scene
 		furniture_count = furniture.size();
 		
 		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
+		std::cout << "funriture_count in load chunk (house included): " << furniture_count << std::endl;
+		furniture_count_old = furniture_count -1;
 	}
 
 
@@ -155,9 +160,14 @@ namespace scene
 		if (last_model_pos != model_pos)
 		{
 			load_chunk(model_pos + UPCOMING_MODEL_AMOUNT);
+			score += furniture_count_old;
+			std::cout << "Score: " << score << std::endl;
+			std::cout << "Funriture_count_old in model (house excluded): " << furniture_count_old << std::endl;
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
+
+		
 	}
 
 	void scene::In_Game_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
