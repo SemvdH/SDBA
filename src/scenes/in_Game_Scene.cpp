@@ -20,7 +20,7 @@
 namespace scene
 {
 	std::deque<entities::Entity> house_models;
-	std::vector<entities::main_character*> main_character;
+	std::vector<entities::MainCharacter*> main_character;
 	std::deque<entities::Light> lights;
 	std::deque<entities::Entity> trees;
 
@@ -78,16 +78,16 @@ namespace scene
 		models::RawModel raw_tree_model = render_engine::LoadObjModel("res/Tree.obj");
 		models::ModelTexture tree_texture = { render_engine::loader::LoadTexture("res/TreeTexture.png") };
 		tree = { raw_tree_model, tree_texture };
-		
-		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
-		models::TexturedModel model_char = { raw_model_char, texture };
 
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
 			load_chunk(i);
 		}
-		entities::main_character character{ model_char, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5,collision::Box() };
+
+		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
+		models::TexturedModel model_char = { raw_model_char, texture };
+		entities::MainCharacter character{ model_char, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5,collision::Box() };
 		main_character.push_back(&character);
 
 		lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5))); // sun
@@ -154,8 +154,8 @@ namespace scene
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
 		//camera.Move(window);
-		entities::main_character* character = main_character[0];
-		glm::vec3 movement = character->move(window);
+		entities::MainCharacter* character = main_character[0];
+		glm::vec3 movement = character->Move(window);
 		std::cout << "x: " << character->GetPosition().x << "\ny: " << character->GetPosition().y << "\nz: " << character->GetPosition().z << "\n";
 		std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 		camera.Follow(character->GetPosition());

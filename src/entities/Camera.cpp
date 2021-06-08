@@ -14,7 +14,7 @@ namespace entities
 		follow_position.z += 100;
 		//set position to follow a bit lower
 		follow_position.y += 50;
-		//move position from original position to fiven position with smoothing
+		//move position from original position to given position with smoothing
 		position = toolbox::Lerp(position, follow_position, 0.1);
 	}
 	
