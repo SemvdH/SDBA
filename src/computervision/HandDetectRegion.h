@@ -7,6 +7,7 @@
 #include "BackgroundRemover.h"
 #include "SkinDetector.h"
 #include "FingerCount.h"
+#include "calibration/StaticSkinTreshold.h"
 namespace computervision
 {
 	class HandDetectRegion

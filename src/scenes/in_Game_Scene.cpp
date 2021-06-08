@@ -130,6 +130,7 @@ namespace scene
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
+			cv::destroyWindow("camera");
 			return_value = scene::Scenes::STOP;
 		}
 

@@ -10,6 +10,8 @@
 #include "async/StaticCameraInstance.h"
 #include "calibration/HandCalibrator.h"
 
+#include "calibration/StaticSkinTreshold.h"
+
 namespace computervision
 {
 
@@ -62,7 +64,6 @@ namespace computervision
 
 		// draw the hand rectangle on the camera input, and draw text showing if the hand is open or closed.
 		DrawHandMask(&camera_frame);
-		
 
 		hand_calibrator.SetAmountOfFingers(fingers_amount);
 		finger_count.DrawHandContours(camera_frame);
@@ -88,7 +89,13 @@ namespace computervision
 		}
 		else if (key == 115) // s, calibrate the skin color
 		{
-			skin_detector.calibrate(input_frame);
+			std::vector<int> treshold = skin_detector.calibrateAndReturn(input_frame);
+			StaticSkinTreshold::hLowThreshold = treshold[0];
+			StaticSkinTreshold::hHighThreshold = treshold[1];
+			StaticSkinTreshold::sLowThreshold = treshold[2];
+			StaticSkinTreshold::sHighThreshold = treshold[3];
+			StaticSkinTreshold::vLowThreshold = treshold[4];
+			StaticSkinTreshold::vHighThreshold = treshold[5];
 			hand_calibrator.SetSkinCalibration(true);
 
 		}

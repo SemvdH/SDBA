@@ -34,7 +34,7 @@ namespace computervision
 
 		//imshow("output" + region_id, frame_out);
 		//imshow("foreground" + region_id, foreground);
-		imshow("handMask" + region_id, handMask);
+		//imshow("handMask" + region_id, handMask);
 		/*imshow("handDetection", fingerCountDebug);*/
 
 		hand_present = hand_calibrator.CheckIfHandPresent(handMask,handcalibration::HandDetectionType::GAME);
@@ -46,6 +46,8 @@ namespace computervision
 		cv::rectangle(camera_frame, cv::Rect(0, camera_frame.rows - 55, 450, camera_frame.cols), cv::Scalar(0, 0, 0), -1);
 
 		hand_calibrator.DrawBackgroundSkinCalibrated(camera_frame);
+
+
 
 	}
 
