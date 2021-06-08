@@ -44,6 +44,7 @@ namespace scene
 
 	scene::Scenes scene::In_Game_Scene::start(GLFWwindow* window)
 	{
+		// set up squares according to size of camera input
 		cv::Mat camera_frame = objDetect.ReadCamera(); // get camera frame to know the width and heigth
 		reg_left.SetXPos(10);
 		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight()/2);

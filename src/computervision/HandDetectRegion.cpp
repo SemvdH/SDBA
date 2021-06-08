@@ -38,9 +38,14 @@ namespace computervision
 		/*imshow("handDetection", fingerCountDebug);*/
 
 		hand_present = hand_calibrator.CheckIfHandPresent(handMask,handcalibration::HandDetectionType::GAME);
-		std::string text = (hand_present ? "hand" : "no");
-		cv::putText(camera_frame, text, cv::Point(start_x_pos, start_y_pos), cv::FONT_HERSHEY_COMPLEX, 2.0, cv::Scalar(0, 255, 255), 2);
+		//std::string text = (hand_present ? "hand" : "no");
+		//cv::putText(camera_frame, text, cv::Point(start_x_pos, start_y_pos), cv::FONT_HERSHEY_COMPLEX, 2.0, cv::Scalar(0, 255, 255), 2);
 		hand_calibrator.SetHandPresent(hand_present);
+
+		//draw black rectangle behind calibration information text
+		cv::rectangle(camera_frame, cv::Rect(0, camera_frame.rows - 55, 450, camera_frame.cols), cv::Scalar(0, 0, 0), -1);
+
+		hand_calibrator.DrawBackgroundSkinCalibrated(camera_frame);
 
 	}
 
@@ -60,7 +65,7 @@ namespace computervision
 	bool HandDetectRegion::DrawHandMask(cv::Mat* input)
 	{
 		if (!hand_mask_generated) return false;
-		rectangle(*input, Rect(start_x_pos, start_y_pos, region_width, region_height), Scalar(255, 255, 255));
+		rectangle(*input, Rect(start_x_pos, start_y_pos, region_width, region_height), (hand_present ? Scalar(0, 255, 0) : Scalar(0,0,255)),2);
 		return true;
 	}
 
@@ -84,6 +89,7 @@ namespace computervision
 	std::vector<int> HandDetectRegion::CalculateSkinTresholds()
 	{
 		std::cout << "calibrating skin " << region_id << std::endl;
+		hand_calibrator.SetSkinCalibration(true);
 		return skin_detector.calibrateAndReturn(frame_out);
 	}
 
@@ -91,6 +97,7 @@ namespace computervision
 	{
 		std::cout << "setting skin " << region_id << std::endl;
 		skin_detector.setTresholds(tresholds);
+		hand_calibrator.SetSkinCalibration(true);
 	}
 
 }

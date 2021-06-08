@@ -3,7 +3,7 @@
 #include <iostream>
 
 #define MIN_MENU_HAND_SIZE 10000
-#define MIN_GAME_HAND_SIZE 4000 // todo change
+#define MIN_GAME_HAND_SIZE 3000 // todo change
 namespace computervision
 {
 	namespace handcalibration
@@ -25,17 +25,23 @@ namespace computervision
 			cv::putText(output_frame, "hand in frame:", cv::Point(5, output_frame.rows - 50), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(255, 255, 0), 1);
 			cv::rectangle(output_frame, cv::Rect(420, output_frame.rows - 67, 15, 15), hand_present ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 0, 255), -1);
 
-			cv::putText(output_frame, "background calibrated:", cv::Point(5, output_frame.rows - 30), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(255, 255, 0), 1);
-			cv::rectangle(output_frame, cv::Rect(420, output_frame.rows - 47, 15, 15), background_calibrated ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 0, 255), -1);
-
-			cv::putText(output_frame, "skin color calibrated:", cv::Point(5, output_frame.rows - 10), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(255, 255, 0), 1);
-			cv::rectangle(output_frame, cv::Rect(420, output_frame.rows - 27, 15, 15), skintone_calibrated ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 0, 255), -1);
+			DrawBackgroundSkinCalibrated(output_frame);
 
 			if (hand_present)
 			{
 				std::string hand_text = fingers_amount > 0 ? "open" : "closed";
 				cv::putText(output_frame, hand_text, cv::Point(10, 75), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(255, 0, 255), 3);
 			}
+		}
+
+		void HandCalibrator::DrawBackgroundSkinCalibrated(cv::Mat& output_frame)
+		{
+
+			cv::putText(output_frame, "background calibrated:", cv::Point(5, output_frame.rows - 30), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(255, 255, 0), 1);
+			cv::rectangle(output_frame, cv::Rect(420, output_frame.rows - 47, 15, 15), background_calibrated ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 0, 255), -1);
+
+			cv::putText(output_frame, "skin color calibrated:", cv::Point(5, output_frame.rows - 10), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(255, 255, 0), 1);
+			cv::rectangle(output_frame, cv::Rect(420, output_frame.rows - 27, 15, 15), skintone_calibrated ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 0, 255), -1);
 		}
 
 		void HandCalibrator::SetSkinCalibration(bool val)
@@ -65,11 +71,10 @@ namespace computervision
 
 			if (points.size() == 0) return false;
 
-			std::cout << std::endl;
 			for (int p = 0; p < points.size(); p++)
 			{
 				int area = cv::contourArea(points[p]);
-				std::cout << area << std::endl;
+
 				if (type == handcalibration::HandDetectionType::MENU)
 					if (area > MIN_MENU_HAND_SIZE) return true;
 

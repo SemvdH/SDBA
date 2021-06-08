@@ -62,6 +62,8 @@ namespace computervision
 			 */
 			void SetAmountOfFingers(int amount);
 
+			void DrawBackgroundSkinCalibrated(cv::Mat& output_frame);
+
 		private:
 
 			bool background_calibrated;
