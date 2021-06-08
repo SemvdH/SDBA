@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\collision\collision_handler.cpp" />
     <ClCompile Include="src\computervision\calibration\HandCalibrator.cpp" />
+    <ClCompile Include="src\computervision\HandDetectRegion.cpp" />
     <ClCompile Include="src\scenes\in_Game_Scene.cpp" />
     <ClCompile Include="src\computervision\async\async_arm_detection.cpp" />
     <ClCompile Include="src\computervision\ObjectDetection.cpp" />
@@ -46,6 +47,7 @@
     <ClInclude Include="src\collision\collision.h" />
     <ClInclude Include="src\collision\collision_handler.h" />
     <ClInclude Include="src\computervision\calibration\HandCalibrator.h" />
+    <ClInclude Include="src\computervision\HandDetectRegion.h" />
     <ClInclude Include="src\scenes\in_Game_Scene.h" />
     <ClInclude Include="src\scenes\scene.h" />
     <ClInclude Include="src\computervision\async\async_arm_detection.h" />

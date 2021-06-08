@@ -23,6 +23,7 @@
     <ClCompile Include="src\toolbox\toolbox.cpp" />
     <ClCompile Include="src\scenes\startup_Scene.cpp" />
     <ClCompile Include="src\computervision\calibration\HandCalibrator.cpp" />
+    <ClCompile Include="src\computervision\HandDetectRegion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\collision\collision.h" />
@@ -54,6 +55,7 @@
     <ClInclude Include="src\toolbox\toolbox.h" />
     <ClInclude Include="src\scenes\startup_Scene.h" />
     <ClInclude Include="src\computervision\calibration\HandCalibrator.h" />
+    <ClInclude Include="src\computervision\HandDetectRegion.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\haarcascade_frontalface_alt.xml" />
