@@ -66,8 +66,26 @@ namespace computervision
 		 */
 		bool DrawHandMask(cv::Mat *input);
 
+		/**
+		 * @brief checks if the hand of the user is open.
+		 * 
+		 * @return true if the hand is open, false if not.
+		 */
+		bool IsHandOpen();
+
+
+		/**
+		 * @brief checks whether the hand is held within the detection square.
+		 * 
+		 * @return true if the hand is in the detection square, false if not.
+		 */
+		bool IsHandPresent();
 
 		cv::VideoCapture GetCap();
+
+	private:
+		bool is_hand_open;
+		bool is_hand_present;
 
 	};
 

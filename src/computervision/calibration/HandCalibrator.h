@@ -47,6 +47,18 @@ namespace computervision
 			 */
 			bool CheckIfHandPresent(cv::Mat input_image);
 
+			/**
+			 * @brief sets the amount of fingers that are currently detected.
+			 * 
+			 * @param amount the amount of fingers.
+			 */
+			void SetAmountOfFingers(int amount);
+		private:
+
+			bool background_calibrated;
+			bool skintone_calibrated;
+			bool hand_present;
+			int fingers_amount;
 		};
 
 	}
