@@ -10,7 +10,9 @@ namespace entities
 {
 	enum class FurnitureType
 	{
-		COUCH
+		COUCH,
+		TABLE,
+		CHAIR
 	};
 	
 	class HouseGenerator

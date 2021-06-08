@@ -33,12 +33,14 @@ namespace entities
 
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
-			rotation.x -= ROT_SPEED;
+			//rotation.x -= ROT_SPEED;
+			position.y += 5;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		{
-			rotation.x += ROT_SPEED;
+			//rotation.x += ROT_SPEED;
+			position.y -= 5;
 		}
 
 		float dx = glm::cos(glm::radians(rotation.y + 90)) * movement_speed;

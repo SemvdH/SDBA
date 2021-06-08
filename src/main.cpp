@@ -37,16 +37,6 @@ scene::Scene* current_scene;
 
 int main(void)
 {
-
-    collision::Box box = { glm::vec3(0, 0, 0), glm::vec3(5, 2, 10) };
-    box.SetRotation(180);
-    std::cout << box.size.x << std::endl;
-    std::cout << box.size.y << std::endl;
-    std::cout << box.size.z << std::endl;
-	
-    return 0;
-
-	
 #pragma region OPENGL_SETTINGS
 	if (!glfwInit())
 		throw "Could not inditialize glwf";

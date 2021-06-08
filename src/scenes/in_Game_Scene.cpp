@@ -10,7 +10,7 @@
 #include "../renderEngine/renderer.h"
 #include "../shaders/entity_shader.h"
 #include "../toolbox/toolbox.h"
-#include "../entities/HouseGenerator.h"
+#include "../entities/house_generator.h"
 #include <deque>
 #include <functional>
 #include <memory>
@@ -31,7 +31,7 @@ namespace scene
 	models::ModelTexture texture;
 	shaders::EntityShader* shader;
 	shaders::GuiShader* gui_shader;
-	entities::Camera camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+	entities::Camera camera(glm::vec3(0, -50, 0), glm::vec3(0, 0, 0));
 	std::vector<gui::GuiTexture*> guis;
 
 
