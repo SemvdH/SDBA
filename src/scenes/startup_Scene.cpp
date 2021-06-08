@@ -116,11 +116,7 @@ namespace scene
 		{
 			render();
 			update(window);
-			for (gui::GuiTexture* button : guis1) {
-				gui::Button* new_button = ConvertGuiTextureToButton(button);
-				if(new_button != NULL)
-				new_button->Update(window);
-			}
+			
 			if (hand_mode) {
 				cameraFrame = objDetect.readCamera();
 
@@ -178,7 +174,11 @@ namespace scene
 
 	void scene::Startup_Scene::update(GLFWwindow* window)
 	{
-
+		for (gui::GuiTexture* button : guis1) {
+			gui::Button* new_button = ConvertGuiTextureToButton(button);
+			if (new_button != NULL)
+				new_button->Update(window);
+		}
 	}
 
 	void scene::Startup_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
