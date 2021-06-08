@@ -33,9 +33,20 @@ namespace computervision
 			 */
 			void SetBackGroundCalibrated(bool val);
 
+			/**
+			 * @brief sets the value for if the hand is present.
+			 * 
+			 * @param val the value to set.
+			 */
+			void SetHandPresent(bool val);
+
+			/**
+			 * @brief checks if the hand is present in the given image
+			 * 
+			 * @param input_image the input image to check.
+			 */
 			bool CheckIfHandPresent(cv::Mat input_image);
 
-			void SetHandPresent(bool val);
 		};
 
 	}
