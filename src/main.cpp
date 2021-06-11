@@ -14,6 +14,7 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/video.hpp>
 
+#include "collision/collision.h"
 #include "gui/gui_interactable.h"
 #include "models/model.h"
 #include "renderEngine/loader.h"

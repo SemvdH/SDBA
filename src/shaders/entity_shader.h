@@ -2,6 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include <deque>
 #include "shader_program.h"
 #include "../entities/camera.h"
 #include "../entities/light.h"
@@ -57,6 +58,13 @@ namespace shaders
 		 * @param lights: The lights
 		 */
 		void LoadLights(std::vector<entities::Light>& lights) const;
+
+		/**
+		 * @brief loads some lights contained in a deque.
+		 * 
+		 * @param lights the deque containing the lights to load
+		 */
+		void LoadLightsDeque(std::deque<entities::Light>& lights) const;
 
 		/*
 		 * @brief: A method to load the the shine variables from a model into the shader

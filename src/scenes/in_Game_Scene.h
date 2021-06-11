@@ -12,6 +12,7 @@ namespace scene
 	
 	public:
 		In_Game_Scene();
+		~In_Game_Scene();
 
 		Scenes start(GLFWwindow* window) override;
 		void render() override;

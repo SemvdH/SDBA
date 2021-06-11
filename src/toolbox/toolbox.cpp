@@ -1,3 +1,4 @@
+#include <ctime>
 #include "toolbox.h"
 
 namespace toolbox
@@ -30,5 +31,16 @@ namespace toolbox
 		const glm::vec3 negative_cam_pos = glm::vec3(-camera.GetPosition().x, -camera.GetPosition().y, -camera.GetPosition().z);
 		matrix = glm::translate(matrix, negative_cam_pos);
 		return matrix;
+	}
+
+	int Random(const int min, const int max)
+	{
+		static bool first = true;
+		if (first)
+		{
+			srand(time(0));
+			first = false;
+		}
+		return min + rand() % ((max + 1) - min);
 	}
 }
