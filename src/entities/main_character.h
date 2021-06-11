@@ -31,7 +31,7 @@ namespace entities
 		* 
 		* @return: Vector with the adjusted side_speed, down_speed, and movement_speed
 		*/
-		glm::vec3 Move(GLFWwindow* window);
+		void Move(GLFWwindow* window);
 
 		void OnCollide(const collision::Collision& collision) override;
 	};

@@ -179,7 +179,7 @@ namespace scene
 	{
 		//camera.Move(window);
 		
-		glm::vec3 movement = main_character->Move(window);
+		main_character->Move(window);
 		
 		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 		camera.Follow(main_character->GetPosition());
