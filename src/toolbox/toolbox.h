@@ -68,4 +68,14 @@ namespace toolbox
 	* @return position of where to go
 	*/
 	glm::vec3 Lerp(glm::vec3 from, glm::vec3 to, float amount);
+  
+  /*
+	 * @brief: This function will return a value between min and max
+	 *
+	 * @param min: The min value
+	 * @param max: The max value
+	 *
+	 * @return: The random number
+	 */
+	int Random(const int min, const int max);
 }

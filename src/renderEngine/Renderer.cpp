@@ -4,7 +4,6 @@
 #include "loader.h"
 #include "../toolbox/toolbox.h"
 #include "renderer.h"
-
 #include <iostream>
 
 namespace render_engine
@@ -51,12 +50,12 @@ namespace render_engine
 		/*
 			This function will Render a Model on the screen.
 		*/
-		void Render(entities::Entity& entity, shaders::EntityShader& shader)
+		void Render(std::shared_ptr<entities::Entity> entity, shaders::EntityShader& shader)
 		{
-			const models::TexturedModel model = entity.GetModel();
+			const models::TexturedModel model = entity.get()->GetModel();
 			const models::RawModel raw_model = model.raw_model;
 			const models::ModelTexture texture = model.texture;
-
+			
 			// Enable the model (VAO)
 			glBindVertexArray(raw_model.vao_id);
 
@@ -66,7 +65,7 @@ namespace render_engine
 			glEnableVertexAttribArray(2);
 
 			// Load the transformation of the model into the shader
-			const glm::mat4 modelMatrix = toolbox::CreateModelMatrix(entity.GetPosition(), entity.GetRotation(), entity.GetScale());
+			const glm::mat4 modelMatrix = toolbox::CreateModelMatrix(entity.get()->GetPosition(), entity.get()->GetRotation(), entity.get()->GetScale());
 			shader.LoadModelMatrix(modelMatrix);
 			shader.LoadShineVariables(texture.shine_damper, texture.reflectivity);
 			

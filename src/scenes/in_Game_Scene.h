@@ -8,9 +8,11 @@ namespace scene
 	{
 	private:
 		scene::Scenes return_value = scene::Scenes::INGAME;
+		void update_hand_detection();
 	
 	public:
 		In_Game_Scene();
+		~In_Game_Scene();
 
 		Scenes start(GLFWwindow* window) override;
 		void render() override;

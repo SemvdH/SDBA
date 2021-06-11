@@ -1,6 +1,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <functional>
+#include <vector>
 #define STB_IMAGE_IMPLEMENTATION
 #include <iostream>
 #include <map>
@@ -12,6 +14,7 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/video.hpp>
 
+#include "collision/collision.h"
 #include "gui/gui_interactable.h"
 #include "models/model.h"
 #include "renderEngine/loader.h"
@@ -24,6 +27,10 @@
 #include "scenes/startup_Scene.h"
 
 #include "computervision/ObjectDetection.h"
+//#include "computervision/OpenPoseImage.h"
+#include "computervision/OpenPoseVideo.h"
+
+#include "computervision/async/async_arm_detection.h"
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
@@ -31,8 +38,20 @@
 
 static double UpdateDelta();
 
-static GLFWwindow* window;
 scene::Scene* current_scene;
+
+static GLFWwindow* window;
+bool points_img_available = false;
+cv::Mat points_img;
+
+void retrieve_points(std::vector<Point> arm_points, cv::Mat points_on_image)
+{
+
+	std::cout << "got points!!" << std::endl;
+	std::cout << "points: " << arm_points << std::endl;
+	points_img = points_on_image;
+	points_img_available = true;
+}
 
 int main(void)
 {

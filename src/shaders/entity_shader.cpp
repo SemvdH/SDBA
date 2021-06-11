@@ -29,7 +29,7 @@ namespace shaders
 	uniform vec3 light_position[4];
 
 	const float density = 0.0017;
-	const float gradient = 4;
+	const float gradient = 3;
 	
 	void main(void)
 	{

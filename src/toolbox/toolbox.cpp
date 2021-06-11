@@ -1,3 +1,4 @@
+#include <ctime>
 #include "toolbox.h"
 
 namespace toolbox
@@ -43,5 +44,16 @@ namespace toolbox
 		final.y = Lerp(from.y, to.y, amount);
 		final.z = Lerp(from.z, to.z, amount);
 		return final;
+  }
+  
+	int Random(const int min, const int max)
+	{
+		static bool first = true;
+		if (first)
+		{
+			srand(time(0));
+			first = false;
+		}
+		return min + rand() % ((max + 1) - min);
 	}
 }
