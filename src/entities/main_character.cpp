@@ -97,4 +97,8 @@ namespace entities
 		is_playing = false;
 		std::cout << "collision" << std::endl;
 	}
+
+	bool MainCharacter::GetOnCollide() {
+		return is_playing;
+	}
 }

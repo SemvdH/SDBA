@@ -30,6 +30,8 @@ namespace entities
 		models::ModelTexture default_texture;
 		
 		std::map<FurnitureType, std::deque<models::TexturedModel>> furniture_models;
+		//std::deque<std::shared_ptr<CollisionEntity>> furniture_collision;
+
 
 	public:
 		HouseGenerator();
@@ -47,7 +49,12 @@ namespace entities
 		/*
 		 * @brief: Returns the depth of the house (chunk)
 		 */
-		float GetHouseDepth() const { return house_model.raw_model.model_size.x * HOUSE_SIZE; }
+		float GetHouseDepth() const { return house_model.raw_model.model_size.x * HOUSE_SIZE; 
+		
+		}
+
+		//std::deque<std::shared_ptr<CollisionEntity>> GetFurnitureCollisions();
+
 	
 	private:
 		/*

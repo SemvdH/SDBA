@@ -35,7 +35,11 @@ namespace entities
 			collision::Box model_box = { model_pos, model.raw_model.model_size };
 			model_box.SetRotation(-90);
 			furniture.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE * 2, model_box));
+			//furniture_collision.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE * 2, model_box));
+			
 		}
+
+		//furniture_collision.pop_front();
 		
 		/*
 		// Add furniture
@@ -255,4 +259,9 @@ namespace entities
 
 		furniture_models.insert(std::pair<FurnitureType, std::deque<models::TexturedModel>>(FurnitureType::MISC, miscs));
 	}
+
+	/*std::deque<std::shared_ptr<CollisionEntity>> HouseGenerator::GetFurnitureCollisions() 
+	{
+		return furniture_collision;
+	}*/
 }

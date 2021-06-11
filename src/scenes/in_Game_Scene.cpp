@@ -31,6 +31,9 @@ namespace scene
 {
 	std::shared_ptr<entities::MainCharacter>main_character;
 	std::vector<std::shared_ptr<entities::CollisionEntity>> collision_entities;
+
+	//std::deque<std::shared_ptr<entities::CollisionEntity>> furniture_collision;
+
 	entities::HouseGenerator* house_generator;
 	std::deque<std::shared_ptr<entities::Entity>> house_models;
 
@@ -135,10 +138,11 @@ namespace scene
 
 		std::deque<std::shared_ptr<entities::Entity>> furniture = house_generator->GenerateHouse(glm::vec3(0, -75, -50 - z_offset), 90);
 		furniture_count = furniture.size();
-
+		
 		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
 		std::cout << "funriture_count in load chunk (house included): " << furniture_count << std::endl;
 		furniture_count_old = furniture_count - 1;
+
 	}
 
 	/**
@@ -270,6 +274,10 @@ namespace scene
 	{
 		//camera.Move(window);
 		main_character->Move(window);
+		if (!main_character.get()->GetOnCollide())
+		{
+			return_value = scene::Scenes::GAMEOVER;
+		}
 
 		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 		camera->Follow(main_character->GetPosition());
@@ -291,6 +299,7 @@ namespace scene
 		last_model_pos = model_pos;
 
 		collision::CheckCollisions(collision_entities);
+		
 		update_hand_detection();
 	
 
@@ -352,11 +361,8 @@ namespace scene
 
 		toolbox::GetDigitsFromNumber(score, digits);
 
-		std::cout << "Digits size: " << digits.size() << std::endl;
-
 		for (int i = digits.size()-1; i >= 0; i--)
 		{
-			std::cout << "Digit in digits: " << i << std::endl;
 			score_textures[digits[i]].get()->position.x = 0.15 * i -0.9;
 			render_engine::renderer::Render(score_textures[digits[i]], *gui_shader);
 

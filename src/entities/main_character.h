@@ -34,5 +34,7 @@ namespace entities
 		void Move(GLFWwindow* window);
 
 		void OnCollide(const collision::Collision& collision) override;
+	
+		bool GetOnCollide();
 	};
 }
