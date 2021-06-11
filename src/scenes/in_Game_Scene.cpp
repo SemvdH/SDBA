@@ -15,9 +15,13 @@
 #include <functional>
 #include <memory>
 #include <queue>
+#include <opencv2/core/base.hpp>
+#include "../computervision/HandDetectRegion.h"
+#include "../computervision/ObjectDetection.h"
 
 #define MAX_MODEL_DEQUE_SIZE 6 // max amount of models to load at the same time
 #define UPCOMING_MODEL_AMOUNT 4 // how much models should be loaded in front of us
+
 
 
 namespace scene
@@ -34,6 +38,9 @@ namespace scene
 	entities::Camera camera(glm::vec3(0, -50, 0), glm::vec3(0, 0, 0));
 	std::vector<gui::GuiTexture*> guis;
 
+
+	std::vector<computervision::HandDetectRegion> regions;
+	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
 
 	In_Game_Scene::In_Game_Scene()
 	{
@@ -59,6 +66,15 @@ namespace scene
 	void load_chunk(int model_pos)
 	{
 		static unsigned int furniture_count = 0;
+		// set up squares according to size of camera input
+		cv::Mat camera_frame;
+		static_camera::getCap().read(camera_frame); // get camera frame to know the width and heigth
+		reg_left.SetXPos(10);
+		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight()/2);
+		reg_right.SetXPos(camera_frame.cols - 10 - reg_right.GetWidth());
+		reg_right.SetYPos(camera_frame.rows / 2 - reg_right.GetHeight()/2);
+		reg_up.SetXPos(camera_frame.cols / 2 - reg_up.GetWidth() / 2);
+		reg_up.SetYPos(10);
 		
 		std::cout << "loading model chunk" << std::endl;
 		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE * furniture_count)
@@ -158,14 +174,41 @@ namespace scene
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
+    
+		update_hand_detection();
 	}
 
 	void scene::In_Game_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		{
+			cv::destroyWindow("camera");
 			return_value = scene::Scenes::STOP;
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
+		{
+			reg_left.CalibrateBackground();
+			reg_right.CalibrateBackground();
+			reg_up.CalibrateBackground();
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		{
+			std::vector<int> tresholds = reg_left.CalculateSkinTresholds();
+			reg_right.setSkinTresholds(tresholds);
+			reg_up.setSkinTresholds(tresholds);
 		}
 	}
 
+	void scene::In_Game_Scene::update_hand_detection()
+	{
+		cv::Mat camera_frame;
+		static_camera::getCap().read(camera_frame);
+		reg_left.DetectHand(camera_frame);
+		reg_right.DetectHand(camera_frame);
+		reg_up.DetectHand(camera_frame);
+
+		cv::imshow("camera", camera_frame);
+	}
 }
