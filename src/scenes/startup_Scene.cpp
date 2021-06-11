@@ -121,10 +121,11 @@ namespace scene
 			update(window);
 			
 			if (hand_mode) {
-				cameraFrame = objDetect.readCamera();
+				cameraFrame = objDetect.ReadCamera();
 
 				//Get hand state from camera
-				bool hand_detection = objDetect.detectHand(cameraFrame);
+				bool detect = false;
+				bool hand_detection = objDetect.DetectHand(cameraFrame,detect);
 
 				if (hand_detection)
 				{

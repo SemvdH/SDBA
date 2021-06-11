@@ -314,4 +314,10 @@ namespace scene
 
 		cv::imshow("camera", camera_frame);
 	}
+
+	//renders the models for the pause menu
+	void In_Game_Scene::render_pause_menu()
+	{
+		render_engine::renderer::Render(pause_guis, *gui_shader);
+	}
 }
