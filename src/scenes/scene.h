@@ -11,6 +11,7 @@ namespace scene {
 	 */
 	enum class Scenes
 	{
+		LOADING,
 		STARTUP,
 		INGAME,
 		GAMEOVER,

@@ -40,6 +40,7 @@
     <ClCompile Include="src\renderEngine\loader.cpp" />
     <ClCompile Include="src\renderEngine\obj_loader.cpp" />
     <ClCompile Include="src\renderEngine\renderer.cpp" />
+    <ClCompile Include="src\scenes\loading_Scene.cpp" />
     <ClCompile Include="src\scenes\scene.cpp" />
     <ClCompile Include="src\shaders\gui_shader.cpp" />
     <ClCompile Include="src\shaders\shader_program.cpp" />
@@ -56,6 +57,7 @@
     <ClInclude Include="src\computervision\calibration\StaticSkinTreshold.h" />
     <ClInclude Include="src\computervision\HandDetectRegion.h" />
     <ClInclude Include="src\scenes\in_Game_Scene.h" />
+    <ClInclude Include="src\scenes\loading_Scene.h" />
     <ClInclude Include="src\scenes\scene.h" />
     <ClInclude Include="src\computervision\async\async_arm_detection.h" />
     <ClInclude Include="src\computervision\async\StaticCameraInstance.h" />

@@ -211,6 +211,7 @@ namespace scene
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
+
 			return_value = scene::Scenes::INGAME;
 			cv::destroyWindow("camera");
 		}

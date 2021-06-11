@@ -24,6 +24,11 @@
     <ClCompile Include="src\scenes\startup_Scene.cpp" />
     <ClCompile Include="src\computervision\calibration\HandCalibrator.cpp" />
     <ClCompile Include="src\computervision\HandDetectRegion.cpp" />
+    <ClCompile Include="src\entities\main_character.cpp" />
+    <ClCompile Include="src\entities\house_generator.cpp" />
+    <ClCompile Include="src\computervision\MenuTest.cpp" />
+    <ClCompile Include="src\scenes\scene.cpp" />
+    <ClCompile Include="src\scenes\loading_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\entities\Camera.cpp">
@@ -83,98 +88,8 @@
     <ClCompile Include="src\computervision\BackgroundRemover.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\computervision\MenuTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scenes\scene.cpp">
-	 <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entities\house_generator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\entities\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\models\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\renderEngine\Loader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\renderEngine\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shaders\shader_program.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\renderEngine\obj_loader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\toolbox\toolbox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shaders\entity_shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shaders\gui_shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gui\gui_element.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gui\gui_interactable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\in_Game_Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scenes\startup_Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\collision_entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\collision\collision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\collision\collision_handler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\computervision\ObjectDetection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\computervision\SkinDetector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\computervision\FingerCount.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\computervision\BackgroundRemover.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\toolbox\Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\computervision\MenuTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\house_generator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\collision\collision.h" />
     <ClInclude Include="src\collision\collision_handler.h" />
     <ClInclude Include="src\scenes\in_Game_Scene.h" />
@@ -206,6 +121,35 @@
     <ClInclude Include="src\computervision\calibration\HandCalibrator.h" />
     <ClInclude Include="src\computervision\HandDetectRegion.h" />
     <ClInclude Include="src\computervision\calibration\StaticSkinTreshold.h" />
+    <ClInclude Include="src\collision\collision.h" />
+    <ClInclude Include="src\collision\collision_handler.h" />
+    <ClInclude Include="src\entities\main_character.h" />
+    <ClInclude Include="src\entities\house_generator.h" />
+    <ClInclude Include="src\scenes\in_Game_Scene.h" />
+    <ClInclude Include="src\scenes\scene.h" />
+    <ClInclude Include="src\computervision\FingerCount.h" />
+    <ClInclude Include="src\computervision\BackgroundRemover.h" />
+    <ClInclude Include="src\computervision\MenuTest.h" />
+    <ClInclude Include="src\computervision\SkinDetector.h" />
+    <ClInclude Include="src\computervision\ObjectDetection.h" />
+    <ClInclude Include="src\entities\camera.h" />
+    <ClInclude Include="src\entities\collision_entity.h" />
+    <ClInclude Include="src\entities\entity.h" />
+    <ClInclude Include="src\entities\light.h" />
+    <ClInclude Include="src\gui\gui_element.h" />
+    <ClInclude Include="src\gui\gui_interactable.h" />
+    <ClInclude Include="src\models\model.h" />
+    <ClInclude Include="src\renderEngine\loader.h" />
+    <ClInclude Include="src\renderEngine\obj_loader.h" />
+    <ClInclude Include="src\renderEngine\renderer.h" />
+    <ClInclude Include="src\shaders\gui_shader.h" />
+    <ClInclude Include="src\shaders\shader_program.h" />
+    <ClInclude Include="src\shaders\entity_shader.h" />
+    <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="src\toolbox\Timer.h" />
+    <ClInclude Include="src\toolbox\toolbox.h" />
+    <ClInclude Include="src\scenes\startup_Scene.h" />
+    <ClInclude Include="src\scenes\loading_Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\haarcascade_frontalface_alt.xml" />
