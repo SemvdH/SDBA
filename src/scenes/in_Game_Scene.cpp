@@ -272,6 +272,15 @@ namespace scene
 
 		collision::CheckCollisions(collision_entities);
 		update_hand_detection();
+		std::vector<int> res;
+		toolbox::GetDigitsFromNumber(1234567890, res);
+		std::cout << "number 1234567890 in digits: " << std::endl;
+		for (int i : res)
+		{
+			std::cout << i << " , ";
+		}
+
+		std::cout << std::endl;
 	}
 
 	//manages the key input in the game scene

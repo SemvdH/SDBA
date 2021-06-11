@@ -56,4 +56,12 @@ namespace toolbox
 		}
 		return min + rand() % ((max + 1) - min);
 	}
+
+	void GetDigitsFromNumber(int number, std::vector<int>& result_vector)
+	{
+		if (number >= 10)
+			GetDigitsFromNumber(number / 10, result_vector);
+
+		result_vector.push_back(number % 10);
+	}
 }

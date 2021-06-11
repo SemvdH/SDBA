@@ -57,6 +57,8 @@ namespace scene
 		//pause_guis is a list of components that will be rendered when the game is paused.
 		std::vector<gui::GuiTexture*> pause_guis;
 
+		std::vector<gui::GuiTexture*> score_guis;
+
 		/**
 		 * @brief renders the objects/gui models
 		 * @param 
