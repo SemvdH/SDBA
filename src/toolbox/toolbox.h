@@ -2,6 +2,7 @@
 
 #include "../entities/camera.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
 namespace toolbox
 {
@@ -78,4 +79,13 @@ namespace toolbox
 	 * @return: The random number
 	 */
 	int Random(const int min, const int max);
+
+
+	/**
+	 * @brief gets the separate digits from the number.
+	 * 
+	 * @param number the number to get the digits from
+	 * @param result_vector the vector to hold the individual digits.
+	 */
+	void GetDigitsFromNumber(int number, std::vector<int>& result_vector);
 }
