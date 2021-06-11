@@ -24,48 +24,71 @@ namespace entities
 	{
 		FurnitureType random_type = FurnitureType(toolbox::Random(0, furniture_models.size() - 1));
 
-		for(std::deque<FurnitureModel>::iterator it = furniture_models.begin(); it != furniture_models.end(); ++it)
+		for (std::deque<FurnitureModel>::iterator it = furniture_models.begin(); it != furniture_models.end(); ++it)
 		{
-			if(it->furniture.type == random_type)
+			if (it->furniture.type == random_type)
 			{
 				return &it->furniture;
 			}
 		}
-		
+
 		return nullptr;
 	}
-	
+
+	const FurniturePiece* HouseGenerator::GetFurniturePiece(FurnitureType type)
+	{
+		for (std::deque<FurnitureModel>::iterator it = furniture_models.begin(); it != furniture_models.end(); ++it)
+		{
+			if (it->furniture.type == type)
+			{
+				return &it->furniture;
+			}
+		}
+		return nullptr;
+	}
+
 	std::deque<std::shared_ptr<Entity>> HouseGenerator::GenerateHouse(const glm::vec3& position, float y_rotation)
 	{
 		std::deque<std::shared_ptr<Entity>> furniture;
 
 		// Add house
 		furniture.push_front(std::make_shared<Entity>(house_model, position, glm::vec3(0, y_rotation, 0), HOUSE_SIZE));
-		int house_size = house_model.raw_model.model_size.x * HOUSE_SIZE;
-		int offset_x = house_model.raw_model.model_size.z * (HOUSE_SIZE/2);
-		int offset_z = house_model.raw_model.model_size.x *( HOUSE_SIZE/2);
-		double multiplier_x = house_size/2;
-		double multiplier_z = house_size / 3;
-		
+		int house_size_x = house_model.raw_model.model_size.x * HOUSE_SIZE;
+		int house_size_y = house_model.raw_model.model_size.x * HOUSE_SIZE;
+		int house_size_z = house_model.raw_model.model_size.x * HOUSE_SIZE;
+
+		int offset_x = house_model.raw_model.model_size.z * (HOUSE_SIZE / 2);
+		int offset_z = house_model.raw_model.model_size.x * (HOUSE_SIZE / 2);
+		double multiplier_x = house_size_x / 2;
+		double multiplier_z = house_size_z / 3;
+
 		for (int z = 1; z < 4; z++) {
 			for (int x = 1; x < 3; x++)
 			{
-				if (toolbox::Random(0, 100) < 50) {
-						const FurniturePiece* furniture_piece = GetRandomFurniturePiece();
+				if (toolbox::Random(0, 100) < 90) {
+					const FurniturePiece* furniture_piece = GetRandomFurniturePiece();
+					if (furniture_piece->type != FurnitureType::CEILING_OBJECTS) {
 						models::TexturedModel model = GetFurnitureModel(furniture_piece);
-						//if (//check of size van furniture nog past in huidige grid vlakje, of ie geen 2 size op t laatste vakje neerzet) {
-						glm::vec3 model_pos = glm::vec3(position.x + (x * multiplier_x) - (multiplier_x/2) - offset_x, position.y, position.z + (z * multiplier_z) - (multiplier_z / 2) + offset_z);
+						if (!(furniture_piece->size > 1 && x > 1)) {
+							glm::vec3 model_pos = glm::vec3(position.x + (x * multiplier_x) - (multiplier_x / 2) - offset_x, position.y, position.z + (z * multiplier_z) - (multiplier_z / 2) + offset_z);
 
-						collision::Box model_box = { model_pos, model.raw_model.model_size };
-						model_box.SetRotation(-90);
-						furniture.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE, model_box));
-					//}
+							collision::Box model_box = { model_pos, model.raw_model.model_size };
+							model_box.SetRotation(-90);
+							furniture.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE, model_box));
+						}
 					}
 				}
 			}
+		}
+
+		models::TexturedModel model = GetFurnitureModel(GetFurniturePiece(FurnitureType::CEILING_OBJECTS));
+		glm::vec3 model_pos = glm::vec3(position.x, position.y + (house_size_y/5 *3), position.z);
+		collision::Box model_box = { model_pos, model.raw_model.model_size };
+		model_box.SetRotation(-90);
+		furniture.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE, model_box));
 
 		return furniture;
-		
+
 		/*
 		// Add furniture
 		models::TexturedModel couch = GetFurnitureModel(FurnitureType::COUCH);
@@ -93,7 +116,7 @@ namespace entities
 		glm::vec3 guitar_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
 		collision::Box guitar_box = { guitar_pos, guitar.raw_model.model_size };
 		furniture.push_back(std::make_shared<CollisionEntity>(guitar, guitar_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, guitar_box));
-		
+
 		models::TexturedModel bookshelf = GetFurnitureModel(FurnitureType::BOOKSHELF);
 		glm::vec3 bookshelf_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
 		collision::Box bookshelf_box = { bookshelf_pos, bookshelf.raw_model.model_size };
@@ -114,30 +137,30 @@ namespace entities
 		collision::Box misc_box = { misc_pos, misc.raw_model.model_size };
 		furniture.push_back(std::make_shared<CollisionEntity>(misc, misc_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, misc_box));
 		*/
-		
+
 	}
 
 	models::TexturedModel HouseGenerator::GetFurnitureModel(const FurniturePiece* furniture)
 	{
-		std::deque<models::TexturedModel> *furniture_list = nullptr;
-		
+		std::deque<models::TexturedModel>* furniture_list = nullptr;
+
 		for (std::deque<FurnitureModel>::iterator it = furniture_models.begin(); it != furniture_models.end(); ++it)
 		{
-			if(it->furniture.type == furniture->type)
+			if (it->furniture.type == furniture->type)
 			{
 				furniture_list = &it->texture;
 			}
 		}
-		
+
 		if (furniture_list == nullptr)
 		{
 			std::cerr << "OH NEEEEEEEEEEEEEEE";
 		}
-		
+
 		const int modelNumber = toolbox::Random(0, furniture_list->size() - 1);
-		
+
 		return furniture_list->at(modelNumber);
-		
+
 		//return {};
 	}
 
@@ -145,7 +168,7 @@ namespace entities
 	{
 		// Couches
 		std::deque<models::TexturedModel> couches;
-		
+
 		models::RawModel couch_inside_model = render_engine::LoadObjModel("res/couchThree.obj");
 		models::TexturedModel couch_inside = { couch_inside_model, default_texture };
 		couches.push_back(couch_inside);
@@ -162,7 +185,7 @@ namespace entities
 		couch.furniture = {
 		FurnitureType::COUCH, 2 };
 		couch.texture = couches;
-		
+
 		furniture_models.push_back(couch);
 
 		// Tables
@@ -179,12 +202,12 @@ namespace entities
 		models::RawModel table_model3 = render_engine::LoadObjModel("res/bureauOne.obj");
 		models::TexturedModel table3 = { table_model3, default_texture };
 		tables.push_back(table3);
-		
+
 		FurnitureModel table;
 		table.furniture = {
 		FurnitureType::TABLE, 2 };
 		table.texture = tables;
-		
+
 		furniture_models.push_back(table);
 
 		// Chairs
@@ -335,6 +358,6 @@ namespace entities
 		FurnitureType::MISC, 1 };
 		misc.texture = miscs;
 
-		furniture_models.push_back(misc);		
+		furniture_models.push_back(misc);
 	}
 }

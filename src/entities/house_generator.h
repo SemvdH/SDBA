@@ -69,6 +69,7 @@ namespace entities
 	
 	private:
 		const FurniturePiece* GetRandomFurniturePiece();
+		const FurniturePiece* GetFurniturePiece(FurnitureType type);
 
 		/*
 		 * @brief: This function loads all the 3D furniture models
