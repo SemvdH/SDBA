@@ -14,7 +14,9 @@ namespace entities
 	{
 		if (on_collide != nullptr)
 		{
-			on_collide(collision);
+			
+				on_collide(collision);
+			
 		}
 	}
 

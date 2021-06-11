@@ -1,8 +1,11 @@
 #include <iostream>
+#include <memory>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "in_Game_Scene.h"
 #include "startup_Scene.h"
+#include "../entities/main_character.h"
+#include "../collision/collision_handler.h"
 #include "../gui/gui_interactable.h"
 #include "../models/model.h"
 #include "../renderEngine/loader.h"
@@ -26,12 +29,13 @@
 
 namespace scene
 {
+	std::shared_ptr<entities::MainCharacter>main_character;
+	std::deque<entities::Light> lights;
+	std::vector<std::shared_ptr<entities::CollisionEntity>> collision_entities;
 	entities::HouseGenerator* house_generator;
 	std::deque<std::shared_ptr<entities::Entity>> house_models;
-	std::deque<entities::Light> lights;
-	std::deque<std::shared_ptr<entities::Entity>> trees;
 
-	models::RawModel raw_model;
+	models::RawModel raw_model, raw_model_char;
 	models::ModelTexture texture;
 	shaders::EntityShader* shader;
 	shaders::GuiShader* gui_shader;
@@ -50,6 +54,18 @@ namespace scene
 
 		gui_shader = new shaders::GuiShader();
 		gui_shader->Init();
+	}
+	/**
+	 * temporary!!!!
+	 * just to make some bounding boxes
+	 */
+	collision::Box create_bounding_box(glm::vec3 size, glm::vec3 pos, int scale) {
+		collision::Box box = collision::Box();
+		box.size.x = size.z* scale;
+		box.size.y = size.y* scale;
+		box.size.z = size.x* scale;
+		box.center_pos = pos;
+		return box;
 	}
 
 	In_Game_Scene::~In_Game_Scene()
@@ -91,10 +107,21 @@ namespace scene
 		
 		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
 	}
+	
 
 
 	scene::Scenes scene::In_Game_Scene::start(GLFWwindow* window)
 	{
+		texture = { render_engine::loader::LoadTexture("res/Texture.png") };
+		texture.shine_damper = 10;
+		texture.reflectivity = 0;
+	
+
+		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
+		models::TexturedModel model_char = { raw_model_char, texture };
+		collision::Box char_box = create_bounding_box(raw_model_char.model_size, glm::vec3(0, 0, 0), 1);
+		main_character = std::make_shared<entities::MainCharacter>(model_char, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5, char_box);
+		collision_entities.push_back(main_character);
 		house_generator = new entities::HouseGenerator();
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
@@ -102,7 +129,7 @@ namespace scene
 			load_chunk(i);
 		}
 
-		lights.push_back(entities::Light(glm::vec3(0, 1000, -7000), glm::vec3(5, 5, 5))); // sun
+		lights.push_back(entities::Light(glm::vec3(0, 1000, 7000), glm::vec3(5, 5, 5))); // sun
 		lights.push_back(entities::Light(glm::vec3(0, 0, -30), glm::vec3(2, 0, 2), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
 		lights.push_back(entities::Light(glm::vec3(0, 0, -200), glm::vec3(0, 2, 0), glm::vec3(0.0001f, 0.0001f, 0.0001f)));
 
@@ -146,11 +173,8 @@ namespace scene
 		{
 			render_engine::renderer::Render(model_entity, *shader);
 		}
-
-		for (std::shared_ptr<entities::Entity> tree_entity : trees)
-		{
-			render_engine::renderer::Render(tree_entity, *shader);
-		}
+		
+			render_engine::renderer::Render(*main_character, *shader);
 
 		// Render GUI items
 		render_engine::renderer::Render(guis, *gui_shader);
@@ -161,7 +185,12 @@ namespace scene
 
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
-		camera.Move(window);
+		//camera.Move(window);
+		
+		main_character->Move(window);
+		
+		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
+		camera.Follow(main_character->GetPosition());
 
 		// calculate where the next house model should be loaded
 		static int last_model_pos = 0;
@@ -174,7 +203,7 @@ namespace scene
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
-    
+		collision::CheckCollisions(collision_entities);
 		update_hand_detection();
 	}
 
