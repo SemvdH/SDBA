@@ -40,7 +40,7 @@ namespace entities
 		inline glm::vec3 GetPosition() const { return position; }
 		inline void SetPosition(const ::glm::vec3& position) {	this->position = position; }
 		inline glm::vec3 GetRotation() const { return rotation; }
-		inline void SetRotation(const ::glm::vec3& rotation) { this->rotation = rotation; }
+		void SetRotation(const ::glm::vec3& rotation) { this->rotation = rotation; }
 		inline float GetScale() const {	return scale; }
 		inline void SetScale(const float scale) { this->scale = scale; }
 	};

@@ -62,7 +62,7 @@ namespace scene
 		score = 0;
 	}
 	/**
-	 * temporary!!!!
+	 * temporary?
 	 * just to make some bounding boxes
 	 */
 	collision::Box create_bounding_box(glm::vec3 size, glm::vec3 pos, int scale) {
