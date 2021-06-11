@@ -11,6 +11,9 @@
 #include "../renderEngine/renderer.h"
 #include "../shaders/entity_shader.h"
 #include "../toolbox/toolbox.h"
+#include <opencv2/core/base.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
 
 
 namespace scene
@@ -97,6 +100,8 @@ namespace scene
 		 * @return void
 		 */
 		void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) override;
+	
+		void DrawScore(cv::Mat& output_frame);
 	};
 }
 

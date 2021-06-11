@@ -21,6 +21,7 @@
 #include <opencv2/core/base.hpp>
 #include "../computervision/HandDetectRegion.h"
 #include "../computervision/ObjectDetection.h"
+#include <string>
 
 #define MAX_MODEL_DEQUE_SIZE 6 // max amount of models to load at the same time
 #define UPCOMING_MODEL_AMOUNT 4 // how much models should be loaded in front of us
@@ -264,6 +265,7 @@ namespace scene
 			score += furniture_count_old;
 			std::cout << "Score: " << score << std::endl;
 			std::cout << "Funriture_count_old in model (house excluded): " << furniture_count_old << std::endl;
+			DrawScore();
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
@@ -319,5 +321,13 @@ namespace scene
 	void In_Game_Scene::render_pause_menu()
 	{
 		render_engine::renderer::Render(pause_guis, *gui_shader);
+	}
+
+	void In_Game_Scene::DrawScore(cv::Mat& output_frame) 
+	{
+		cv::rectangle(output_frame, cv::Rect(0, 0, 30, 40), cv::Scalar(0, 0, 0), -1);
+		cv::putText(output_frame, "Score: ", cv::Point(0, 0), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(18, 219, 65), 2);
+		cv::putText(output_frame, std::to_string(score), cv::Point(5, 15), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(18, 219, 65), 2);
+		
 	}
 }
