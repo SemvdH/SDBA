@@ -27,7 +27,6 @@
 #define UPCOMING_MODEL_AMOUNT 4 // how much models should be loaded in front of us
 
 
-
 namespace scene
 {
 	std::shared_ptr<entities::MainCharacter>main_character;
@@ -40,6 +39,7 @@ namespace scene
 	shaders::EntityShader* shader;
 	shaders::GuiShader* gui_shader;
 	std::vector<gui::GuiTexture*> guis;
+	std::vector<std::shared_ptr<gui::GuiTexture>> score_textures;
 
 	int furniture_count_old;
 	int score;
@@ -61,7 +61,26 @@ namespace scene
 		gui_shader = new shaders::GuiShader();
 		gui_shader->Init();
 		score = 0;
+
+		for (int i = 0; i <= 9; i++) 
+		{
+			std::shared_ptr<gui::GuiTexture> score_pointer;
+
+			std::string texture_path = "res/";
+			texture_path += std::to_string(i);
+			texture_path += ".png";
+			
+			score_pointer = std::make_unique<gui::GuiTexture>(render_engine::loader::LoadTexture(texture_path), glm::vec2(-0.9f, 0.8f), glm::vec2(0.07, 0.15));
+			
+			score_textures.push_back(score_pointer);
+
+			std::cout << "Add to score_pointer: " << texture_path << std::endl;
+		}
+
+		std::cout << "Size textures: " << score_textures.size() << std::endl;
+		
 	}
+
 	/**
 	 * temporary!!!!
 	 * just to make some bounding boxes
@@ -242,13 +261,14 @@ namespace scene
 
 		// Stop rendering the entities
 		shader->Stop();
+
+		DrawScore(score);
 	}
 
 	//updates certain variables 
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
 		//camera.Move(window);
-
 		main_character->Move(window);
 
 		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
@@ -264,23 +284,16 @@ namespace scene
 			load_chunk(model_pos + UPCOMING_MODEL_AMOUNT);
 			score += furniture_count_old;
 			std::cout << "Score: " << score << std::endl;
-			std::cout << "Funriture_count_old in model (house excluded): " << furniture_count_old << std::endl;
-			DrawScore();
+			std::cout << "Furniture_count_old in model (house excluded): " << furniture_count_old << std::endl;
+			
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
 
 		collision::CheckCollisions(collision_entities);
 		update_hand_detection();
-		std::vector<int> res;
-		toolbox::GetDigitsFromNumber(1234567890, res);
-		std::cout << "number 1234567890 in digits: " << std::endl;
-		for (int i : res)
-		{
-			std::cout << i << " , ";
-		}
+	
 
-		std::cout << std::endl;
 	}
 
 	//manages the key input in the game scene
@@ -332,11 +345,21 @@ namespace scene
 		render_engine::renderer::Render(pause_guis, *gui_shader);
 	}
 
-	void In_Game_Scene::DrawScore(cv::Mat& output_frame) 
-	{
-		cv::rectangle(output_frame, cv::Rect(0, 0, 30, 40), cv::Scalar(0, 0, 0), -1);
-		cv::putText(output_frame, "Score: ", cv::Point(0, 0), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(18, 219, 65), 2);
-		cv::putText(output_frame, std::to_string(score), cv::Point(5, 15), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(18, 219, 65), 2);
-		
+	void In_Game_Scene::DrawScore(int score) 
+	{	
+		std::vector<int> digits;
+		score_guis.clear();
+
+		toolbox::GetDigitsFromNumber(score, digits);
+
+		std::cout << "Digits size: " << digits.size() << std::endl;
+
+		for (int i = digits.size()-1; i >= 0; i--)
+		{
+			std::cout << "Digit in digits: " << i << std::endl;
+			score_textures[digits[i]].get()->position.x = 0.15 * i -0.9;
+			render_engine::renderer::Render(score_textures[digits[i]], *gui_shader);
+
+		}
 	}
 }

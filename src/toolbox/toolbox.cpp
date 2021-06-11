@@ -1,6 +1,6 @@
 #include <ctime>
 #include "toolbox.h"
-
+#include <iostream>
 namespace toolbox
 {
 	glm::mat4 CreateModelMatrix(glm::vec2 translation, glm::vec2 scale)

@@ -57,7 +57,7 @@ namespace scene
 		//pause_guis is a list of components that will be rendered when the game is paused.
 		std::vector<gui::GuiTexture*> pause_guis;
 
-		std::vector<gui::GuiTexture*> score_guis;
+		std::vector<std::shared_ptr<gui::GuiTexture>> score_guis;
 
 		/**
 		 * @brief renders the objects/gui models
@@ -103,7 +103,8 @@ namespace scene
 		 */
 		void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) override;
 	
-		void DrawScore(cv::Mat& output_frame);
+		void DrawScore(int score);
+
 	};
 }
 

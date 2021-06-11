@@ -40,5 +40,22 @@ namespace render_engine
 			@param shade: The shader the GUI textures need to be rendered with
 		 */
 		void Render(std::vector<gui::GuiTexture*>& guis, shaders::GuiShader& shader);
+
+		/*
+		* @brief: renders guis elements from a shared pointer vector
+		* 
+		* @param  guis: List with GUI textures to render
+		* @param sahde: The shader to use
+		*/
+		void Render(std::vector<std::shared_ptr<gui::GuiTexture>>& guis, shaders::GuiShader& shader);
+
+
+		/*
+		 * @brief renders 1 gui element.
+		 *
+		 * @param gui: the texture to render
+		 * @param shader: the shader to use
+		 */
+		void Render(std::shared_ptr<gui::GuiTexture>& gui, shaders::GuiShader& shader);
 	}
 }
