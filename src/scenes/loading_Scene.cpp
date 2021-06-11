@@ -1,4 +1,7 @@
 #include "loading_Scene.h"
+
+#include <iostream>
+
 #include "../renderEngine/Renderer.h"
 #include "../renderEngine/Loader.h"
 #include "../renderEngine/obj_loader.h"
@@ -23,6 +26,16 @@ namespace scene
 		load_default_variables();
 		load_all_models();
 		
+		int vertices = singleton::Model_Storage::get_instance()->get_house_model().raw_model.vertex_count;
+		GLuint number = singleton::Model_Storage::get_instance()->get_house_model().raw_model.vao_id;
+
+		std::cout << "amount of vertices of the house model: " << vertices << std::endl;
+		std::cout << "GLUint of the house model: " << number << std::endl;
+
+		while (true) {
+
+		}
+		return scene::Scenes::STARTUP;
 	}
 
 	void Loading_Scene::render()

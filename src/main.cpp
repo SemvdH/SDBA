@@ -132,7 +132,6 @@ int main(void)
 
 	// Clean up -> preventing memory leaks!!!
     std::cout << "ending..." << std::endl;
-    singleton::Model_Storage::
 	glfwTerminate();
 	return 0;
 }
