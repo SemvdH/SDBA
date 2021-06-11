@@ -27,6 +27,7 @@
 #include "scenes/scene.h"
 #include "scenes/in_Game_Scene.h"
 #include "scenes/startup_Scene.h"
+#include "scenes/game_Over_Scene.h"
 
 #include "computervision/ObjectDetection.h"
 //#include "computervision/OpenPoseImage.h"
@@ -112,6 +113,10 @@ int main(void)
                 current_scene = new scene::In_Game_Scene();
                 break;
                 
+            case scene::Scenes::GAMEOVER:
+                current_scene = new scene::Game_Over_Scene();
+                break;
+
             default:
                 std::cout << "Wrong return value!!! ->" << std::endl;
                 break;

@@ -27,7 +27,8 @@ namespace scene
 
 	bool hand_mode_gameOver = false;
 
-	Game_Over_Scene::Game_Over_Scene() {
+	Game_Over_Scene::Game_Over_Scene() 
+	{
 		shaders::EntityShader shader;
 		shader.Init();
 		render_engine::renderer::Init(shader);
