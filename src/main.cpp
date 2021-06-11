@@ -27,6 +27,8 @@
 #include "scenes/scene.h"
 #include "scenes/in_Game_Scene.h"
 #include "scenes/startup_Scene.h"
+#include "scenes/loading_Scene.h"
+#include "model_Storage.h"
 
 #include "computervision/ObjectDetection.h"
 //#include "computervision/OpenPoseImage.h"
@@ -72,8 +74,8 @@ int main(void)
 	glGetError();
 #pragma endregion
 
-    
-    current_scene = new scene::Startup_Scene();
+    //current_scene = new scene::Startup_Scene();
+    current_scene = new scene::Loading_Scene();
 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {
@@ -103,6 +105,10 @@ int main(void)
                 window_open = false;
                 break;
 
+            case scene::Scenes::LOADING:
+                current_scene = new scene::Loading_Scene();
+                break;
+
             case scene::Scenes::STARTUP:
                 current_scene = new scene::Startup_Scene();
                 break;
@@ -126,6 +132,7 @@ int main(void)
 
 	// Clean up -> preventing memory leaks!!!
     std::cout << "ending..." << std::endl;
+    singleton::Model_Storage::
 	glfwTerminate();
 	return 0;
 }

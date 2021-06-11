@@ -29,6 +29,7 @@
     <ClCompile Include="src\computervision\MenuTest.cpp" />
     <ClCompile Include="src\scenes\scene.cpp" />
     <ClCompile Include="src\scenes\loading_Scene.cpp" />
+    <ClCompile Include="src\model_Storage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\entities\Camera.cpp">
@@ -150,6 +151,7 @@
     <ClInclude Include="src\toolbox\toolbox.h" />
     <ClInclude Include="src\scenes\startup_Scene.h" />
     <ClInclude Include="src\scenes\loading_Scene.h" />
+    <ClInclude Include="src\model_Storage.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\haarcascade_frontalface_alt.xml" />

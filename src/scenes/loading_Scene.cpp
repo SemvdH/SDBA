@@ -1,11 +1,11 @@
 #include "loading_Scene.h"
 #include "../renderEngine/Renderer.h"
 #include "../renderEngine/Loader.h"
+#include "../renderEngine/obj_loader.h"
 #include "../gui/gui_element.h"
 
 namespace scene
 {
-	
 	Loading_Scene::Loading_Scene()
 	{
 		gui_shader = new shaders::GuiShader();
@@ -20,6 +20,8 @@ namespace scene
 	Scenes Loading_Scene::start(GLFWwindow* window)
 	{
 		render();
+		load_default_variables();
+		load_all_models();
 		
 	}
 
@@ -27,7 +29,7 @@ namespace scene
 	{
 		render_engine::renderer::Prepare();
 		
-		gui::GuiTexture loading_image = { render_engine::loader::LoadTexture("res/menu_item_start1.png"),
+		gui::GuiTexture loading_image = { render_engine::loader::LoadTexture("res/loading_screen.png"),
 			glm::vec2(0,0),glm::vec2(1,1) };
 		
 		std::vector<gui::GuiTexture*> image_list;
@@ -43,5 +45,23 @@ namespace scene
 	
 	void Loading_Scene::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
+	}
+
+
+	void Loading_Scene::load_default_variables()
+	{
+		models::RawModel raw_model = render_engine::LoadObjModel("res/HouseNew.obj");
+		models::ModelTexture default_texture = { render_engine::loader::LoadTexture("res/Texture.png") };
+		default_texture.shine_damper = 10;
+
+		models::TexturedModel house = { raw_model, default_texture };
+
+		singleton::Model_Storage::get_instance()->set_default_texture(default_texture);
+		singleton::Model_Storage::get_instance()->set_house_model(house);
+	}
+
+	void Loading_Scene::load_all_models() 
+	{
+
 	}
 }

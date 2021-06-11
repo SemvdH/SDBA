@@ -1,8 +1,8 @@
 #pragma once
-#pragma once
 #include "scene.h"
 #include "../gui/gui_element.h"
 #include "../shaders/gui_shader.h"
+#include "../model_Storage.h"
 
 namespace scene
 {
@@ -17,9 +17,13 @@ namespace scene
 		shaders::GuiShader* gui_shader;
 
 
+	private:
+		void load_default_variables();
+		void load_all_models();
+
 	public:
 		/**
-		 * @brief Constructor of the class Startup_Scene
+		 * @brief Constructor of the class Loading_Scene
 		 *
 		 */
 		Loading_Scene();

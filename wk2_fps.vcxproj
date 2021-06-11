@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\model_Storage.cpp" />
     <ClCompile Include="src\collision\collision_handler.cpp" />
     <ClCompile Include="src\entities\main_character.cpp" />
     <ClCompile Include="src\entities\house_generator.cpp" />
@@ -49,6 +50,7 @@
     <ClCompile Include="src\scenes\startup_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\model_Storage.h" />
     <ClInclude Include="src\collision\collision.h" />
     <ClInclude Include="src\collision\collision_handler.h" />
     <ClInclude Include="src\entities\main_character.h" />
