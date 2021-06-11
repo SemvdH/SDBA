@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../entities/entity.h"
 
@@ -15,6 +16,18 @@ namespace collision
 	{
 		glm::vec3 center_pos;
 		glm::vec3 size;
+
+		void SetRotation(float angle)
+		{
+			double sinTheta = glm::sin(glm::radians(angle));
+			double cosTheta = glm::cos(glm::radians(angle));
+
+			float x = size.x * cosTheta + size.z * sinTheta;
+			float z = size.z * cosTheta - size.x * sinTheta;
+			
+			size.x = x < 0 ? -x : x;
+			size.z = z < 0 ? -z : z;
+		}
 	};
 
 	/*

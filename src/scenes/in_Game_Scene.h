@@ -59,7 +59,7 @@ namespace scene
 		 * @return void
 		 */
 		void render_pause_menu();
-
+		void update_hand_detection();
 	
 	public:
 		In_Game_Scene();

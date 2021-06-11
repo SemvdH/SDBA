@@ -20,10 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\collision\collision_handler.cpp" />
+    <ClCompile Include="src\entities\main_character.cpp" />
+    <ClCompile Include="src\entities\house_generator.cpp" />
+    <ClCompile Include="src\computervision\calibration\HandCalibrator.cpp" />
+    <ClCompile Include="src\computervision\HandDetectRegion.cpp" />
     <ClCompile Include="src\scenes\in_Game_Scene.cpp" />
     <ClCompile Include="src\computervision\FaceDetector.cpp" />
     <ClCompile Include="src\computervision\MenuTest.cpp" />
+    <ClCompile Include="src\computervision\async\async_arm_detection.cpp" />
     <ClCompile Include="src\computervision\ObjectDetection.cpp" />
+    <ClCompile Include="src\computervision\OpenPoseVideo.cpp" />
     <ClCompile Include="src\computervision\SkinDetector.cpp" />
     <ClCompile Include="src\computervision\FingerCount.cpp" />
     <ClCompile Include="src\computervision\BackgroundRemover.cpp" />
@@ -45,12 +51,19 @@
   <ItemGroup>
     <ClInclude Include="src\collision\collision.h" />
     <ClInclude Include="src\collision\collision_handler.h" />
+    <ClInclude Include="src\entities\main_character.h" />
+    <ClInclude Include="src\entities\house_generator.h" />
+    <ClInclude Include="src\computervision\calibration\HandCalibrator.h" />
+    <ClInclude Include="src\computervision\calibration\StaticSkinTreshold.h" />
+    <ClInclude Include="src\computervision\HandDetectRegion.h" />
     <ClInclude Include="src\scenes\in_Game_Scene.h" />
     <ClInclude Include="src\scenes\scene.h" />
-    <ClInclude Include="src\computervision\FaceDetector.h" />
+    <ClInclude Include="src\computervision\async\async_arm_detection.h" />
+    <ClInclude Include="src\computervision\async\StaticCameraInstance.h" />
     <ClInclude Include="src\computervision\FingerCount.h" />
     <ClInclude Include="src\computervision\BackgroundRemover.h" />
     <ClInclude Include="src\computervision\MenuTest.h" />
+    <ClInclude Include="src\computervision\OpenPoseVideo.h" />
     <ClInclude Include="src\computervision\SkinDetector.h" />
     <ClInclude Include="src\computervision\ObjectDetection.h" />
     <ClInclude Include="src\entities\camera.h" />
@@ -73,6 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\haarcascade_frontalface_alt.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Avans Hogeschool\Kim Veldhoen - Proftaak 2.4\pose_iter_160000.caffemodel" />
+    <None Include="res\pose\coco\pose_deploy_linevec.prototxt" />
+    <None Include="res\pose\mpi\pose_deploy_linevec_faster_4_stages.prototxt" />
+    <None Include="res\pose\mpi\pose_iter_160000.caffemodel" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -142,6 +161,8 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;C:\opencv\opencv\build\include;C:\opencv\build\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\opencv\opencv\build\x64\vc15\lib;C:\opencv\build\x64\vc15\lib</LibraryPath>
+    <IncludePath>C:\opencv\build\include\;$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\opencv\opencv\build\include</IncludePath>
+    <LibraryPath>C:\opencv\build\x64\vc15\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\opencv\opencv\build\x64\vc15\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -215,6 +236,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\glfw-3.3.2\$(Platform);$(SolutionDir)lib\glew-2.1.0\lib\Release\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies); opencv_world452.lib;opencv_world452d.lib</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world452.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

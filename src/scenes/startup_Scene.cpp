@@ -15,6 +15,7 @@
 #include "../toolbox/toolbox.h"
 #include "../computervision/MenuTest.h"
 #include "../computervision/ObjectDetection.h"
+#include "../computervision/HandDetectRegion.h"
 
 
 
@@ -23,6 +24,7 @@ namespace scene
 {
 	shaders::GuiShader* gui_shader1;
 	std::vector<gui::GuiTexture*> guis1;
+  computervision::ObjectDetection objDetect;
 
 	float item_number = 0;
 
@@ -186,6 +188,8 @@ namespace scene
 			if (new_button != NULL)
 				new_button->Update(window);
 		}
+		bool hand_present;
+		objDetect.DetectHand(objDetect.ReadCamera(),hand_present);
 	}
 
 	/**
@@ -196,6 +200,7 @@ namespace scene
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			return_value = scene::Scenes::INGAME;
+			cv::destroyWindow("camera");
 		}
 		else if (glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS) {
 			hand_mode = !hand_mode;
