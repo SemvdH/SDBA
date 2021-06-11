@@ -9,6 +9,8 @@
 
 #include "stb_image.h"
 #include <ostream>
+#include <stdlib.h>
+#include <iostream>
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
@@ -38,6 +40,8 @@
 
 static double UpdateDelta();
 
+static GLFWwindow* window;
+
 scene::Scene* current_scene;
 
 static GLFWwindow* window;
@@ -58,7 +62,7 @@ int main(void)
 #pragma region OPENGL_SETTINGS
 	if (!glfwInit())
 		throw "Could not inditialize glwf";
-	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGT, "SDBA", NULL, NULL);
+	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "SDBA", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -81,8 +85,11 @@ int main(void)
     	
             current_scene->onKey(window, key, scancode, action, mods);
         });
-
+    
     bool window_open = true;
+
+	
+
 	// Main game loop
 	while (!glfwWindowShouldClose(window) && window_open)
 	{
@@ -101,14 +108,21 @@ int main(void)
                 current_scene = new scene::Startup_Scene();
                 break;
 
+		
             case scene::Scenes::INGAME:
                 current_scene = new scene::In_Game_Scene();
                 break;
-
+                
             default:
                 std::cout << "Wrong return value!!! ->" << std::endl;
                 break;
         }
+        
+		// Finish up
+		//shader.Stop();
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+           
 	}
 
 	// Clean up -> preventing memory leaks!!!

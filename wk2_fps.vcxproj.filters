@@ -86,6 +86,10 @@
     <ClCompile Include="src\computervision\BackgroundRemover.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\computervision\MenuTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\scene.cpp">
     <ClCompile Include="src\entities\house_generator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -167,6 +171,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\toolbox\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\computervision\MenuTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\house_generator.h">

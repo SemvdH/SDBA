@@ -25,7 +25,7 @@ namespace render_engine
 			glCullFace(GL_BACK);
 			
 			const glm::mat4 projectionMatrix = 
-				glm::perspective(glm::radians(FOV), (WINDOW_WIDTH / WINDOW_HEIGT), NEAR_PLANE, FAR_PLANE);
+				glm::perspective(glm::radians(FOV), (WINDOW_WIDTH / WINDOW_HEIGHT), NEAR_PLANE, FAR_PLANE);
 
 			// Load the projectionmatrix into the shader
 			shader.Start();

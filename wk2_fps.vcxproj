@@ -25,6 +25,8 @@
     <ClCompile Include="src\computervision\calibration\HandCalibrator.cpp" />
     <ClCompile Include="src\computervision\HandDetectRegion.cpp" />
     <ClCompile Include="src\scenes\in_Game_Scene.cpp" />
+    <ClCompile Include="src\computervision\FaceDetector.cpp" />
+    <ClCompile Include="src\computervision\MenuTest.cpp" />
     <ClCompile Include="src\computervision\async\async_arm_detection.cpp" />
     <ClCompile Include="src\computervision\ObjectDetection.cpp" />
     <ClCompile Include="src\computervision\OpenPoseVideo.cpp" />
@@ -39,6 +41,7 @@
     <ClCompile Include="src\renderEngine\loader.cpp" />
     <ClCompile Include="src\renderEngine\obj_loader.cpp" />
     <ClCompile Include="src\renderEngine\renderer.cpp" />
+    <ClCompile Include="src\scenes\scene.cpp" />
     <ClCompile Include="src\shaders\gui_shader.cpp" />
     <ClCompile Include="src\shaders\shader_program.cpp" />
     <ClCompile Include="src\shaders\entity_shader.cpp" />
@@ -59,6 +62,7 @@
     <ClInclude Include="src\computervision\async\StaticCameraInstance.h" />
     <ClInclude Include="src\computervision\FingerCount.h" />
     <ClInclude Include="src\computervision\BackgroundRemover.h" />
+    <ClInclude Include="src\computervision\MenuTest.h" />
     <ClInclude Include="src\computervision\OpenPoseVideo.h" />
     <ClInclude Include="src\computervision\SkinDetector.h" />
     <ClInclude Include="src\computervision\ObjectDetection.h" />

@@ -5,6 +5,11 @@
 
 namespace gui
 {
+	//Represents the type of the entitie
+	enum class GuiType{
+		LABEL, BUTTON
+	};
+
 	/*
 	 * Structure for representing a gui item to display on the screen
 	 *
@@ -18,9 +23,12 @@ namespace gui
 		glm::vec2 position;
 		glm::vec2 scale;
 
+		virtual GuiType GetType() {
+			return GuiType::LABEL;
+		}
 		GuiTexture(int texture, glm::vec2 position, glm::vec2 scale): texture(texture), position(position), scale(scale)
 		{
-			scale.x /= (WINDOW_WIDTH / WINDOW_HEIGT);
+			scale.x /= (WINDOW_WIDTH / WINDOW_HEIGHT);
 		}
 	};
 }

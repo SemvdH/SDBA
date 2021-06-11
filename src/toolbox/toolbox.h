@@ -11,10 +11,10 @@ namespace toolbox
 
 		// Change these macros to change the window size
 		#define WINDOW_WIDTH 1400.0f
-		#define WINDOW_HEIGT 800.0f
+		#define WINDOW_HEIGHT 800.0f
 
 		#define SCALED_WIDTH (WINDOW_WIDTH/DEFAULT_WIDTH)
-		#define SCALED_HEIGHT (WINDOW_HEIGT/DEFAULT_HEIGHT)
+		#define SCALED_HEIGHT (WINDOW_HEIGHT/DEFAULT_HEIGHT)
 	//
 	
 	/*

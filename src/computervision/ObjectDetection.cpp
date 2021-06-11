@@ -69,8 +69,6 @@ namespace computervision
 		hand_calibrator.DrawHandCalibrationText(camera_frame);
 		imshow("camera", camera_frame);
 
-
-
 		/*imshow("output", frame_out);
 		imshow("foreground", foreground);
 		imshow("handMask", handMask);
