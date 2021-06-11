@@ -59,6 +59,8 @@ namespace scene
 
 		std::vector<std::shared_ptr<gui::GuiTexture>> score_guis;
 
+		void UpdateDeltaTime();
+
 		/**
 		 * @brief renders the objects/gui models
 		 * @param 

@@ -44,6 +44,8 @@ namespace scene
 	int furniture_count_old;
 	int score;
 
+	float delta_time = 0;
+
 	std::vector<computervision::HandDetectRegion> regions;
 	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
 
@@ -73,11 +75,8 @@ namespace scene
 			score_pointer = std::make_unique<gui::GuiTexture>(render_engine::loader::LoadTexture(texture_path), glm::vec2(-0.9f, 0.8f), glm::vec2(0.07, 0.15));
 			
 			score_textures.push_back(score_pointer);
-
-			std::cout << "Add to score_pointer: " << texture_path << std::endl;
 		}
 
-		std::cout << "Size textures: " << score_textures.size() << std::endl;
 		
 	}
 
@@ -268,6 +267,7 @@ namespace scene
 	//updates certain variables 
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
+		UpdateDeltaTime();
 		//camera.Move(window);
 		main_character->Move(window);
 
@@ -330,6 +330,10 @@ namespace scene
 
 	void scene::In_Game_Scene::update_hand_detection()
 	{
+		reg_left.UpdateTime(delta_time);
+		reg_right.UpdateTime(delta_time);
+		reg_up.UpdateTime(delta_time);
+
 		cv::Mat camera_frame;
 		static_camera::getCap().read(camera_frame);
 		reg_left.DetectHand(camera_frame);
@@ -352,14 +356,20 @@ namespace scene
 
 		toolbox::GetDigitsFromNumber(score, digits);
 
-		std::cout << "Digits size: " << digits.size() << std::endl;
-
 		for (int i = digits.size()-1; i >= 0; i--)
 		{
-			std::cout << "Digit in digits: " << i << std::endl;
 			score_textures[digits[i]].get()->position.x = 0.15 * i -0.9;
 			render_engine::renderer::Render(score_textures[digits[i]], *gui_shader);
 
 		}
+	}
+
+	void In_Game_Scene::UpdateDeltaTime()
+	{
+		double current_time = glfwGetTime();
+		static double last_frame_time = current_time;
+		delta_time = current_time - last_frame_time;
+		last_frame_time = current_time;
+
 	}
 }

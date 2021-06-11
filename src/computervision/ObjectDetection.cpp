@@ -51,24 +51,17 @@ namespace computervision
 	bool ObjectDetection::DetectHand(Mat camera_frame, bool& hand_present)
 	{
 		//calculate deltatime
-
-		double current_time = glfwGetTime();
-		static double last_frame_time = current_time;
-		double delt_time = current_time - last_frame_time;
-		std::cout << "delta time : " << delt_time << std::endl;
-		last_frame_time = current_time;
-
-		time += delt_time;
-
-		if (time >= TIME_DURATION)
+		if (!background_calibrated || !skin_calibrated)
 		{
-			std::cout << "timer finised,  seconds left: " << seconds_left << std::endl;
-			seconds_left--;
-			time = 0;
+			UpdateTime();
+
+			if (time >= TIME_DURATION)
+			{
+				std::cout << "timer finised,  seconds left: " << seconds_left << std::endl;
+				seconds_left--;
+				time = 0;
+			}
 		}
-
-
-
 
 
 		Mat input_frame = GenerateHandMaskSquare(camera_frame);
@@ -119,10 +112,11 @@ namespace computervision
 		hand_calibrator.SetAmountOfFingers(fingers_amount);
 		finger_count.DrawHandContours(camera_frame);
 		hand_calibrator.DrawHandCalibrationText(camera_frame);
+
 		std::string calibration_text = (!background_calibrated ? "calibrating background in " : (!skin_calibrated ? "calibrating skin in " : ""));
 		calibration_text += std::to_string(seconds_left);
 		if (!background_calibrated || !skin_calibrated)
-			cv:putText(camera_frame, calibration_text, cv::Point(5, 400), cv::FONT_HERSHEY_COMPLEX, 1.0, cv::Scalar(255, 0, 255),2);
+			cv:putText(camera_frame, calibration_text, cv::Point(5, 400), cv::FONT_HERSHEY_COMPLEX, 1.0, cv::Scalar(255, 0, 255), 2);
 
 		imshow("camera", camera_frame);
 
@@ -199,6 +193,16 @@ namespace computervision
 	void ObjectDetection::ShowWebcam()
 	{
 		imshow("Webcam image", img);
+	}
+
+	void ObjectDetection::UpdateTime()
+	{
+		double current_time = glfwGetTime();
+		static double last_frame_time = current_time;
+		double delt_time = current_time - last_frame_time;
+		last_frame_time = current_time;
+
+		time += delt_time;
 	}
 
 

@@ -1,6 +1,6 @@
 
 #include "HandDetectRegion.h"
-
+#define TIME_DURATION 1.0f
 namespace computervision
 {
 
@@ -20,6 +20,15 @@ namespace computervision
 		Mat input_frame = GenerateHandMaskSquare(camera_frame);
 		frame_out = input_frame.clone();
 
+		if (!background_calibrated || !skin_calibrated)
+			if (time >= TIME_DURATION)
+			{
+				std::cout << "timer finised,  seconds left: " << seconds_left << std::endl;
+				seconds_left--;
+				time = 0;
+			}
+		
+
 		// detect skin color
 		skin_detector.drawSkinColorSampler(camera_frame,start_x_pos,start_y_pos,region_width,region_height);
 
@@ -31,6 +40,30 @@ namespace computervision
 
 		// draw the hand rectangle on the camera input, and draw text showing if the hand is open or closed.
 		DrawHandMask(&camera_frame);
+
+		if (seconds_left <= 0)
+		{
+			if (!background_calibrated)
+			{
+				background_remover.calibrate(input_frame);
+				background_calibrated = true;
+				hand_calibrator.SetBackGroundCalibrated(background_calibrated);
+				seconds_left = 5;
+				time = 0;
+			}
+			else
+			{
+
+				if (!skin_calibrated)
+				{
+					skin_detector.calibrate(input_frame);
+					skin_calibrated = true;
+					hand_calibrator.SetSkinCalibration(skin_calibrated);
+					time = 0;
+				}
+			}
+
+		}
 
 		//imshow("output" + region_id, frame_out);
 		//imshow("foreground" + region_id, foreground);
@@ -47,7 +80,10 @@ namespace computervision
 
 		hand_calibrator.DrawBackgroundSkinCalibrated(camera_frame);
 
-
+		std::string calibration_text = (!background_calibrated ? "calibrating background in " : (!skin_calibrated ? "calibrating skin in " : ""));
+		calibration_text += std::to_string(seconds_left);
+		if (!background_calibrated || !skin_calibrated)
+			cv:putText(camera_frame, calibration_text, cv::Point(5, 400), cv::FONT_HERSHEY_COMPLEX, 1.0, cv::Scalar(255, 0, 255), 2);
 
 	}
 
@@ -100,6 +136,11 @@ namespace computervision
 		std::cout << "setting skin " << region_id << std::endl;
 		skin_detector.setTresholds(tresholds);
 		hand_calibrator.SetSkinCalibration(true);
+	}
+
+	void HandDetectRegion::UpdateTime(float delta_time)
+	{
+		time += delta_time;
 	}
 
 }

@@ -86,6 +86,7 @@ namespace computervision
 	private:
 		bool is_hand_open;
 		bool is_hand_present;
+		void UpdateTime();
 
 	};
 
