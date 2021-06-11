@@ -1,5 +1,6 @@
 #include "entity_shader.h"
 #include "../toolbox/toolbox.h"
+#include <deque>
 
 namespace shaders
 {
@@ -28,7 +29,7 @@ namespace shaders
 	uniform vec3 light_position[4];
 
 	const float density = 0.0017;
-	const float gradient = 4;
+	const float gradient = 3;
 	
 	void main(void)
 	{
@@ -152,6 +153,25 @@ namespace shaders
 				LoadVector(location_light_color[i], lights[i].GetColor());
 				LoadVector(location_light_attenuation[i], lights[i].GetAttenuation());
 			} else
+			{
+				LoadVector(location_light_position[i], glm::vec3(0, 0, 0));
+				LoadVector(location_light_color[i], glm::vec3(0, 0, 0));
+				LoadVector(location_light_attenuation[i], glm::vec3(1, 0, 0));
+			}
+		}
+	}
+
+	void EntityShader::LoadLightsDeque(std::deque<entities::Light>& lights) const
+	{
+		for (int i = 0; i < MAX_LIGHTS; ++i)
+		{
+			if (i < lights.size())
+			{
+				LoadVector(location_light_position[i], lights[i].GetPosition());
+				LoadVector(location_light_color[i], lights[i].GetColor());
+				LoadVector(location_light_attenuation[i], lights[i].GetAttenuation());
+			}
+			else
 			{
 				LoadVector(location_light_position[i], glm::vec3(0, 0, 0));
 				LoadVector(location_light_color[i], glm::vec3(0, 0, 0));

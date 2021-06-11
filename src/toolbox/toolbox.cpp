@@ -1,3 +1,4 @@
+#include <ctime>
 #include "toolbox.h"
 
 namespace toolbox
@@ -30,5 +31,29 @@ namespace toolbox
 		const glm::vec3 negative_cam_pos = glm::vec3(-camera.GetPosition().x, -camera.GetPosition().y, -camera.GetPosition().z);
 		matrix = glm::translate(matrix, negative_cam_pos);
 		return matrix;
+	}
+		float Lerp(float from, float to, float amount)
+	{
+		return from + amount * (to - from);
+	}
+
+	glm::vec3 Lerp(glm::vec3 from, glm::vec3 to, float amount)
+	{
+		glm::vec3 final;
+		final.x = Lerp(from.x, to.x, amount);
+		final.y = Lerp(from.y, to.y, amount);
+		final.z = Lerp(from.z, to.z, amount);
+		return final;
+  }
+  
+	int Random(const int min, const int max)
+	{
+		static bool first = true;
+		if (first)
+		{
+			srand(time(0));
+			first = false;
+		}
+		return min + rand() % ((max + 1) - min);
 	}
 }

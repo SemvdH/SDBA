@@ -24,12 +24,19 @@ namespace computervision
 		*/
 		void drawSkinColorSampler(Mat input);
 
+		void drawSkinColorSampler(Mat input, int x, int y, int width, int heigth);
+
+
 		/*
 		* @brief calibrates the skin color detector with the given input frame
 		* 
 		* @param input the input frame to calibrate from
 		*/
 		void calibrate(Mat input);
+
+		std::vector<int> calibrateAndReturn(Mat input);
+
+		void setTresholds(std::vector<int>& tresholds);
 
 		/*
 		* @brief gets the mask for the hand
@@ -62,6 +69,8 @@ namespace computervision
 		* @param sample2 the second sample
 		*/
 		void calculateThresholds(Mat sample1, Mat sample2);
+
+		std::vector<int> calculateAndReturnTresholds(Mat sample1, Mat sample2);
 
 		/**
 		 * @brief the opening. it generates the structuring element and performs the morphological transformations required to detect the hand.

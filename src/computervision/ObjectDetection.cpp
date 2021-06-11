@@ -6,117 +6,140 @@
 #include "ObjectDetection.h"
 #include "BackgroundRemover.h"
 #include "SkinDetector.h"
-#include "FaceDetector.h"
 #include "FingerCount.h"
+#include "async/StaticCameraInstance.h"
+#include "calibration/HandCalibrator.h"
 
 namespace computervision
 {
-	cv::VideoCapture cap(0);
 
-	cv::Mat img, imgGray, img2, img2Gray, img3, img4;
+	cv::Mat img, img_gray, img2, img2_gray, img3, img4;
 
-	int handMaskStartXPos, handMaskStartYPos, handMaskWidth, handMaskHeight;
-	bool handMaskGenerated = false;
+	int hand_mask_start_x_pos, hand_mask_start_y_pos, hand_mask_width, hand_mask_height;
+	bool hand_mask_generated = false;
 
-	Mat frame, frameOut, handMask, foreground, fingerCountDebug;
-	BackgroundRemover backgroundRemover;
-	SkinDetector skinDetector;
-	FaceDetector faceDetector;
-	FingerCount fingerCount;
+	Mat frame, frame_out, handMask, foreground, fingerCountDebug;
+	BackgroundRemover background_remover;
+	SkinDetector skin_detector;
+	FingerCount finger_count;
+	handcalibration::HandCalibrator hand_calibrator;
+
+	cv::VideoCapture cap = static_camera::getCap();
 
 	ObjectDetection::ObjectDetection()
 	{
 	}
 
-	cv::Mat ObjectDetection::readCamera() {
+	cv::Mat ObjectDetection::ReadCamera() {
 		cap.read(img);
 		return img;
 	}
 
-	bool ObjectDetection::detectHand(Mat cameraFrame)
+	cv::VideoCapture ObjectDetection::GetCap()
 	{
-		Mat inputFrame = generateHandMaskSquare(cameraFrame);
-		frameOut = inputFrame.clone();
+		return cap;
+	}
+
+	bool ObjectDetection::DetectHand(Mat camera_frame, bool& hand_present)
+	{
+		Mat input_frame = GenerateHandMaskSquare(camera_frame);
+		frame_out = input_frame.clone();
 
 		// detect skin color
-		skinDetector.drawSkinColorSampler(frameOut);
+		skin_detector.drawSkinColorSampler(camera_frame);
 
 		// remove background from image
-		foreground = backgroundRemover.getForeground(inputFrame);
+		foreground = background_remover.getForeground(input_frame);
 
 		// detect the hand contours
-		handMask = skinDetector.getSkinMask(foreground);
+		handMask = skin_detector.getSkinMask(foreground);
 
 		// count the amount of fingers and put the info on the matrix
-		fingerCountDebug = fingerCount.findFingersCount(handMask, frameOut);
+		fingerCountDebug = finger_count.findFingersCount(handMask, frame_out);
 
 		// get the amount of fingers
-		int fingers_amount = fingerCount.getAmountOfFingers();
+		int fingers_amount = finger_count.getAmountOfFingers();
 
 		// draw the hand rectangle on the camera input, and draw text showing if the hand is open or closed.
-		drawHandMaskRect(&cameraFrame);
-		string hand_text = fingers_amount > 0 ? "open" : "closed";
-		putText(cameraFrame,hand_text, Point(10, 75), FONT_HERSHEY_PLAIN, 2.0, Scalar(255, 0, 255),3);
-		imshow("camera", cameraFrame);
+		DrawHandMask(&camera_frame);
+		
 
-	/*	imshow("output", frameOut);
+		hand_calibrator.SetAmountOfFingers(fingers_amount);
+		finger_count.DrawHandContours(camera_frame);
+		hand_calibrator.DrawHandCalibrationText(camera_frame);
+		imshow("camera", camera_frame);
+
+		/*imshow("output", frame_out);
 		imshow("foreground", foreground);
 		imshow("handMask", handMask);
 		imshow("handDetection", fingerCountDebug);*/
 
+		hand_present = hand_calibrator.CheckIfHandPresent(handMask,handcalibration::HandDetectionType::MENU);
+		hand_calibrator.SetHandPresent(hand_present);
+
+
+
 		int key = waitKey(1);
 
 		if (key == 98) // b, calibrate the background
-			backgroundRemover.calibrate(inputFrame);
+		{
+			background_remover.calibrate(input_frame);
+			hand_calibrator.SetBackGroundCalibrated(true);
+		}
 		else if (key == 115) // s, calibrate the skin color
-			skinDetector.calibrate(inputFrame);
+		{
+			skin_detector.calibrate(input_frame);
+			hand_calibrator.SetSkinCalibration(true);
+
+		}
+
 
 		return fingers_amount > 0;
 	}
 
-	void ObjectDetection::calculateDifference()
+	void ObjectDetection::CalculateDifference()
 	{
 		cap.read(img);
 		cap.read(img2);
 
-		cv::cvtColor(img, imgGray, cv::COLOR_RGBA2GRAY);
-		cv::cvtColor(img2, img2Gray, cv::COLOR_RGBA2GRAY);
+		cv::cvtColor(img, img_gray, cv::COLOR_RGBA2GRAY);
+		cv::cvtColor(img2, img2_gray, cv::COLOR_RGBA2GRAY);
 
-		cv::absdiff(imgGray, img2Gray, img3);
+		cv::absdiff(img_gray, img2_gray, img3);
 		cv::threshold(img3, img4, 50, 170, cv::THRESH_BINARY);
 
 		imshow("threshold", img4);
 	}
 
 
-	cv::Mat ObjectDetection::generateHandMaskSquare(cv::Mat img)
+	cv::Mat ObjectDetection::GenerateHandMaskSquare(cv::Mat img)
 	{
-		handMaskStartXPos = 20;
-		handMaskStartYPos = img.rows / 5;
-		handMaskWidth = img.cols / 3;
-		handMaskHeight = img.cols / 3;
+		hand_mask_start_x_pos = 20;
+		hand_mask_start_y_pos = img.rows / 5;
+		hand_mask_width = img.cols / 3;
+		hand_mask_height = img.cols / 3;
 
 
 		cv::Mat mask = cv::Mat::zeros(img.size(), img.type());
-		cv::Mat dstImg = cv::Mat::zeros(img.size(), img.type());
+		cv::Mat distance_img = cv::Mat::zeros(img.size(), img.type());
 
-		cv::rectangle(mask, Rect(handMaskStartXPos, handMaskStartYPos, handMaskWidth, handMaskHeight), Scalar(255, 255, 255), -1);
+		cv::rectangle(mask, Rect(hand_mask_start_x_pos, hand_mask_start_y_pos, hand_mask_width, hand_mask_height), Scalar(255, 255, 255), -1);
 
-		img.copyTo(dstImg, mask);
+		img.copyTo(distance_img, mask);
 
-		handMaskGenerated = true;
-		return dstImg;
+		hand_mask_generated = true;
+		return distance_img;
 
 	}
 
-	bool ObjectDetection::drawHandMaskRect(cv::Mat* input)
+	bool ObjectDetection::DrawHandMask(cv::Mat* input)
 	{
-		if (!handMaskGenerated) return false;
-		rectangle(*input, Rect(handMaskStartXPos, handMaskStartYPos, handMaskWidth, handMaskHeight), Scalar(255, 255, 255));
+		if (!hand_mask_generated) return false;
+		rectangle(*input, Rect(hand_mask_start_x_pos, hand_mask_start_y_pos, hand_mask_width, hand_mask_height), Scalar(255, 255, 255));
 		return true;
 	}
 
-	void ObjectDetection::showWebcam()
+	void ObjectDetection::ShowWebcam()
 	{
 		imshow("Webcam image", img);
 	}
