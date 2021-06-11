@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ostream>
 #include <vector>
+#include <memory>
 #include "scene.h"
 #include "../gui/gui_interactable.h"
 #include "../models/model.h"
@@ -38,7 +39,7 @@ namespace scene
 		//entities_to_render is a list of entities, those entities will be rendered in the 3D environment.
 		std::vector<entities::Entity> entities_to_render;
 		//lights is a lost of light points in the game, for example the sun or it can be used to attach light effects to lamps.
-		std::vector<entities::Light> lights;
+		std::deque<entities::Light> lights;
 		
 		models::RawModel raw_model;
 		models::ModelTexture texture;
@@ -47,7 +48,7 @@ namespace scene
 		//the gui_shader is used of rendering the gui models (for example the pause buttons).
 		shaders::GuiShader* gui_shader;
 		//camera is the camera view of the game scene, this camera will be behind the main character.
-		entities::Camera *camera;
+		std::unique_ptr<entities::Camera> camera;
 		//guis is a list of all the gui components that needs to be load in the scene.
 		std::vector<gui::GuiTexture*> guis;
 		//pause_guis is a list of components that will be rendered when the game is paused.
