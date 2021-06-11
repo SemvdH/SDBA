@@ -30,7 +30,6 @@
 namespace scene
 {
 	std::shared_ptr<entities::MainCharacter>main_character;
-	std::deque<entities::Light> lights;
 	std::vector<std::shared_ptr<entities::CollisionEntity>> collision_entities;
 	entities::HouseGenerator* house_generator;
 	std::deque<std::shared_ptr<entities::Entity>> house_models;
@@ -39,9 +38,8 @@ namespace scene
 	models::ModelTexture texture;
 	shaders::EntityShader* shader;
 	shaders::GuiShader* gui_shader;
-	entities::Camera camera(glm::vec3(0, -50, 0), glm::vec3(0, 0, 0));
 	std::vector<gui::GuiTexture*> guis;
-	
+
 	int furniture_count_old;
 	int score;
 
@@ -53,7 +51,7 @@ namespace scene
 	 */
 	In_Game_Scene::In_Game_Scene()
 	{
-		camera = new entities::Camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+		camera = std::make_unique<entities::Camera>(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
 		shader = new shaders::EntityShader;
 		shader->Init();
@@ -69,9 +67,9 @@ namespace scene
 	 */
 	collision::Box create_bounding_box(glm::vec3 size, glm::vec3 pos, int scale) {
 		collision::Box box = collision::Box();
-		box.size.x = size.z* scale;
-		box.size.y = size.y* scale;
-		box.size.z = size.x* scale;
+		box.size.x = size.z * scale;
+		box.size.y = size.y * scale;
+		box.size.z = size.x * scale;
 		box.center_pos = pos;
 		return box;
 	}
@@ -80,30 +78,29 @@ namespace scene
 	 */
 	In_Game_Scene::~In_Game_Scene()
 	{
-		delete camera;
 		delete shader;
 		delete gui_shader;
-    delete house_generator;
+		delete house_generator;
 	}
 
 
 	/**
 	 * @brief loads a new chunk in front of the camera, and deletes the chunk behind the camera.
-	 * 
+	 *
 	 * @param model_pos the amount of models the camera has passed already. This is the rounded result of (z position of camera) / (size of model)
-	 * 
+	 *
 	 */
 	void load_chunk(int model_pos)
 	{
 		static unsigned int furniture_count = 0;
-    
+
 		// set up squares according to size of camera input
 		cv::Mat camera_frame;
 		static_camera::getCap().read(camera_frame); // get camera frame to know the width and heigth
 		reg_left.SetXPos(10);
-		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight()/2);
+		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight() / 2);
 		reg_right.SetXPos(camera_frame.cols - 10 - reg_right.GetWidth());
-		reg_right.SetYPos(camera_frame.rows / 2 - reg_right.GetHeight()/2);
+		reg_right.SetYPos(camera_frame.rows / 2 - reg_right.GetHeight() / 2);
 		reg_up.SetXPos(camera_frame.cols / 2 - reg_up.GetWidth() / 2);
 		reg_up.SetYPos(10);
 		std::cout << "loading model chunk" << std::endl;
@@ -118,13 +115,13 @@ namespace scene
 
 		std::deque<std::shared_ptr<entities::Entity>> furniture = house_generator->GenerateHouse(glm::vec3(0, -75, -50 - z_offset), 90);
 		furniture_count = furniture.size();
-		
+
 		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
 		std::cout << "funriture_count in load chunk (house included): " << furniture_count << std::endl;
-		furniture_count_old = furniture_count -1;
+		furniture_count_old = furniture_count - 1;
 	}
-	
-  	/**
+
+	/**
 	 * starts the game scene, calls the render and update methods in a while loop
 	 */
 	scene::Scenes scene::In_Game_Scene::start(GLFWwindow* window)
@@ -132,7 +129,7 @@ namespace scene
 		texture = { render_engine::loader::LoadTexture("res/Texture.png") };
 		texture.shine_damper = 10;
 		texture.reflectivity = 0;
-	
+
 
 		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
 		models::TexturedModel model_char = { raw_model_char, texture };
@@ -188,10 +185,10 @@ namespace scene
 		while (return_value == scene::Scenes::INGAME)
 		{
 			//checks the current game state, so it can render the correct models for each state
-			switch (game_state) 
+			switch (game_state)
 			{
-			/*case scene::Game_State::IDLE:
-				break;*/
+				/*case scene::Game_State::IDLE:
+					break;*/
 
 			case scene::Game_State::PAUSED:
 				render();
@@ -208,7 +205,7 @@ namespace scene
 				std::cout << "Game state unknown" << std::endl;
 				break;
 			}
-			
+
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
@@ -230,14 +227,14 @@ namespace scene
 		shader->Start();
 		shader->LoadSkyColor(render_engine::renderer::SKY_COLOR);
 		shader->LoadLightsDeque(lights);
-		shader->LoadViewMatrix(camera);
+		shader->LoadViewMatrix(*camera);
 
 		for (std::shared_ptr<entities::Entity> model_entity : house_models)
 		{
 			render_engine::renderer::Render(model_entity, *shader);
 		}
-		
-			render_engine::renderer::Render(*main_character, *shader);
+
+		render_engine::renderer::Render(main_character, *shader);
 
 		// Render GUI items
 		//render_engine::renderer::Render(guis, *gui_shader);
@@ -250,15 +247,15 @@ namespace scene
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
 		//camera.Move(window);
-		
+
 		main_character->Move(window);
-		
+
 		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
-		camera.Follow(main_character->GetPosition());
+		camera->Follow(main_character->GetPosition());
 
 		// calculate where the next house model should be loaded
 		static int last_model_pos = 0;
-		int model_pos = -round(camera.GetPosition().z / (house_generator->GetHouseDepth())); // how much models we have passed, minus because we are moving in the negative z axis
+		int model_pos = -round(camera->GetPosition().z / (house_generator->GetHouseDepth())); // how much models we have passed, minus because we are moving in the negative z axis
 
 		// if we have passed a model, load a new one and delete the one behind us
 		if (last_model_pos != model_pos)
@@ -270,7 +267,7 @@ namespace scene
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
-    
+
 		collision::CheckCollisions(collision_entities);
 		update_hand_detection();
 	}
@@ -316,5 +313,11 @@ namespace scene
 		reg_up.DetectHand(camera_frame);
 
 		cv::imshow("camera", camera_frame);
+	}
+
+	//renders the models for the pause menu
+	void In_Game_Scene::render_pause_menu()
+	{
+		render_engine::renderer::Render(pause_guis, *gui_shader);
 	}
 }

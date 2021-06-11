@@ -41,15 +41,26 @@ namespace scene
 	}
 
 	gui::Button* ConvertGuiTextureToButton(gui::GuiTexture* texture) {
+		gui::Button* button;
 		if (texture != NULL)
+		{
+
 			if (texture->GetType() == gui::GuiType::BUTTON) {
 				
-				gui::Button* button = (gui::Button*)texture;
+				button = (gui::Button*)texture;
 				return button;
 			}
 			else {
-				return NULL;
+				button = nullptr;
+				return button;
 			}
+		}
+		else {
+			button = nullptr;
+			return button;
+		}
+
+
 	}
 
 	/*gui::InteractableGui* ConvertGuiTextureToInteractableGui(gui::GuiTexture* texture) {
@@ -121,10 +132,11 @@ namespace scene
 			update(window);
 			
 			if (hand_mode) {
-				cameraFrame = objDetect.readCamera();
+				cameraFrame = objDetect.ReadCamera();
 
 				//Get hand state from camera
-				bool hand_detection = objDetect.detectHand(cameraFrame);
+				bool detect = false;
+				bool hand_detection = objDetect.DetectHand(cameraFrame,detect);
 
 				if (hand_detection)
 				{

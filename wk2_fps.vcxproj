@@ -25,7 +25,6 @@
     <ClCompile Include="src\computervision\calibration\HandCalibrator.cpp" />
     <ClCompile Include="src\computervision\HandDetectRegion.cpp" />
     <ClCompile Include="src\scenes\in_Game_Scene.cpp" />
-    <ClCompile Include="src\computervision\FaceDetector.cpp" />
     <ClCompile Include="src\computervision\MenuTest.cpp" />
     <ClCompile Include="src\computervision\async\async_arm_detection.cpp" />
     <ClCompile Include="src\computervision\ObjectDetection.cpp" />

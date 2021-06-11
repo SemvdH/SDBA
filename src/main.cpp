@@ -44,7 +44,6 @@ static GLFWwindow* window;
 
 scene::Scene* current_scene;
 
-static GLFWwindow* window;
 bool points_img_available = false;
 cv::Mat points_img;
 
