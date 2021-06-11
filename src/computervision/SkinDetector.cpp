@@ -1,4 +1,5 @@
 #include "SkinDetector.h"
+#include <iostream>
 
 /*
  Author: Pierfrancesco Soffritti https://github.com/PierfrancescoSoffritti
@@ -23,7 +24,7 @@ namespace computervision
 		int frameWidth = input.size().width, frameHeight = input.size().height;
 
 		int rectangleSize = 25;
-		Scalar rectangleColor = Scalar(255, 0, 255);
+		Scalar rectangleColor = Scalar(0, 255, 255);
 
 		skinColorSamplerRectangle1 = Rect(frameWidth / 5, frameHeight / 2, rectangleSize, rectangleSize);
 		skinColorSamplerRectangle2 = Rect(frameWidth / 5, frameHeight / 3, rectangleSize, rectangleSize);
@@ -41,6 +42,29 @@ namespace computervision
 		);
 	}
 
+	void SkinDetector::drawSkinColorSampler(Mat input,int x, int y,int width, int height) {
+		int frameWidth = width, frameHeight = height;
+
+		int rectangleSize = 25;
+		Scalar rectangleColor = Scalar(0, 255, 255);
+
+		skinColorSamplerRectangle1 = Rect(frameWidth / 5 + x, frameHeight / 2 + y, rectangleSize, rectangleSize);
+		skinColorSamplerRectangle2 = Rect(frameWidth / 5 + x, frameHeight / 3 + y, rectangleSize, rectangleSize);
+
+		rectangle(
+			input,
+			skinColorSamplerRectangle1,
+			rectangleColor
+		);
+
+		rectangle(
+			input,
+			skinColorSamplerRectangle2,
+			rectangleColor
+		);
+	}
+
+
 	void SkinDetector::calibrate(Mat input) {
 
 		Mat hsvInput;
@@ -52,6 +76,19 @@ namespace computervision
 		calculateThresholds(sample1, sample2);
 
 		calibrated = true;
+	}
+
+	std::vector<int> SkinDetector::calibrateAndReturn(Mat input)
+	{
+		Mat hsvInput;
+		cvtColor(input, hsvInput, CV_BGR2HSV);
+
+		Mat sample1 = Mat(hsvInput, skinColorSamplerRectangle1);
+		Mat sample2 = Mat(hsvInput, skinColorSamplerRectangle2);
+
+		calibrated = true;
+		return calculateAndReturnTresholds(sample1, sample2);
+
 	}
 
 	void SkinDetector::calculateThresholds(Mat sample1, Mat sample2) {
@@ -73,6 +110,39 @@ namespace computervision
 		vHighThreshold = max(hsvMeansSample1[2], hsvMeansSample2[2]) + offsetHighThreshold;
 		//vLowThreshold = 0;
 		//vHighThreshold = 255;
+	}
+
+	std::vector<int> SkinDetector::calculateAndReturnTresholds(Mat sample1, Mat sample2)
+	{
+		
+		calculateThresholds(sample1, sample2);
+		std::vector<int> res;
+		res.push_back(hLowThreshold);
+		res.push_back(hHighThreshold);
+		res.push_back(sLowThreshold);
+		res.push_back(sHighThreshold);
+		res.push_back(vLowThreshold);
+		res.push_back(vHighThreshold);
+		return res;
+	}
+
+	void SkinDetector::setTresholds(std::vector<int>& tresholds)
+	{
+		if (tresholds.size() != 6)
+		{
+			std::cout << "tresholds array not the right size!" << std::endl;
+			return;
+		}
+
+		hLowThreshold = tresholds[0];
+		hHighThreshold = tresholds[1];
+		sLowThreshold = tresholds[2];
+		sHighThreshold = tresholds[3];
+		vLowThreshold = tresholds[4];
+		vHighThreshold = tresholds[5];
+
+		calibrated = true;
+		
 	}
 
 	Mat SkinDetector::getSkinMask(Mat input) {
