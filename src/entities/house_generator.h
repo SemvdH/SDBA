@@ -20,6 +20,24 @@ namespace entities
 		CEILING_OBJECTS,
 		MISC
 	};
+	struct FurniturePiece
+	{
+		FurnitureType type;
+		int size;
+	};
+
+	struct FurnitureModel
+	{
+		FurniturePiece furniture;
+		std::deque<models::TexturedModel> texture;
+
+		bool operator<(FurnitureModel a)
+		{
+			return true;
+		}
+	};
+
+	
 	
 	class HouseGenerator
 	{
@@ -29,11 +47,11 @@ namespace entities
 		models::TexturedModel house_model;
 		models::ModelTexture default_texture;
 		
-		std::map<FurnitureType, std::deque<models::TexturedModel>> furniture_models;
-
+		//std::map<FurniturePiece, std::deque<models::TexturedModel>> furniture_models;
+		std::deque<FurnitureModel> furniture_models;
 	public:
 		HouseGenerator();
-
+		
 		/*
 		 * @brief: This function generates a house with furniture at the given position and rotation
 		 *
@@ -50,6 +68,8 @@ namespace entities
 		float GetHouseDepth() const { return house_model.raw_model.model_size.x * HOUSE_SIZE; }
 	
 	private:
+		const FurniturePiece* GetRandomFurniturePiece();
+
 		/*
 		 * @brief: This function loads all the 3D furniture models
 		 */
@@ -62,6 +82,6 @@ namespace entities
 		 *
 		 * @return: The model of the random furniture of the chosen furniture type
 		 */
-		models::TexturedModel GetFurnitureModel(FurnitureType furniture);
+		models::TexturedModel GetFurnitureModel(const FurniturePiece* furniture);
 	};
 }

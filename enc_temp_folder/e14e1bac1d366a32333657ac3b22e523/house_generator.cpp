@@ -50,7 +50,7 @@ namespace entities
 		for (int z = 1; z < 4; z++) {
 			for (int x = 1; x < 3; x++)
 			{
-				if (toolbox::Random(0, 100) < 50) {
+				//if (toolbox::Random(0, 100) < 50) {
 						const FurniturePiece* furniture_piece = GetRandomFurniturePiece();
 						models::TexturedModel model = GetFurnitureModel(furniture_piece);
 						//if (//check of size van furniture nog past in huidige grid vlakje, of ie geen 2 size op t laatste vakje neerzet) {
@@ -60,7 +60,7 @@ namespace entities
 						model_box.SetRotation(-90);
 						furniture.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE, model_box));
 					//}
-					}
+					//}
 				}
 			}
 
