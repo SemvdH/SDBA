@@ -43,7 +43,7 @@ namespace scene
 	int furniture_count_old;
 	int score;
 
-	std::vector<computervision::HandDetectRegion> regions;
+	std::vector<computervision::HandDetectRegion*> regions;
 	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
 
 	/**
@@ -180,6 +180,9 @@ namespace scene
 			});
 		pause_guis.push_back(&pause_button_quit);
 
+		regions.push_back(&reg_left);
+		regions.push_back(&reg_up);
+		regions.push_back(&reg_right);
 
 		//the scene loop, this while loop represent the scene
 		while (return_value == scene::Scenes::INGAME)
@@ -247,8 +250,8 @@ namespace scene
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
 		//camera.Move(window);
-
-		main_character->Move(window);
+		update_hand_detection();
+		main_character->Move(regions);
 
 		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 		camera->Follow(main_character->GetPosition());
@@ -269,7 +272,6 @@ namespace scene
 		last_model_pos = model_pos;
 
 		collision::CheckCollisions(collision_entities);
-		update_hand_detection();
 	}
 
 	//manages the key input in the game scene

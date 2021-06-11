@@ -2,6 +2,7 @@
 
 #include "collision_entity.h"
 #include "../shaders/entity_shader.h"
+#include "../computervision/HandDetectRegion.h"
 
 namespace entities
 {
@@ -31,7 +32,7 @@ namespace entities
 		* 
 		* @return: Vector with the adjusted side_speed, down_speed, and movement_speed
 		*/
-		void Move(GLFWwindow* window);
+		void Move(std::vector<computervision::HandDetectRegion*> regions);
 
 		void OnCollide(const collision::Collision& collision) override;
 	};

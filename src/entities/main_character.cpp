@@ -19,8 +19,12 @@ namespace entities
 		is_playing = true;
 	}
 
-	void MainCharacter::Move(GLFWwindow* window)
+	void MainCharacter::Move(std::vector<computervision::HandDetectRegion*> regions)
 	{
+		computervision::HandDetectRegion* reg_left = regions.at(0);
+		computervision::HandDetectRegion* reg_up = regions.at(1);
+		computervision::HandDetectRegion* reg_right = regions.at(2);
+
 		if (is_playing) {
 			movement_speed = -0.5f;	//Forward speed adjustment, bee is moving at a standard speedrate
 			down_speed = -1.0f;		//Down speed adjustment, downspeed is difference between down_speed and UP_SPEED	
@@ -32,47 +36,33 @@ namespace entities
 			//S: Go backwards
 			//D: Go right
 			//TODO Implement CV actions 
-			SetRotation(glm::vec3(0, 90, 0));
-			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-			{
-				movement_speed -= SIDE_SPEED;
-			}
-
-			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-			{
-				movement_speed += SIDE_SPEED;
-			}
 			//top right
-			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+			if (reg_up->IsHandPresent() && reg_left->IsHandPresent())
 			{
 				side_speed += SIDE_SPEED;
 				down_speed += UP_SPEED;
 			}
 			//right
-			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			if (reg_left->IsHandPresent())
 			{
 				side_speed += SIDE_SPEED;
 			}
 			//top left
-			if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+			if (reg_up->IsHandPresent() && reg_right->IsHandPresent())
 			{
 				down_speed += UP_SPEED;
 				side_speed -= SIDE_SPEED;
 			}
 			//left
-			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			if (reg_right->IsHandPresent())
 			{
 				side_speed -= SIDE_SPEED;
 			}
 
-			if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+			if (reg_up->IsHandPresent())
 			{
 				down_speed += UP_SPEED;
 				SetRotation(glm::vec3(10, 90, 0));
-			}
-			if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			{
-				down_speed -= UP_SPEED;
 			}
 		}
 			IncreasePosition(glm::vec3(side_speed, down_speed, movement_speed));
@@ -85,7 +75,7 @@ namespace entities
 			else if (position.y < -40) position.y = -40;
 			//Move player bounding box according to the position on screen
 			MoveCollisionBox();
-			if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+			if (reg_right->IsHandPresent() && reg_left->IsHandPresent())
 			{
 				is_playing = true;
 			}
