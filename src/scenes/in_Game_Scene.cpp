@@ -1,27 +1,4 @@
-#include <iostream>
-#include <memory>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include "in_Game_Scene.h"
-#include "startup_Scene.h"
-#include "../entities/main_character.h"
-#include "../collision/collision_handler.h"
-#include "../gui/gui_interactable.h"
-#include "../models/model.h"
-#include "../renderEngine/loader.h"
-#include "../renderEngine/obj_loader.h"
-#include "../renderEngine/renderer.h"
-#include "../shaders/entity_shader.h"
-#include "../toolbox/toolbox.h"
-#include "../entities/house_generator.h"
-#include <deque>
-#include <functional>
-#include <memory>
-#include <queue>
-#include <opencv2/core/base.hpp>
-#include "../computervision/hand_detect_region.h"
-#include "../computervision/object_detection.h"
-#include <string>
 
 #define MAX_MODEL_DEQUE_SIZE 6 // max amount of models to load at the same time
 #define UPCOMING_MODEL_AMOUNT 4 // how much models should be loaded in front of us
