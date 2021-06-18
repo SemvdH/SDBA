@@ -2,6 +2,7 @@
 
 #include "../entities/camera.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
 namespace toolbox
 {
@@ -11,10 +12,10 @@ namespace toolbox
 
 		// Change these macros to change the window size
 		#define WINDOW_WIDTH 1400.0f
-		#define WINDOW_HEIGT 800.0f
+		#define WINDOW_HEIGHT 800.0f
 
 		#define SCALED_WIDTH (WINDOW_WIDTH/DEFAULT_WIDTH)
-		#define SCALED_HEIGHT (WINDOW_HEIGT/DEFAULT_HEIGHT)
+		#define SCALED_HEIGHT (WINDOW_HEIGHT/DEFAULT_HEIGHT)
 	//
 	
 	/*
@@ -46,4 +47,45 @@ namespace toolbox
 	 * @return: The view matrix
 	 */
 	glm::mat4 CreateViewMatrix(entities::Camera& camera);
+
+	/*
+	* @biref go to one coordinate to another with smooting
+	*
+	* @param from one coordinate of the start
+	* @param to one coordinate of where to go
+	* @param amount the amount of smoothing (lower is smoother)
+	* 
+	* @return coordinate of where to go
+	*/
+	float Lerp(float from, float to, float amount);
+
+	/*
+	* @biref go from one position to another with smoothing
+	*
+	* @param from position of the start
+	* @param to position of where to go
+	* @param amount the amount of smoothing (lower is smoother)
+	*
+	* @return position of where to go
+	*/
+	glm::vec3 Lerp(glm::vec3 from, glm::vec3 to, float amount);
+  
+  /*
+	 * @brief: This function will return a value between min and max
+	 *
+	 * @param min: The min value
+	 * @param max: The max value
+	 *
+	 * @return: The random number
+	 */
+	int Random(const int min, const int max);
+
+
+	/**
+	 * @brief gets the separate digits from the number.
+	 * 
+	 * @param number the number to get the digits from
+	 * @param result_vector the vector to hold the individual digits.
+	 */
+	void GetDigitsFromNumber(int number, std::vector<int>& result_vector);
 }

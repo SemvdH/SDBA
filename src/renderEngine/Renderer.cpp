@@ -4,7 +4,6 @@
 #include "loader.h"
 #include "../toolbox/toolbox.h"
 #include "renderer.h"
-
 #include <iostream>
 
 namespace render_engine
@@ -26,7 +25,7 @@ namespace render_engine
 			glCullFace(GL_BACK);
 			
 			const glm::mat4 projectionMatrix = 
-				glm::perspective(glm::radians(FOV), (WINDOW_WIDTH / WINDOW_HEIGT), NEAR_PLANE, FAR_PLANE);
+				glm::perspective(glm::radians(FOV), (WINDOW_WIDTH / WINDOW_HEIGHT), NEAR_PLANE, FAR_PLANE);
 
 			// Load the projectionmatrix into the shader
 			shader.Start();
@@ -51,12 +50,12 @@ namespace render_engine
 		/*
 			This function will Render a Model on the screen.
 		*/
-		void Render(entities::Entity& entity, shaders::EntityShader& shader)
+		void Render(std::shared_ptr<entities::Entity> entity, shaders::EntityShader& shader)
 		{
-			const models::TexturedModel model = entity.GetModel();
+			const models::TexturedModel model = entity.get()->GetModel();
 			const models::RawModel raw_model = model.raw_model;
 			const models::ModelTexture texture = model.texture;
-
+			
 			// Enable the model (VAO)
 			glBindVertexArray(raw_model.vao_id);
 
@@ -66,7 +65,7 @@ namespace render_engine
 			glEnableVertexAttribArray(2);
 
 			// Load the transformation of the model into the shader
-			const glm::mat4 modelMatrix = toolbox::CreateModelMatrix(entity.GetPosition(), entity.GetRotation(), entity.GetScale());
+			const glm::mat4 modelMatrix = toolbox::CreateModelMatrix(entity.get()->GetPosition(), entity.get()->GetRotation(), entity.get()->GetScale());
 			shader.LoadModelMatrix(modelMatrix);
 			shader.LoadShineVariables(texture.shine_damper, texture.reflectivity);
 			
@@ -116,6 +115,88 @@ namespace render_engine
 			// Disable alpha blending
 			glDisable(GL_BLEND);
 			
+			// Disable the VBO and VAO
+			glDisableVertexAttribArray(0);
+			glBindVertexArray(0);
+
+			shader.Stop();
+		}
+
+		void Render(std::vector<std::shared_ptr<gui::GuiTexture>>& guis, shaders::GuiShader& shader)
+		{
+			shader.Start();
+
+			// Enable the VAO and the positions VBO
+			glBindVertexArray(quad.vao_id);
+			glEnableVertexAttribArray(0);
+
+			// Enable alpha blending (for transparency in the texture)
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			// Disable depth testing to textures with transparency can overlap
+			glDisable(GL_DEPTH_TEST);
+
+			// Render each gui to the screen
+			for (std::shared_ptr<gui::GuiTexture> gui : guis)
+			{
+				// Bind the texture of the gui to the shader
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, gui->texture);
+
+				glm::mat4 matrix = toolbox::CreateModelMatrix(gui->position, gui->scale);
+				shader.LoadModelMatrix(matrix);
+
+				glDrawArrays(GL_TRIANGLE_STRIP, 0, quad.vertex_count);
+
+				std::cout << "in render method, gui x value: " << gui.get()->scale.x << std::endl;
+			}
+
+			// Enable depth test again
+			glEnable(GL_DEPTH_TEST);
+
+			// Disable alpha blending
+			glDisable(GL_BLEND);
+
+			// Disable the VBO and VAO
+			glDisableVertexAttribArray(0);
+			glBindVertexArray(0);
+
+			shader.Stop();
+		}
+
+		void Render(std::shared_ptr<gui::GuiTexture>& gui, shaders::GuiShader& shader)
+		{
+			shader.Start();
+
+			// Enable the VAO and the positions VBO
+			glBindVertexArray(quad.vao_id);
+			glEnableVertexAttribArray(0);
+
+			// Enable alpha blending (for transparency in the texture)
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			// Disable depth testing to textures with transparency can overlap
+			glDisable(GL_DEPTH_TEST);
+
+			// Render each gui to the screen
+			// Bind the texture of the gui to the shader
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, gui->texture);
+
+			glm::mat4 matrix = toolbox::CreateModelMatrix(gui->position, gui->scale);
+			shader.LoadModelMatrix(matrix);
+
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, quad.vertex_count);
+
+
+			// Enable depth test again
+			glEnable(GL_DEPTH_TEST);
+
+			// Disable alpha blending
+			glDisable(GL_BLEND);
+
 			// Disable the VBO and VAO
 			glDisableVertexAttribArray(0);
 			glBindVertexArray(0);

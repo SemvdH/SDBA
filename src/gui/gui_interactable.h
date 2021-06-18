@@ -1,8 +1,10 @@
 #pragma once
 
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../toolbox/toolbox.h"
 #include "gui_element.h"
+#include <functional>
 
 namespace gui
 {
@@ -33,6 +35,14 @@ namespace gui
 		void Update(GLFWwindow* window);
 
 		/*
+		 * @brief: Call this function when you want to perform a mouseclick
+		 *
+		 * @param mousebutton: mouseButton you want to perform the click on
+		 */
+		void ForceClick(int mouseButton);
+
+		
+		/*
 		 * @brief: This function gets called when the InteractabeGui is clicked
 		 */
 		virtual void OnClick() = 0;
@@ -50,7 +60,10 @@ namespace gui
 		/*
 		 * @brief: This function sets the texture of the InteractableGUI for when the InteractableGUI is clicked
 		 */
-		void SetClickedTexture(int texture) { clicked_texture = texture; }
+		void SetClickedTexture(int texture)
+		{
+			clicked_texture = texture;
+		}
 
 		/*
 		 * @brief: This function sets the texture of the InteractableGUI for when the mouse is hovering above the InteractableGUI
@@ -71,14 +84,15 @@ namespace gui
 
 	
 	/*
-	 * This class represents a button
-	 */
+ * This class represents a button
+ */
 	class Button : public InteractableGui
 	{
 	private:
-		void (*on_click_action)();
-		void (*on_enter_action)();
-		void (*on_exit_action)();
+
+		std::function<void()> on_click_action;
+		std::function<void()> on_enter_action;
+		std::function<void()> on_exit_action;
 
 	public:
 		Button(int default_texture, glm::vec2 position, glm::vec2 scale) : InteractableGui(default_texture, position, scale) {}
@@ -88,21 +102,25 @@ namespace gui
 		 *
 		 * @param fun: A function pointer to a function (or lambda)
 		 */
-		void SetOnClickAction(void (*fun)()) { on_click_action = fun; }
+		void SetOnClickAction(std::function<void()> fun) { on_click_action = fun; }
 
 		/*
 		 * @brief: This function sets an action (function pointer) to the OnEnter function
 		 *
 		 * @param fun: A function pointer to a function (or lambda)
 		 */
-		void SetOnEnterAction(void (*fun)()) { on_enter_action = fun; }
+		void SetOnEnterAction(std::function<void()> fun) { on_enter_action = fun; }
 
 		/*
 		 * @brief: This function sets an action (function pointer) to the OnExit function
 		 *
 		 * @param fun: A function pointer to a function (or lambda)
 		 */
-		void SetOnExitAction(void (*fun)()) { on_exit_action = fun; }
+		void SetOnExitAction(std::function<void()> fun) { on_exit_action = fun; }
+
+		GuiType GetType() override {
+			return GuiType::BUTTON;
+		}
 
 	protected:
 		void OnClick() override { if (on_click_action != nullptr) on_click_action(); }

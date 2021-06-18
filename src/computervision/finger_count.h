@@ -31,7 +31,15 @@ namespace computervision
 		 */
 		int getAmountOfFingers();
 
+		void DrawHandContours(Mat& image);
+
 	private:
+
+		int biggest_contour_index;
+		vector<vector<Point>> contours;
+		vector<Vec4i> hierarchy;
+
+
 		// colors to use
 		Scalar color_blue;
 		Scalar color_green;
@@ -115,5 +123,7 @@ namespace computervision
 		 * @param with_numbers if the numbers should be drawn with the points
 		 */
 		void drawVectorPoints(Mat image, vector<Point> points, Scalar color, bool with_numbers);
+
+
 	};
 }

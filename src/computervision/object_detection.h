@@ -8,6 +8,15 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/video.hpp>
+#include <GLFW/glfw3.h>
+
+#include <functional>
+#include "background_remover.h"
+#include "skin_detector.h"
+#include "finger_count.h"
+#include "async/StaticCameraInstance.h"
+#include "calibration/HandCalibrator.h"
 
 
 namespace computervision
@@ -27,13 +36,13 @@ namespace computervision
 		 * @brief Displays an image of the current webcam-footage
 		 * 
 		 */
-		void showWebcam();
+		void ShowWebcam();
 		/**
 		 * @brief Calculates the difference between two images
 		 *  and outputs an image that only shows the difference
 		 * 
 		 */
-		void calculateDifference();
+		void CalculateDifference();
 
 		/**
 		 * @brief generates the square that will hold the mask in which the hand will be detected.
@@ -41,29 +50,57 @@ namespace computervision
 		 * @param img the current camear frame
 		 * @return a matrix containing the mask
 		 */
-		cv::Mat generateHandMaskSquare(cv::Mat img);
+		cv::Mat GenerateHandMaskSquare(cv::Mat img);
 
 		/**
 		 * @brief reads the camera and returns it in a matrix.
 		 * 
 		 * @return the camera frame in a matrix
 		 */
-		cv::Mat readCamera();
+		cv::Mat ReadCamera();
 
 		/**
 		 * @brief detects a hand based on the given hand mask input frame.
 		 * 
 		 * @param inputFrame the input frame from the camera
+		 * @param hand_present boolean that will hold true if the hand is detected, false if not.
 		 * @return true if hand is open, false if hand is closed
 		 */
-		bool detectHand(cv::Mat cameraFrame);
+		bool DetectHand(cv::Mat camera_frame, bool& hand_present);
 
 		/**
 		 * @brief draws the hand mask rectangle on the given input matrix.
 		 * 
 		 * @param input the input matrix to draw the rectangle on
 		 */
-		bool drawHandMaskRect(cv::Mat *input);
+		bool DrawHandMask(cv::Mat *input);
+
+		/**
+		 * @brief checks if the hand of the user is open.
+		 * 
+		 * @return true if the hand is open, false if not.
+		 */
+		bool IsHandOpen();
+
+		bool IsCalibrated();
+
+
+		/**
+		 * @brief checks whether the hand is held within the detection square.
+		 * 
+		 * @return true if the hand is in the detection square, false if not.
+		 */
+		bool IsHandPresent();
+
+		cv::VideoCapture GetCap();
+
+		void SetCalibrationCallback(std::function<void()> fun) { calibration_callback = fun; };
+
+	private:
+		bool is_hand_open;
+		bool is_hand_present;
+		void UpdateTime();
+		std::function<void()> calibration_callback;
 
 	};
 
