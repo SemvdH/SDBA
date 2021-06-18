@@ -32,8 +32,6 @@ namespace scene
 	std::shared_ptr<entities::MainCharacter>main_character;
 	std::vector<std::shared_ptr<entities::CollisionEntity>> collision_entities;
 
-	//std::deque<std::shared_ptr<entities::CollisionEntity>> furniture_collision;
-
 	entities::HouseGenerator* house_generator;
 	std::deque<std::shared_ptr<entities::Entity>> house_models;
 
@@ -132,14 +130,16 @@ namespace scene
 			for (int i = 0; i < furniture_count; i++)
 			{
 				house_models.pop_front();
+				collision_entities.pop_back();
 			}
 		}
 		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
 
-		std::deque<std::shared_ptr<entities::Entity>> furniture = house_generator->GenerateHouse(glm::vec3(0, -75, -50 - z_offset), 90);
+		std::deque<std::shared_ptr<entities::CollisionEntity>> furniture = house_generator->GenerateHouse(glm::vec3(0, -75, -50 - z_offset), 90);
 		furniture_count = furniture.size();
 		
 		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
+		collision_entities.insert(collision_entities.end(), furniture.begin(), furniture.end());
 		std::cout << "funriture_count in load chunk (house included): " << furniture_count << std::endl;
 		furniture_count_old = furniture_count - 1;
 
@@ -153,7 +153,6 @@ namespace scene
 		texture = { render_engine::loader::LoadTexture("res/Texture.png") };
 		texture.shine_damper = 10;
 		texture.reflectivity = 0;
-
 
 		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
 		models::TexturedModel model_char = { raw_model_char, texture };
@@ -230,7 +229,6 @@ namespace scene
 				break;
 			}
 
-
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
@@ -279,6 +277,8 @@ namespace scene
 			return_value = scene::Scenes::GAMEOVER;
 		}
 
+		std::cout << "Pos of main char: " << main_character.get()->GetPosition().z << std::endl;
+		std::cout << "Pos z of collision entity: "<< collision_entities.at(0).get()->GetPosition().z << std::endl;
 		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 		camera->Follow(main_character->GetPosition());
 
@@ -293,16 +293,14 @@ namespace scene
 			score += furniture_count_old;
 			std::cout << "Score: " << score << std::endl;
 			std::cout << "Furniture_count_old in model (house excluded): " << furniture_count_old << std::endl;
-			
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
 
+		std::cout << "amount of collision entities: " << collision_entities.size() << std::endl;
 		collision::CheckCollisions(collision_entities);
 		
 		update_hand_detection();
-	
-
 	}
 
 	//manages the key input in the game scene

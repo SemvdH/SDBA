@@ -40,7 +40,10 @@ namespace entities
 		
 		const glm::vec3 size = bounding_box.size;
 
+		/*min_xyz = { bounding_box.center_pos.x - (0.5 * size.x), bounding_box.center_pos.y, bounding_box.center_pos.z + (0.5 * size.z) };
+		max_xyz = { bounding_box.center_pos.x + (0.5 * size.x), bounding_box.center_pos.y + size.y, bounding_box.center_pos.z - (0.5 * size.z) };*/
+
 		min_xyz = bounding_box.center_pos;
-		max_xyz = glm::vec3(min_xyz.x + size.x, min_xyz.y + size.y, min_xyz.z + size.z);
+		max_xyz = { bounding_box.center_pos.x + size.x, bounding_box.center_pos.y + size.y, bounding_box.center_pos.z - size.z };
 	}
 }

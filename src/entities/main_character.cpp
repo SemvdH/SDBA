@@ -22,7 +22,7 @@ namespace entities
 	void MainCharacter::Move(GLFWwindow* window)
 	{
 		if (is_playing) {
-			movement_speed = -0.5f;	//Forward speed adjustment, bee is moving at a standard speedrate
+			movement_speed = -2.0f;	//Forward speed adjustment, bee is moving at a standard speedrate
 			down_speed = -1.0f;		//Down speed adjustment, downspeed is difference between down_speed and UP_SPEED	
 			side_speed = 0;			//Side speed adjustment
 

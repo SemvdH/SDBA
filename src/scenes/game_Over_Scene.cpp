@@ -181,5 +181,4 @@ namespace scene
 			hand_mode_gameOver = !hand_mode_gameOver;
 		}
 	}
-	
 }

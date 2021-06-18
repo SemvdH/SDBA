@@ -20,12 +20,13 @@ namespace entities
 		GenerateFurnitureModels();
 	}
 
-	std::deque<std::shared_ptr<Entity>> HouseGenerator::GenerateHouse(const glm::vec3& position, float y_rotation)
+	std::deque<std::shared_ptr<CollisionEntity>> HouseGenerator::GenerateHouse(const glm::vec3& position, float y_rotation)
 	{
-		std::deque<std::shared_ptr<Entity>> furniture;
+		std::deque<std::shared_ptr<CollisionEntity>> furniture;
 
 		// Add house
-		furniture.push_front(std::make_shared<Entity>(house_model, position, glm::vec3(0, y_rotation, 0), HOUSE_SIZE));
+		collision::Box house_box = { position, glm::vec3(0,0,0) };
+		furniture.push_front(std::make_shared<CollisionEntity>(house_model, position, glm::vec3(0, y_rotation, 0), HOUSE_SIZE, house_box));
 
 		for(int i = 0; i<toolbox::Random(1,4);i++)
 		{
@@ -41,7 +42,7 @@ namespace entities
 
 		//furniture_collision.pop_front();
 		
-		/*
+		
 		// Add furniture
 		models::TexturedModel couch = GetFurnitureModel(FurnitureType::COUCH);
 		glm::vec3 couch_pos = glm::vec3(position.x + 200, position.y, position.z + 10);
@@ -88,7 +89,7 @@ namespace entities
 		glm::vec3 misc_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
 		collision::Box misc_box = { misc_pos, misc.raw_model.model_size };
 		furniture.push_back(std::make_shared<CollisionEntity>(misc, misc_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, misc_box));
-		*/
+		
 		return furniture;
 	}
 

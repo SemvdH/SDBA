@@ -5,6 +5,7 @@
 #include <map>
 #include "../models/Model.h"
 #include "../collision/collision.h"
+#include "collision_entity.h"
 
 namespace entities
 {
@@ -44,7 +45,7 @@ namespace entities
 		 *
 		 * @return: A list with all the entities of the generated house (the furniture)
 		 */
-		std::deque<std::shared_ptr<Entity>> GenerateHouse(const glm::vec3& position, float y_rotation);
+		std::deque<std::shared_ptr<CollisionEntity>> GenerateHouse(const glm::vec3& position, float y_rotation);
 
 		/*
 		 * @brief: Returns the depth of the house (chunk)
