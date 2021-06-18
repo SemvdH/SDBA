@@ -174,21 +174,23 @@ namespace scene
 		gui::GuiTexture background(render_engine::loader::LoadTexture("res/background_grey.png"), glm::vec2(0, 0), glm::vec2(1, 1));
 		pause_guis.push_back(&background);
 
-		gui::Button pause_button_resume(render_engine::loader::LoadTexture("res/Mayo.png"), glm::vec2(0, 0), glm::vec2(0.25f, 0.25f));
-		pause_button_resume.SetHoverTexture(render_engine::loader::LoadTexture("res/Texture.png"));
-		pause_button_resume.SetClickedTexture(render_engine::loader::LoadTexture("res/Mayo.png"));
+		gui::Button pause_button_resume(render_engine::loader::LoadTexture("res/menu_item_start1.png"), glm::vec2(0.0f, 0.3f), glm::vec2(0.25f, 0.25f));
+		pause_button_resume.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_start1_hover.png"));
+		pause_button_resume.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_start1_click.png"));
 		pause_button_resume.SetOnClickAction([]()
 			{
 				std::cout << "I got clicked on the resume button!" << std::endl;
+				//game_state = scene::Game_State::RUNNING;
 			});
 		pause_guis.push_back(&pause_button_resume);
 
-		gui::Button pause_button_quit(render_engine::loader::LoadTexture("res/Mayo.png"), glm::vec2(0.3f, 0.0f), glm::vec2(0.25f, 0.25f));
-		pause_button_quit.SetHoverTexture(render_engine::loader::LoadTexture("res/Texture.png"));
-		pause_button_quit.SetClickedTexture(render_engine::loader::LoadTexture("res/Mayo.png"));
+		gui::Button pause_button_quit(render_engine::loader::LoadTexture("res/menu_item_quit1.png"), glm::vec2(0.0f, -0.3f), glm::vec2(0.25f, 0.25f));
+		pause_button_quit.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_quit1_hover.png"));
+		pause_button_quit.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_quit1_click.png"));
 		pause_button_quit.SetOnClickAction([]()
 			{
 				std::cout << "I got clicked on the quit button!" << std::endl;
+				//return_value = scene::Scenes::STOP;
 			});
 		pause_guis.push_back(&pause_button_quit);
 

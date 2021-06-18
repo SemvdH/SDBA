@@ -95,30 +95,27 @@ namespace scene
 		gui::Button button_start(render_engine::loader::LoadTexture("res/menu_item_start1.png"), glm::vec2(0.0f, 0.6f), glm::vec2(0.25f, 0.25f));
 		button_start.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_start1_hover.png"));
 		button_start.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_start1_click.png"));
-		button_start.SetOnClickAction([]()
-			{
-				std::cout << "Clicked on button: Start!" << std::endl;
-				
-			});
+		std::function<void()> start_fun = [this]()
+		{
+			std::cout << "Clicked on button: Start!" << std::endl;
+			return_value = scene::Scenes::INGAME;
+			cv::destroyWindow("camera");
+
+		};
+		button_start.SetOnClickAction(start_fun);
+
 		guis1.push_back(&button_start);
-
-		gui::Button button_calibrate(render_engine::loader::LoadTexture("res/menu_item_calibrate1.png"), glm::vec2(0.0f, 0.0f), glm::vec2(0.25f, 0.25f));
-		button_calibrate.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_calibrate1_hover.png"));
-		button_calibrate.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_calibrate1_click.png"));
-		button_calibrate.SetOnClickAction([]()
-			{
-				std::cout << "Clicked on button: Calibrate!" << std::endl;
-
-			});
-		guis1.push_back(&button_calibrate);
 
 		gui::Button button_quit(render_engine::loader::LoadTexture("res/menu_item_quit1.png"), glm::vec2(0.0f, -0.6f), glm::vec2(0.25f, 0.25f));
 		button_quit.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_quit1_hover.png"));
 		button_quit.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_quit1_click.png"));
-		button_quit.SetOnClickAction([]()
-			{
-				std::cout << "Clicked on button: Quit!" << std::endl;
-			});
+		std::function<void()> quit_fun = [this]()
+		{
+			std::cout << "Clicked on button: Quit!" << std::endl;
+			return_value = scene::Scenes::STOP;
+			cv::destroyWindow("camera");
+		};
+		button_quit.SetOnClickAction(quit_fun);
 		guis1.push_back(&button_quit);
 
 		computervision::ObjectDetection objDetect;
