@@ -1,27 +1,4 @@
-#include <iostream>
-#include <memory>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include "in_Game_Scene.h"
-#include "startup_Scene.h"
-#include "../entities/main_character.h"
-#include "../collision/collision_handler.h"
-#include "../gui/gui_interactable.h"
-#include "../models/model.h"
-#include "../renderEngine/loader.h"
-#include "../renderEngine/obj_loader.h"
-#include "../renderEngine/renderer.h"
-#include "../shaders/entity_shader.h"
-#include "../toolbox/toolbox.h"
-#include "../entities/house_generator.h"
-#include <deque>
-#include <functional>
-#include <memory>
-#include <queue>
-#include <opencv2/core/base.hpp>
-#include "../computervision/HandDetectRegion.h"
-#include "../computervision/ObjectDetection.h"
-#include <string>
 
 #define MAX_MODEL_DEQUE_SIZE 6 // max amount of models to load at the same time
 #define UPCOMING_MODEL_AMOUNT 4 // how much models should be loaded in front of us
@@ -48,6 +25,8 @@ namespace scene
 	int score;
 	int* ptr;
 
+	float delta_time = 0;
+
 	std::vector<computervision::HandDetectRegion> regions;
 	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
 
@@ -67,16 +46,15 @@ namespace scene
 		gui_shader->Init();
 		score = 0;
 
-		for (int i = 0; i <= 9; i++) 
+		for (int i = 0; i <= 9; i++)
 		{
 			std::shared_ptr<gui::GuiTexture> score_pointer;
 
 			std::string texture_path = "res/";
 			texture_path += std::to_string(i);
 			texture_path += ".png";
-			
+
 			score_pointer = std::make_unique<gui::GuiTexture>(render_engine::loader::LoadTexture(texture_path), glm::vec2(-0.9f, 0.8f), glm::vec2(0.07, 0.15));
-			
 			score_textures.push_back(score_pointer);
 		}
 	}
@@ -103,26 +81,31 @@ namespace scene
 		delete house_generator;
 	}
 
-
-	/**
-	 * @brief loads a new chunk in front of the camera, and deletes the chunk behind the camera.
-	 *
-	 * @param model_pos the amount of models the camera has passed already. This is the rounded result of (z position of camera) / (size of model)
-	 *
-	 */
-	void load_chunk(int model_pos)
+	
+	void In_Game_Scene::SetupHandDetection()
 	{
-		static unsigned int furniture_count = 0;
-
 		// set up squares according to size of camera input
 		cv::Mat camera_frame;
 		static_camera::getCap().read(camera_frame); // get camera frame to know the width and heigth
+
+		reg_left.SetMainSkinDetecRegion(true);
+		reg_right.SetMainSkinDetecRegion(false);
+		reg_right.SetMainSkinDetecRegion(false);
+		std::function<void()> callback = [this]() {OnSkinCalibrationCallback(); };
+		reg_left.SetSkinTimerCallback(callback);
+
 		reg_left.SetXPos(10);
 		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight() / 2);
 		reg_right.SetXPos(camera_frame.cols - 10 - reg_right.GetWidth());
 		reg_right.SetYPos(camera_frame.rows / 2 - reg_right.GetHeight() / 2);
 		reg_up.SetXPos(camera_frame.cols / 2 - reg_up.GetWidth() / 2);
 		reg_up.SetYPos(10);
+	}
+
+	
+	void In_Game_Scene::LoadChunk(int model_pos)
+	{
+		static unsigned int furniture_count = 0;
 		std::cout << "loading model chunk" << std::endl;
 		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE * furniture_count)
 		{
@@ -162,10 +145,12 @@ namespace scene
 		//collision_entities.push_back(main_character);
 		house_generator = new entities::HouseGenerator();
 
+		SetupHandDetection();
+
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
-			load_chunk(i);
+			LoadChunk(i);
 		}
 
 		lights.push_back(entities::Light(glm::vec3(0, 1000, 7000), glm::vec3(5, 5, 5))); // sun
@@ -273,6 +258,7 @@ namespace scene
 	//updates certain variables 
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
+		UpdateDeltaTime();
 		//camera.Move(window);
 		main_character->Move(window);
 		if (!main_character.get()->GetOnCollide())
@@ -291,11 +277,11 @@ namespace scene
 		// if we have passed a model, load a new one and delete the one behind us
 		if (last_model_pos != model_pos)
 		{
-			load_chunk(model_pos + UPCOMING_MODEL_AMOUNT);
+			LoadChunk(model_pos + UPCOMING_MODEL_AMOUNT);
 			score += furniture_count_old;
 			std::cout << "Score: " << score << std::endl;
 			std::cout << "Furniture_count_old in model (house excluded): " << furniture_count_old << std::endl;
-			
+
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
@@ -323,24 +309,14 @@ namespace scene
 		{
 			game_state = scene::Game_State::RUNNING;
 		}
-
-		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
-		{
-			reg_left.CalibrateBackground();
-			reg_right.CalibrateBackground();
-			reg_up.CalibrateBackground();
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		{
-			std::vector<int> tresholds = reg_left.CalculateSkinTresholds();
-			reg_right.setSkinTresholds(tresholds);
-			reg_up.setSkinTresholds(tresholds);
-		}
 	}
 
 	void scene::In_Game_Scene::update_hand_detection()
 	{
+		reg_left.UpdateTime(delta_time);
+		reg_right.UpdateTime(delta_time);
+		reg_up.UpdateTime(delta_time);
+
 		cv::Mat camera_frame;
 		static_camera::getCap().read(camera_frame);
 		reg_left.DetectHand(camera_frame);
@@ -350,24 +326,41 @@ namespace scene
 		cv::imshow("camera", camera_frame);
 	}
 
+	void scene::In_Game_Scene::OnSkinCalibrationCallback()
+	{
+		std::cout << "on skin calibration callback" << std::endl;
+		std::vector<int> tresholds = reg_left.CalculateSkinTresholds();
+		reg_right.setSkinTresholds(tresholds);
+		reg_up.setSkinTresholds(tresholds);
+	}
+
 	//renders the models for the pause menu
 	void In_Game_Scene::render_pause_menu()
 	{
 		render_engine::renderer::Render(pause_guis, *gui_shader);
 	}
 
-	void In_Game_Scene::DrawScore(int score) 
-	{	
+	void In_Game_Scene::DrawScore(int score)
+	{
 		std::vector<int> digits;
 		score_guis.clear();
 
 		toolbox::GetDigitsFromNumber(score, digits);
 
-		for (int i = digits.size()-1; i >= 0; i--)
-		{
-			score_textures[digits[i]].get()->position.x = 0.15 * i -0.9;
-			render_engine::renderer::Render(score_textures[digits[i]], *gui_shader);
 
+		for (int i = digits.size() - 1; i >= 0; i--)
+		{
+			score_textures[digits[i]].get()->position.x = 0.15 * i - 0.9; // place the number at the top left. the numbers are just fine tuned to get the position just right
+			render_engine::renderer::Render(score_textures[digits[i]], *gui_shader);
 		}
+	}
+
+	void In_Game_Scene::UpdateDeltaTime()
+	{
+		double current_time = glfwGetTime();
+		static double last_frame_time = current_time;
+		delta_time = current_time - last_frame_time;
+		last_frame_time = current_time;
+
 	}
 }

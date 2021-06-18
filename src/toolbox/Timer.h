@@ -42,5 +42,7 @@ namespace toolbox
 		 * @return: True if the timer has finished 
 		 */
 		bool HasFinished() const { return has_finished; }
+
+		void Reset() { current_time = 0; }
 	};
 }

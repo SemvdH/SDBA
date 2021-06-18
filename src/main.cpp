@@ -30,7 +30,7 @@
 #include "scenes/game_Over_Scene.h"
 #include "entities/collision_entity.h"
 
-#include "computervision/ObjectDetection.h"
+#include "computervision/object_detection.h"
 //#include "computervision/OpenPoseImage.h"
 #include "computervision/OpenPoseVideo.h"
 
