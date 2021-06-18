@@ -214,5 +214,4 @@ namespace scene
 			render_engine::renderer::Render(score_textures_gameOver[digits[i]], *gui_shader_gameOver);
 		}
 	}
-	
 }

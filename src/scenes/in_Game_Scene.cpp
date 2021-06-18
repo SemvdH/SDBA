@@ -30,7 +30,7 @@
 namespace scene
 {
 	std::shared_ptr<entities::MainCharacter>main_character;
-	std::vector<std::shared_ptr<entities::CollisionEntity>> collision_entities;
+	std::deque<std::shared_ptr<entities::CollisionEntity>> collision_entities;
 
 	//std::deque<std::shared_ptr<entities::CollisionEntity>> furniture_collision;
 
@@ -129,7 +129,7 @@ namespace scene
 			for (int i = 0; i < furniture_count; i++)
 			{
 				house_models.pop_front();
-				collision_entities.pop_back();
+				collision_entities.erase(collision_entities.begin() + 1);
 			}
 		}
 		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
@@ -158,8 +158,10 @@ namespace scene
 		models::TexturedModel model_char = { raw_model_char, texture };
 		collision::Box char_box = create_bounding_box(raw_model_char.model_size, glm::vec3(0, 0, 0), 1);
 		main_character = std::make_shared<entities::MainCharacter>(model_char, glm::vec3(0, 50, -100), glm::vec3(0, 90, 0), 5, char_box);
-		collision_entities.push_back(main_character);
+		
+		//collision_entities.push_back(main_character);
 		house_generator = new entities::HouseGenerator();
+
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
@@ -297,8 +299,10 @@ namespace scene
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
+		collision_entities.push_front(main_character);
 
 		collision::CheckCollisions(collision_entities);
+		collision_entities.pop_front();
 		
 		update_hand_detection();
 	}
