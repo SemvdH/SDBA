@@ -56,10 +56,8 @@ namespace computervision
 
 				if (!skin_calibrated)
 				{
-					skin_detector.calibrate(input_frame);
-					skin_calibrated = true;
-					hand_calibrator.SetSkinCalibration(skin_calibrated);
-					time = 0;
+					if (is_main_skin_detection_region)
+						skin_timer_callback();
 				}
 			}
 
@@ -135,6 +133,8 @@ namespace computervision
 	{
 		std::cout << "calibrating skin " << region_id << std::endl;
 		hand_calibrator.SetSkinCalibration(true);
+		skin_calibrated = true;
+		time = 0;
 		return skin_detector.calibrateAndReturn(frame_out);
 	}
 
@@ -143,6 +143,8 @@ namespace computervision
 		std::cout << "setting skin " << region_id << std::endl;
 		skin_detector.setTresholds(tresholds);
 		hand_calibrator.SetSkinCalibration(true);
+		skin_calibrated = true;
+		time = 0;
 	}
 
 	void HandDetectRegion::UpdateTime(float delta_time)

@@ -39,6 +39,8 @@ namespace computervision
 
 		void setSkinTresholds(std::vector<int>& tresholds);
 		void UpdateTime(float delta_time);
+		void SetMainSkinDetecRegion(bool val) { is_main_skin_detection_region = val; };
+		void SetSkinTimerCallback(std::function<void()> fun) { skin_timer_callback = fun; };
 
 	private:
 
@@ -61,6 +63,8 @@ namespace computervision
 
 		bool background_calibrated = false;
 		bool skin_calibrated = false;
+		bool is_main_skin_detection_region = false;
+		std::function<void()> skin_timer_callback;
 
 
 		

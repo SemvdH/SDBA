@@ -68,6 +68,9 @@ namespace scene
 		 */
 		void render_pause_menu();
 		void update_hand_detection();
+
+		void SetupHandDetection();
+		void OnSkinCalibrationCallback();
 	
 	public:
 		In_Game_Scene();

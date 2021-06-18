@@ -64,20 +64,20 @@ namespace scene
 		gui_shader->Init();
 		score = 0;
 
-		for (int i = 0; i <= 9; i++) 
+		for (int i = 0; i <= 9; i++)
 		{
 			std::shared_ptr<gui::GuiTexture> score_pointer;
 
 			std::string texture_path = "res/";
 			texture_path += std::to_string(i);
 			texture_path += ".png";
-			
+
 			score_pointer = std::make_unique<gui::GuiTexture>(render_engine::loader::LoadTexture(texture_path), glm::vec2(-0.9f, 0.8f), glm::vec2(0.07, 0.15));
-			
+
 			score_textures.push_back(score_pointer);
 		}
 
-		
+
 	}
 
 	/**
@@ -102,6 +102,29 @@ namespace scene
 		delete house_generator;
 	}
 
+	/**
+	 * @brief sets up the hand detection regions and sets the callbacks for the skin calibration.
+	 * 
+	 */
+	void In_Game_Scene::SetupHandDetection()
+	{
+		// set up squares according to size of camera input
+		cv::Mat camera_frame;
+		static_camera::getCap().read(camera_frame); // get camera frame to know the width and heigth
+
+		reg_left.SetMainSkinDetecRegion(true);
+		reg_right.SetMainSkinDetecRegion(false);
+		reg_right.SetMainSkinDetecRegion(false);
+		std::function<void()> callback = [this]() {OnSkinCalibrationCallback(); };
+		reg_left.SetSkinTimerCallback(callback);
+
+		reg_left.SetXPos(10);
+		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight() / 2);
+		reg_right.SetXPos(camera_frame.cols - 10 - reg_right.GetWidth());
+		reg_right.SetYPos(camera_frame.rows / 2 - reg_right.GetHeight() / 2);
+		reg_up.SetXPos(camera_frame.cols / 2 - reg_up.GetWidth() / 2);
+		reg_up.SetYPos(10);
+	}
 
 	/**
 	 * @brief loads a new chunk in front of the camera, and deletes the chunk behind the camera.
@@ -112,16 +135,6 @@ namespace scene
 	void load_chunk(int model_pos)
 	{
 		static unsigned int furniture_count = 0;
-
-		// set up squares according to size of camera input
-		cv::Mat camera_frame;
-		static_camera::getCap().read(camera_frame); // get camera frame to know the width and heigth
-		reg_left.SetXPos(10);
-		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight() / 2);
-		reg_right.SetXPos(camera_frame.cols - 10 - reg_right.GetWidth());
-		reg_right.SetYPos(camera_frame.rows / 2 - reg_right.GetHeight() / 2);
-		reg_up.SetXPos(camera_frame.cols / 2 - reg_up.GetWidth() / 2);
-		reg_up.SetYPos(10);
 		std::cout << "loading model chunk" << std::endl;
 		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE * furniture_count)
 		{
@@ -156,6 +169,9 @@ namespace scene
 		main_character = std::make_shared<entities::MainCharacter>(model_char, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5, char_box);
 		collision_entities.push_back(main_character);
 		house_generator = new entities::HouseGenerator();
+
+		SetupHandDetection();
+
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
@@ -285,14 +301,14 @@ namespace scene
 			score += furniture_count_old;
 			std::cout << "Score: " << score << std::endl;
 			std::cout << "Furniture_count_old in model (house excluded): " << furniture_count_old << std::endl;
-			
+
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
 
 		collision::CheckCollisions(collision_entities);
 		update_hand_detection();
-	
+
 
 	}
 
@@ -343,22 +359,30 @@ namespace scene
 		cv::imshow("camera", camera_frame);
 	}
 
+	void scene::In_Game_Scene::OnSkinCalibrationCallback()
+	{
+		std::cout << "on skin calibration callback" << std::endl;
+		std::vector<int> tresholds = reg_left.CalculateSkinTresholds();
+		reg_right.setSkinTresholds(tresholds);
+		reg_up.setSkinTresholds(tresholds);
+	}
+
 	//renders the models for the pause menu
 	void In_Game_Scene::render_pause_menu()
 	{
 		render_engine::renderer::Render(pause_guis, *gui_shader);
 	}
 
-	void In_Game_Scene::DrawScore(int score) 
-	{	
+	void In_Game_Scene::DrawScore(int score)
+	{
 		std::vector<int> digits;
 		score_guis.clear();
 
 		toolbox::GetDigitsFromNumber(score, digits);
 
-		for (int i = digits.size()-1; i >= 0; i--)
+		for (int i = digits.size() - 1; i >= 0; i--)
 		{
-			score_textures[digits[i]].get()->position.x = 0.15 * i -0.9;
+			score_textures[digits[i]].get()->position.x = 0.15 * i - 0.9;
 			render_engine::renderer::Render(score_textures[digits[i]], *gui_shader);
 
 		}
