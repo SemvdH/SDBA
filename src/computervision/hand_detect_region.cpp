@@ -23,7 +23,7 @@ namespace computervision
 		if (!background_calibrated || !skin_calibrated)
 			if (time >= TIME_DURATION)
 			{
-				std::cout << "timer finised,  seconds left: " << seconds_left << std::endl;
+				//std::cout << "timer finised,  seconds left: " << seconds_left << std::endl;
 				seconds_left--;
 				time = 0;
 			}

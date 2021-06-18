@@ -102,10 +102,7 @@ namespace scene
 		delete house_generator;
 	}
 
-	/**
-	 * @brief sets up the hand detection regions and sets the callbacks for the skin calibration.
-	 * 
-	 */
+	
 	void In_Game_Scene::SetupHandDetection()
 	{
 		// set up squares according to size of camera input
@@ -126,13 +123,8 @@ namespace scene
 		reg_up.SetYPos(10);
 	}
 
-	/**
-	 * @brief loads a new chunk in front of the camera, and deletes the chunk behind the camera.
-	 *
-	 * @param model_pos the amount of models the camera has passed already. This is the rounded result of (z position of camera) / (size of model)
-	 *
-	 */
-	void load_chunk(int model_pos)
+	
+	void In_Game_Scene::LoadChunk(int model_pos)
 	{
 		static unsigned int furniture_count = 0;
 		std::cout << "loading model chunk" << std::endl;

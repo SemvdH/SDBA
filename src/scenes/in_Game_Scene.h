@@ -3,6 +3,18 @@
 #include <ostream>
 #include <vector>
 #include <memory>
+#include <string>
+#include <opencv2/core/base.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <deque>
+#include <functional>
+#include <queue>
+#include <opencv2/core/base.hpp>
+
+#include "startup_Scene.h"
 #include "scene.h"
 #include "../gui/gui_interactable.h"
 #include "../models/model.h"
@@ -11,9 +23,12 @@
 #include "../renderEngine/renderer.h"
 #include "../shaders/entity_shader.h"
 #include "../toolbox/toolbox.h"
-#include <opencv2/core/base.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
+#include "../entities/main_character.h"
+#include "../collision/collision_handler.h"
+#include "../entities/house_generator.h"
+#include "../computervision/hand_detect_region.h"
+#include "../computervision/object_detection.h"
+
 
 
 namespace scene
@@ -56,7 +71,7 @@ namespace scene
 		std::vector<gui::GuiTexture*> guis;
 		//pause_guis is a list of components that will be rendered when the game is paused.
 		std::vector<gui::GuiTexture*> pause_guis;
-
+		// list of gui texture that holds the textures for the score
 		std::vector<std::shared_ptr<gui::GuiTexture>> score_guis;
 
 		void UpdateDeltaTime();
@@ -67,10 +82,39 @@ namespace scene
 		 * @return void
 		 */
 		void render_pause_menu();
+
+		/**
+		 * @brief updates the hand detection with the deltatime and checks the hand detection for each region. als updates the camera display
+		 *
+		 */
 		void update_hand_detection();
 
+		/**
+		 * @brief sets up the hand detection regions and sets the callbacks for the skin calibration.
+		 *
+		 */
 		void SetupHandDetection();
+
+		/**
+		 * @brief callback that gets called when the left skin detect region timout has been reached. sets the other regions with the skin data from the first region
+		 *
+		 */
 		void OnSkinCalibrationCallback();
+
+		/**
+		 * @brief draws the score on the screen with the digit resources.
+		 * 
+		 * @param score the score to display.
+		 */
+		void DrawScore(int score);
+
+		/**
+		 * @brief loads a new chunk in front of the camera, and deletes the chunk behind the camera.
+		 *
+		 * @param model_pos the amount of models the camera has passed already. This is the rounded result of (z position of camera) / (size of model)
+		 *
+		 */
+		void LoadChunk(int model_pos);
 	
 	public:
 		In_Game_Scene();
@@ -108,7 +152,7 @@ namespace scene
 		 */
 		void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) override;
 	
-		void DrawScore(int score);
+		
 
 	};
 }
