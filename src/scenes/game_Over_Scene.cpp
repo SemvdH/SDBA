@@ -95,9 +95,10 @@ namespace scene
 		gui::Button button_start_scene(render_engine::loader::LoadTexture("res/Birb1.jpg"), glm::vec2(0.0f, -0.5f), glm::vec2(0.25f, 0.25f));
 		button_start_scene.SetHoverTexture(render_engine::loader::LoadTexture("res/Birb2.jpg"));
 		button_start_scene.SetClickedTexture(render_engine::loader::LoadTexture("res/Birb3.jpg"));
-		button_start_scene.SetOnClickAction([]()
+		button_start_scene.SetOnClickAction([this]()
 			{
 				std::cout << "Back to start screen!!" << std::endl;
+				return_value = Scenes::STARTUP;
 				
 			});
 		guis_gameOver.push_back(&button_start_scene);
