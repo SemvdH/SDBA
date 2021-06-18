@@ -6,6 +6,35 @@
 #include "entities/Entity.h"
 
 namespace singleton {
+	enum class FurnitureType
+	{
+		COUCH,
+		TABLE,
+		CHAIR,
+		PLANT,
+		GUITAR,
+		BOOKSHELF,
+		LAMP,
+		CEILING_OBJECTS,
+		MISC
+	};
+	struct FurniturePiece
+	{
+		FurnitureType type;
+		int size;
+	};
+
+	struct FurnitureModel
+	{
+		FurniturePiece furniture;
+		std::deque<models::TexturedModel> texture;
+
+		bool operator<(FurnitureModel a)
+		{
+			return true;
+		}
+	};
+	
 	class Model_Storage
 	{
 	private:
@@ -17,7 +46,9 @@ namespace singleton {
 		//default texture
 		models::ModelTexture default_texture;
 
-
+		//list that sorts furniture_models on type
+		std::deque<FurnitureModel> furniture_models;
+		
 		//list of furniture:
 		//couches
 		std::deque<models::TexturedModel> couches;
@@ -64,8 +95,9 @@ namespace singleton {
 		void add_guitar(models::TexturedModel guitar);
 		void add_bookshelf(models::TexturedModel bookshelf);
 		void add_lamp(models::TexturedModel lamp);
-		void addd_ceiling_object(models::TexturedModel co);
+		void add_ceiling_object(models::TexturedModel co);
 		void add_misc(models::TexturedModel misc);
+		void add_furniture_model(FurnitureModel model);
 
 		//getters for the whole list
 		std::deque<models::TexturedModel> get_all_couches();
@@ -77,6 +109,7 @@ namespace singleton {
 		std::deque<models::TexturedModel> get_all_lamps();
 		std::deque<models::TexturedModel> get_all_ceiling_objects();
 		std::deque<models::TexturedModel> get_all_miscs();
+		std::deque<FurnitureModel> get_all_furniture_models();
 
 		//getters for one model
 		models::TexturedModel get_couch(int index);
@@ -88,6 +121,7 @@ namespace singleton {
 		models::TexturedModel get_lamp(int index);
 		models::TexturedModel get_ceiling_object(int index);
 		models::TexturedModel get_misc(int index);
+		FurnitureModel get_furniture_model(int index);
 
 		//getters for the standard variables
 		models::TexturedModel get_house_model();

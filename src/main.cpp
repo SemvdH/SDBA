@@ -132,6 +132,7 @@ int main(void)
 
 	// Clean up -> preventing memory leaks!!!
     std::cout << "ending..." << std::endl;
+    render_engine::loader::CleanUp();
 	glfwTerminate();
 	return 0;
 }

@@ -6,6 +6,7 @@ std::mutex singleton::Model_Storage::mutex;
 
 singleton::Model_Storage::~Model_Storage()
 {
+	std::cout << "DELETING...." << std::endl;
 	delete instance;
 }
 
@@ -57,7 +58,7 @@ void singleton::Model_Storage::add_lamp(models::TexturedModel lamp)
 	lamps.push_back(lamp);
 }
 
-void singleton::Model_Storage::addd_ceiling_object(models::TexturedModel co)
+void singleton::Model_Storage::add_ceiling_object(models::TexturedModel co)
 {
 	ceiling_objects.push_back(co);
 }
@@ -65,6 +66,11 @@ void singleton::Model_Storage::addd_ceiling_object(models::TexturedModel co)
 void singleton::Model_Storage::add_misc(models::TexturedModel misc)
 {
 	miscs.push_back(misc);
+}
+
+void singleton::Model_Storage::add_furniture_model(FurnitureModel model)
+{
+	furniture_models.push_back(model);
 }
 
 /**
@@ -116,6 +122,11 @@ std::deque<models::TexturedModel> singleton::Model_Storage::get_all_miscs()
 	return miscs;
 }
 
+std::deque<singleton::FurnitureModel> singleton::Model_Storage::get_all_furniture_models()
+{
+	return furniture_models;
+}
+
 models::TexturedModel singleton::Model_Storage::get_couch(int index)
 {
 	return couches[index];
@@ -159,6 +170,11 @@ models::TexturedModel singleton::Model_Storage::get_ceiling_object(int index)
 models::TexturedModel singleton::Model_Storage::get_misc(int index)
 {
 	return miscs[index];
+}
+
+singleton::FurnitureModel singleton::Model_Storage::get_furniture_model(int index)
+{
+	return furniture_models[index];
 }
 
 

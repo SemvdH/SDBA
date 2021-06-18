@@ -175,7 +175,7 @@ namespace scene
 			glfwPollEvents();
 		}
 		gui_shader1->CleanUp();
-		render_engine::loader::CleanUp();
+		//render_engine::loader::CleanUp();
 		return return_value;
 	}
 
