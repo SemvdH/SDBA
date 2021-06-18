@@ -19,6 +19,7 @@ namespace scene
 
 	public:
 		Game_Over_Scene(int score);
+		~Game_Over_Scene();
 
 		Scenes start(GLFWwindow* window) override;
 

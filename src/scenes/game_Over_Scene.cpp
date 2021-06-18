@@ -81,8 +81,8 @@ namespace scene
 		button_start_scene.SetClickedTexture(render_engine::loader::LoadTexture("res/Birb3.jpg"));
 		button_start_scene.SetOnClickAction([this]()
 			{
-				std::cout << "Back to start screen!!" << std::endl;
-				return_value = Scenes::STARTUP;
+				std::cout << "Back to stop screen!!" << std::endl;
+				return_value = Scenes::STOP;
 				
 			});
 		guis_gameOver.push_back(&button_start_scene);
@@ -103,7 +103,6 @@ namespace scene
 		}
 
 		gui_shader_gameOver->CleanUp();
-		render_engine::loader::CleanUp();
 		return return_value;
 	}
 
@@ -176,5 +175,11 @@ namespace scene
 		delta_time = current_time - last_frame_time;
 		last_frame_time = current_time;
 
+	}
+
+	Game_Over_Scene::~Game_Over_Scene()
+	{
+		std::cout << "game over destructor" << std::endl;
+		delete gui_shader_gameOver;
 	}
 }

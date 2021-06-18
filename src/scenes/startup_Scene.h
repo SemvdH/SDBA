@@ -20,6 +20,8 @@ namespace scene
 		 */
 		Startup_Scene();
 
+		~Startup_Scene();
+
 		/**
 		 * @brief 
 		 * 

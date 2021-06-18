@@ -81,7 +81,7 @@ namespace scene
 
 	gui::GuiTexture* GetMenuItem(bool hand_state) {
 		if(hand_state)
-		item_number += 0.20f;
+		item_number += 0.10f;
 
 		int temp_item_number = item_number;
 		
@@ -220,5 +220,11 @@ namespace scene
 		else if (glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS) {
 			hand_mode = !hand_mode;
 		}
+	}
+
+	Startup_Scene::~Startup_Scene()
+	{
+		std::cout << "startup scene destructor" << std::endl;
+		delete gui_shader1;
 	}
 }
