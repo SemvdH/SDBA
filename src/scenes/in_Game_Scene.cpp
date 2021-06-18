@@ -60,7 +60,7 @@ namespace scene
 	}
 
 	/**
-	 * temporary!!!!
+	 * temporary?
 	 * just to make some bounding boxes
 	 */
 	collision::Box create_bounding_box(glm::vec3 size, glm::vec3 pos, int scale) {
@@ -190,6 +190,9 @@ namespace scene
 			});
 		pause_guis.push_back(&pause_button_quit);
 
+		regions.push_back(&reg_left);
+		regions.push_back(&reg_up);
+		regions.push_back(&reg_right);
 
 		//the scene loop, this while loop represent the scene
 		while (return_value == scene::Scenes::INGAME)
@@ -260,7 +263,8 @@ namespace scene
 	{
 		UpdateDeltaTime();
 		//camera.Move(window);
-		main_character->Move(window);
+		update_hand_detection();
+		main_character->Move(regions);
 		if (!main_character.get()->GetOnCollide())
 		{	
 			*ptr = score;

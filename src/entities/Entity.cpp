@@ -23,5 +23,7 @@ namespace entities
 		this->rotation.y += rotation.y;
 		this->rotation.z += rotation.z;
 	}
+
+
 }
 

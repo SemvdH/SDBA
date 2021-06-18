@@ -59,7 +59,6 @@
     <ClInclude Include="src\computervision\hand_detect_region.h" />
     <ClInclude Include="src\scenes\in_Game_Scene.h" />
     <ClInclude Include="src\scenes\scene.h" />
-    <ClInclude Include="src\computervision\async\async_arm_detection.h" />
     <ClInclude Include="src\computervision\async\StaticCameraInstance.h" />
     <ClInclude Include="src\computervision\finger_count.h" />
     <ClInclude Include="src\computervision\background_remover.h" />

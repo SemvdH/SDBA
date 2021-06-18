@@ -33,6 +33,7 @@ namespace computervision
 		skin_detector.drawSkinColorSampler(camera_frame,start_x_pos,start_y_pos,region_width,region_height);
 
 		// remove background from image
+
 		foreground = background_remover.getForeground(input_frame);
 
 		// detect the hand contours
@@ -67,7 +68,7 @@ namespace computervision
 		//imshow("output" + region_id, frame_out);
 		//imshow("foreground" + region_id, foreground);
 		//imshow("handMask" + region_id, handMask);
-		/*imshow("handDetection", fingerCountDebug);*/
+		//imshow("handDetection", fingerCountDebug);
 
 		hand_present = hand_calibrator.CheckIfHandPresent(handMask,handcalibration::HandDetectionType::GAME);
 		//std::string text = (hand_present ? "hand" : "no");
