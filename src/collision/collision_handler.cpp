@@ -3,7 +3,7 @@
 
 namespace collision
 {
-	void CheckCollisions(std::vector<std::shared_ptr<entities::CollisionEntity>> entities)
+	void CheckCollisions(std::vector<std::shared_ptr<entities::CollisionEntity>>& entities)
 	{
 		if (entities.size() < 2) { return; }
 			if (entities.size() == 2)
@@ -15,7 +15,7 @@ namespace collision
 					entities[1]->OnCollide(c);
 				}
 			}
-
+		
 			for (int i = 0; i < entities.size() - 2; i++)
 			{
 				std::shared_ptr<entities::CollisionEntity> entity = entities[i];

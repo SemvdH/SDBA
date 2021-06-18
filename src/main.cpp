@@ -60,22 +60,6 @@ void retrieve_points(std::vector<Point> arm_points, cv::Mat points_on_image)
 
 int main(void)
 {
-    collision::Box house_box_1 = { glm::vec3(-50, 0,0), glm::vec3(5,5,5) };
-    collision::Box house_box_2 = { glm::vec3(50, 0,0), glm::vec3(5,5,5) };
-    entities::CollisionEntity ent1({ {0,0}, {0} }, glm::vec3(-50, 0, 0), glm::vec3(0, 0, 0), 1, house_box_1);
-    entities::CollisionEntity ent2({ {0,0}, {0} }, glm::vec3(50, 0, 0), glm::vec3(0, 0, 0), 1, house_box_2);
-    while (true){
-        house_box_1.center_pos += 1;
-        ent1.IncreasePosition(glm::vec3(1, 0, 0));
-        ent1.MoveCollisionBox();
-        ent2.IncreasePosition(glm::vec3(-1, 0, 0));
-        ent2.MoveCollisionBox();
-
-        if (ent1.IsColliding(ent2)) {
-            std::cout << "entities are colliding!! " << ent1.GetPosition().x << " : " << ent2.GetPosition().x << std::endl;
-        }
-    }
-    return 0;
 #pragma region OPENGL_SETTINGS
 	if (!glfwInit())
 		throw "Could not inditialize glwf";

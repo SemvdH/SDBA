@@ -28,66 +28,66 @@ namespace entities
 		collision::Box house_box = { position, glm::vec3(0,0,0) };
 		furniture.push_front(std::make_shared<CollisionEntity>(house_model, position, glm::vec3(0, y_rotation, 0), HOUSE_SIZE, house_box));
 
-		for(int i = 0; i<toolbox::Random(1,4);i++)
-		{
-			FurnitureType type = FurnitureType(toolbox::Random(0, furniture_models.size() - 1));
-			models::TexturedModel model = GetFurnitureModel(type);
-			glm::vec3 model_pos = glm::vec3(position.x, position.y, position.z);
-			collision::Box model_box = { model_pos, model.raw_model.model_size };
-			model_box.SetRotation(-90);
-			furniture.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE * 2, model_box));
-			//furniture_collision.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE * 2, model_box));
-			
-		}
+		// for(int i = 0; i<toolbox::Random(1,4);i++)
+		// {
+		// 	FurnitureType type = FurnitureType(toolbox::Random(0, furniture_models.size() - 1));
+		// 	models::TexturedModel model = GetFurnitureModel(type);
+		// 	glm::vec3 model_pos = glm::vec3(position.x, position.y, position.z);
+		// 	collision::Box model_box = { model_pos, model.raw_model.model_size };
+		// 	model_box.SetRotation(-90);
+		// 	furniture.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE * 2, model_box));
+		// 	//furniture_collision.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE * 2, model_box));
+		// 	
+		// }
 
 		//furniture_collision.pop_front();
 		
 		
 		// Add furniture
-		models::TexturedModel couch = GetFurnitureModel(FurnitureType::COUCH);
-		glm::vec3 couch_pos = glm::vec3(position.x + 200, position.y, position.z + 10);
-		collision::Box couch_box = { couch_pos, couch.raw_model.model_size };
-		couch_box.SetRotation(-90);
-		furniture.push_back(std::make_shared<CollisionEntity>(couch, couch_pos, glm::vec3(0, -90, 0), HOUSE_SIZE * 2, couch_box));
-
-		models::TexturedModel table = GetFurnitureModel(FurnitureType::TABLE);
-		glm::vec3 table_pos = glm::vec3(position.x - 30, position.y, position.z);
-		collision::Box table_box = { table_pos, table.raw_model.model_size };
-		furniture.push_back(std::make_shared<CollisionEntity>(table, table_pos, glm::vec3(0, 0, 0), HOUSE_SIZE * 1.3, table_box));
-
-		models::TexturedModel chair = GetFurnitureModel(FurnitureType::CHAIR);
-		glm::vec3 chair_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
-		collision::Box chair_box = { chair_pos, chair.raw_model.model_size };
-		furniture.push_back(std::make_shared<CollisionEntity>(chair, chair_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, chair_box));
-
-		models::TexturedModel plant = GetFurnitureModel(FurnitureType::PLANT);
-		glm::vec3 plant_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
-		collision::Box plant_box = { plant_pos, plant.raw_model.model_size };
-		furniture.push_back(std::make_shared<CollisionEntity>(plant, plant_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, plant_box));
-
-		models::TexturedModel guitar = GetFurnitureModel(FurnitureType::GUITAR);
-		glm::vec3 guitar_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
-		collision::Box guitar_box = { guitar_pos, guitar.raw_model.model_size };
-		furniture.push_back(std::make_shared<CollisionEntity>(guitar, guitar_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, guitar_box));
-		
-		models::TexturedModel bookshelf = GetFurnitureModel(FurnitureType::BOOKSHELF);
-		glm::vec3 bookshelf_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
-		collision::Box bookshelf_box = { bookshelf_pos, bookshelf.raw_model.model_size };
-		furniture.push_back(std::make_shared<CollisionEntity>(bookshelf, bookshelf_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, bookshelf_box));
-
-		models::TexturedModel lamp = GetFurnitureModel(FurnitureType::LAMP);
-		glm::vec3 lamp_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
-		collision::Box lamp_box = { lamp_pos, lamp.raw_model.model_size };
-		furniture.push_back(std::make_shared<CollisionEntity>(lamp, lamp_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, lamp_box));
-
-		models::TexturedModel ceiling_object = GetFurnitureModel(FurnitureType::CEILING_OBJECTS);
-		glm::vec3 ceiling_object_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
-		collision::Box ceiling_object_box = { ceiling_object_pos, ceiling_object.raw_model.model_size };
-		furniture.push_back(std::make_shared<CollisionEntity>(ceiling_object, ceiling_object_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, ceiling_object_box));
+		 // models::TexturedModel couch = GetFurnitureModel(FurnitureType::COUCH);
+		 // glm::vec3 couch_pos = glm::vec3(position.x + 200, position.y, position.z + 10);
+		 // collision::Box couch_box = { couch_pos, couch.raw_model.model_size * (HOUSE_SIZE) };
+		 // couch_box.SetRotation(-90);
+		 // furniture.push_back(std::make_shared<CollisionEntity>(couch, couch_pos, glm::vec3(0, -90, 0), HOUSE_SIZE * 2, couch_box));
+		 //
+		 // models::TexturedModel table = GetFurnitureModel(FurnitureType::TABLE);
+		 // glm::vec3 table_pos = glm::vec3(position.x - 30, position.y, position.z);
+		 // collision::Box table_box = { table_pos, table.raw_model.model_size * ((HOUSE_SIZE) * 1.3f) };
+		 // furniture.push_back(std::make_shared<CollisionEntity>(table, table_pos, glm::vec3(0, 0, 0), HOUSE_SIZE * 1.3, table_box));
+		 //
+		 // models::TexturedModel chair = GetFurnitureModel(FurnitureType::CHAIR);
+		 // glm::vec3 chair_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
+		 // collision::Box chair_box = { chair_pos, chair.raw_model.model_size * (HOUSE_SIZE) };
+		 // furniture.push_back(std::make_shared<CollisionEntity>(chair, chair_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, chair_box));
+		 //
+		 // models::TexturedModel plant = GetFurnitureModel(FurnitureType::PLANT);
+		 // glm::vec3 plant_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
+		 // collision::Box plant_box = { plant_pos, plant.raw_model.model_size * (HOUSE_SIZE) };
+		 // furniture.push_back(std::make_shared<CollisionEntity>(plant, plant_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, plant_box));
+		 //
+		 // models::TexturedModel guitar = GetFurnitureModel(FurnitureType::GUITAR);
+		 // glm::vec3 guitar_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
+		 // collision::Box guitar_box = { guitar_pos, guitar.raw_model.model_size * (HOUSE_SIZE) };
+		 // furniture.push_back(std::make_shared<CollisionEntity>(guitar, guitar_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, guitar_box));
+		 //
+		 // models::TexturedModel bookshelf = GetFurnitureModel(FurnitureType::BOOKSHELF);
+		 // glm::vec3 bookshelf_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
+		 // collision::Box bookshelf_box = { bookshelf_pos, bookshelf.raw_model.model_size * (HOUSE_SIZE) };
+		 // furniture.push_back(std::make_shared<CollisionEntity>(bookshelf, bookshelf_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, bookshelf_box));
+		 //
+		 // models::TexturedModel lamp = GetFurnitureModel(FurnitureType::LAMP);
+		 // glm::vec3 lamp_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
+		 // collision::Box lamp_box = { lamp_pos, lamp.raw_model.model_size * (HOUSE_SIZE) };
+		 // furniture.push_back(std::make_shared<CollisionEntity>(lamp, lamp_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, lamp_box));
+		 //
+		 // models::TexturedModel ceiling_object = GetFurnitureModel(FurnitureType::CEILING_OBJECTS);
+		 // glm::vec3 ceiling_object_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
+		 // collision::Box ceiling_object_box = { ceiling_object_pos, ceiling_object.raw_model.model_size * (HOUSE_SIZE / 2) };
+		 // furniture.push_back(std::make_shared<CollisionEntity>(ceiling_object, ceiling_object_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, ceiling_object_box));
 
 		models::TexturedModel misc = GetFurnitureModel(FurnitureType::MISC);
-		glm::vec3 misc_pos = glm::vec3(position.x - 50, position.y, position.z + 220);
-		collision::Box misc_box = { misc_pos, misc.raw_model.model_size };
+		glm::vec3 misc_pos = glm::vec3(position.x - 50, position.y - 10, position.z + 220);
+		collision::Box misc_box = { misc_pos, misc.raw_model.model_size * (HOUSE_SIZE) };
 		furniture.push_back(std::make_shared<CollisionEntity>(misc, misc_pos, glm::vec3(0, 0, 0), HOUSE_SIZE, misc_box));
 		
 		return furniture;

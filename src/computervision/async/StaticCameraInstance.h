@@ -6,7 +6,7 @@ namespace static_camera
 
 	static cv::VideoCapture getCap()
 	{
-		static cv::VideoCapture cap(0);
+		static cv::VideoCapture cap(1);
 		return cap;
 	}
 };

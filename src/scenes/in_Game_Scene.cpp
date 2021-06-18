@@ -274,11 +274,9 @@ namespace scene
 		main_character->Move(window);
 		if (!main_character.get()->GetOnCollide())
 		{
-			return_value = scene::Scenes::GAMEOVER;
+			//return_value = scene::Scenes::GAMEOVER;
 		}
 
-		std::cout << "Pos of main char: " << main_character.get()->GetPosition().z << std::endl;
-		std::cout << "Pos z of collision entity: "<< collision_entities.at(0).get()->GetPosition().z << std::endl;
 		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 		camera->Follow(main_character->GetPosition());
 
