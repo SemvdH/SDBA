@@ -23,6 +23,7 @@
     <ClCompile Include="src\entities\main_character.cpp" />
     <ClCompile Include="src\entities\house_generator.cpp" />
     <ClCompile Include="src\computervision\calibration\HandCalibrator.cpp" />
+    <ClCompile Include="src\scenes\game_Over_Scene.cpp" />
     <ClCompile Include="src\computervision\hand_detect_region.cpp" />
     <ClCompile Include="src\scenes\in_Game_Scene.cpp" />
     <ClCompile Include="src\computervision\MenuTest.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="src\entities\house_generator.h" />
     <ClInclude Include="src\computervision\calibration\HandCalibrator.h" />
     <ClInclude Include="src\computervision\calibration\StaticSkinTreshold.h" />
+    <ClInclude Include="src\scenes\game_Over_Scene.h" />
     <ClInclude Include="src\computervision\hand_detect_region.h" />
     <ClInclude Include="src\scenes\in_Game_Scene.h" />
     <ClInclude Include="src\scenes\scene.h" />
