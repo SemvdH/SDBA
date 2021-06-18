@@ -23,6 +23,7 @@ namespace computervision
 
 	bool background_calibrated = false;
 	bool skin_calibrated = false;
+	bool hand_open = false;
 
 	ObjectDetection::ObjectDetection()
 	{
@@ -94,6 +95,7 @@ namespace computervision
 					skin_calibrated = true;
 					hand_calibrator.SetSkinCalibration(skin_calibrated);
 					time = 0;
+					calibration_callback();
 				}
 			}
 
@@ -126,8 +128,8 @@ namespace computervision
 		hand_present = hand_calibrator.CheckIfHandPresent(handMask, handcalibration::HandDetectionType::MENU);
 		hand_calibrator.SetHandPresent(hand_present);
 
-
-		return fingers_amount > 0;
+		hand_open = fingers_amount > 0;
+		return hand_open;
 	}
 
 	void ObjectDetection::CalculateDifference()
@@ -185,6 +187,16 @@ namespace computervision
 		last_frame_time = current_time;
 
 		time += delt_time;
+	}
+
+	bool ObjectDetection::IsHandOpen()
+	{
+		return hand_open;
+	}
+
+	bool ObjectDetection::IsCalibrated()
+	{
+		return background_calibrated && skin_calibrated;
 	}
 
 

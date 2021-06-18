@@ -14,6 +14,7 @@ namespace scene
 		scene::Scenes return_value = scene::Scenes::GAMEOVER;
 		std::vector<std::shared_ptr<gui::GuiTexture>> score_guis_gameOver;
 		std::shared_ptr<gui::GuiTexture> game_over_texture;
+		void UpdateDeltaTime();
 
 
 	public:

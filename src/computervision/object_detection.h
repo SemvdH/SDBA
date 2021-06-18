@@ -11,6 +11,7 @@
 #include <opencv2/video.hpp>
 #include <GLFW/glfw3.h>
 
+#include <functional>
 #include "background_remover.h"
 #include "skin_detector.h"
 #include "finger_count.h"
@@ -81,6 +82,8 @@ namespace computervision
 		 */
 		bool IsHandOpen();
 
+		bool IsCalibrated();
+
 
 		/**
 		 * @brief checks whether the hand is held within the detection square.
@@ -91,10 +94,13 @@ namespace computervision
 
 		cv::VideoCapture GetCap();
 
+		void SetCalibrationCallback(std::function<void()> fun) { calibration_callback = fun; };
+
 	private:
 		bool is_hand_open;
 		bool is_hand_present;
 		void UpdateTime();
+		std::function<void()> calibration_callback;
 
 	};
 

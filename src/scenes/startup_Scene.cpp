@@ -40,6 +40,11 @@ namespace scene
 		gui_shader1->Init();
 	}
 
+	void Startup_Scene::EnableHandMode()
+	{
+		hand_mode = true;
+	}
+
 	gui::Button* ConvertGuiTextureToButton(gui::GuiTexture* texture) {
 		gui::Button* button;
 		if (texture != NULL)
@@ -92,7 +97,7 @@ namespace scene
 	scene::Scenes scene::Startup_Scene::start(GLFWwindow *window)
 	{
 		// GUI stuff
-		gui::Button button_start(render_engine::loader::LoadTexture("res/menu_item_start1.png"), glm::vec2(0.0f, 0.6f), glm::vec2(0.25f, 0.25f));
+		gui::Button button_start(render_engine::loader::LoadTexture("res/menu_item_start1.png"), glm::vec2(0.0f, 0.3f), glm::vec2(0.25f, 0.25f));
 		button_start.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_start1_hover.png"));
 		button_start.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_start1_click.png"));
 		std::function<void()> start_fun = [this]()
@@ -106,7 +111,7 @@ namespace scene
 
 		guis1.push_back(&button_start);
 
-		gui::Button button_quit(render_engine::loader::LoadTexture("res/menu_item_quit1.png"), glm::vec2(0.0f, -0.6f), glm::vec2(0.25f, 0.25f));
+		gui::Button button_quit(render_engine::loader::LoadTexture("res/menu_item_quit1.png"), glm::vec2(0.0f, -0.3f), glm::vec2(0.25f, 0.25f));
 		button_quit.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_quit1_hover.png"));
 		button_quit.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_quit1_click.png"));
 		std::function<void()> quit_fun = [this]()
@@ -118,11 +123,11 @@ namespace scene
 		button_quit.SetOnClickAction(quit_fun);
 		guis1.push_back(&button_quit);
 
-		computervision::ObjectDetection objDetect;
 		cv::Mat cameraFrame;
 		gui::GuiTexture* chosen_item = NULL; //This is the selected menu_item
 		bool hand_closed = false; //Flag to prevent multiple button presses
-		
+		std::function<void()> calibration_func = [this]() {EnableHandMode(); };
+		objDetect.SetCalibrationCallback(calibration_func);
 		while (return_value == scene::Scenes::STARTUP)
 		{
 			render();

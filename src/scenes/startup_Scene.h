@@ -11,6 +11,7 @@ namespace scene
 	private:
 		//return_value is an enum that is necessary for the scene switching. Whenever this changes, the scene will change to a different scene.
 		scene::Scenes return_value = scene::Scenes::STARTUP;
+		void EnableHandMode();
 
 	public:
 		/**

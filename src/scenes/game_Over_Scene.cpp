@@ -23,11 +23,10 @@ namespace scene
 {
 	shaders::GuiShader* gui_shader_gameOver;
 	std::vector<gui::GuiTexture*> guis_gameOver;
-	computervision::ObjectDetection objDetect_gameOver;
 	std::vector<std::shared_ptr<gui::GuiTexture>> score_textures_gameOver;
-
-	float item_number_gameOver = 0;
-	bool hand_mode_gameOver = false;
+	double delta_time = 0;
+	double time = 0;
+	bool game_over = false;
 
 	Game_Over_Scene::Game_Over_Scene(int score) 
 	{
@@ -76,21 +75,6 @@ namespace scene
 		}
 	}
 
-	gui::GuiTexture* GetMenuItemGameOver(bool hand_state) {
-		if (hand_state)
-			item_number_gameOver += 0.20f;
-
-		int temp_item_number = item_number_gameOver;
-
-		//If temp_item_number is equal to the size of the array, set item_number bac to zero to loop through the array again
-		if (temp_item_number == guis_gameOver.size()) {
-			item_number_gameOver = 0;
-			temp_item_number = 0;
-		}
-		std::cout << guis_gameOver[temp_item_number]->texture << std::endl;
-		return guis_gameOver[temp_item_number];
-	}
-
 	scene::Scenes scene::Game_Over_Scene::start(GLFWwindow* window) {
 		gui::Button button_start_scene(render_engine::loader::LoadTexture("res/Birb1.jpg"), glm::vec2(0.0f, -0.5f), glm::vec2(0.25f, 0.25f));
 		button_start_scene.SetHoverTexture(render_engine::loader::LoadTexture("res/Birb2.jpg"));
@@ -112,46 +96,8 @@ namespace scene
 		{
 			render();
 			update(window);
-
-			if (hand_mode_gameOver) 
-			{
-				cameraFrame = objDetect_gameOver.ReadCamera();
-
-				bool detect = false;
-				bool hand_detection = objDetect_gameOver.DetectHand(cameraFrame, detect);
-
-				if (hand_detection) 
-				{
-					hand_closed = false;
-					std::cout << "hand is opened" << std::endl;
-
-					//Loop through menu items
-					chosen_item_gameOver = GetMenuItemGameOver(true);
-
-					gui::Button* new_button = ConvertGuiTextureToButtonGameOver(chosen_item_gameOver);
-					if (new_button != NULL) {
-						const float x_pos = (chosen_item_gameOver->position.x + 1.0) * WINDOW_WIDTH / 2;
-						const float y_pos = (1.0 - chosen_item_gameOver->position.y) * WINDOW_HEIGHT / 2;
-
-						//Set cursor to location of selected menu_item
-						glfwSetCursorPos(window, x_pos, y_pos);
-					}
-				}
-				else if (!hand_detection)
-				{
-					std::cout << "hand is closed" << std::endl;
-
-					//Gets selected menu_item
-					chosen_item_gameOver = GetMenuItemGameOver(false);
-					gui::Button* new_button = ConvertGuiTextureToButtonGameOver(chosen_item_gameOver);
-
-					if (new_button != NULL && !hand_closed) {
-						//Run function click
-						new_button->ForceClick(GLFW_MOUSE_BUTTON_LEFT);
-						hand_closed = true;
-					}
-				}
-			}
+			
+			if (game_over) button_start_scene.ForceClick(GLFW_MOUSE_BUTTON_LEFT);
 			glfwSwapBuffers(window);
 			glfwPollEvents();			
 		}
@@ -169,7 +115,10 @@ namespace scene
 		render_engine::renderer::Prepare();
 
 		// Render GUI items
-		render_engine::renderer::Render(guis_gameOver, *gui_shader_gameOver);
+		//render_engine::renderer::Render(guis_gameOver, *gui_shader_gameOver);
+
+		render_engine::renderer::Render(game_over_texture, *gui_shader_gameOver);
+		DrawScore(end_score);
 	}
 
 	/**
@@ -182,11 +131,16 @@ namespace scene
 			if (new_button != NULL)
 				new_button->Update(window);
 		}
-		bool hand_present;
-		objDetect_gameOver.DetectHand(objDetect_gameOver.ReadCamera(), hand_present);
+
+		UpdateDeltaTime();
+		time += delta_time;
+
+		if (time >= 5.0)
+		{
+			game_over = true;
+		}
 		
-		render_engine::renderer::Render(game_over_texture, *gui_shader_gameOver);
-		DrawScore(end_score);
+
 		}
 
 	/**
@@ -198,9 +152,6 @@ namespace scene
 		{
 			//return_value = scene::Scenes::STARTUP;
 			cv::destroyWindow("camera");
-		}
-		else if (glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS) {
-			hand_mode_gameOver = !hand_mode_gameOver;
 		}
 	}
 
@@ -216,5 +167,14 @@ namespace scene
 			score_textures_gameOver[digits[i]].get()->position.x = (0.15 * i - 0.05);
 			render_engine::renderer::Render(score_textures_gameOver[digits[i]], *gui_shader_gameOver);
 		}
+	}
+
+	void Game_Over_Scene::UpdateDeltaTime()
+	{
+		double current_time = glfwGetTime();
+		static double last_frame_time = current_time;
+		delta_time = current_time - last_frame_time;
+		last_frame_time = current_time;
+
 	}
 }

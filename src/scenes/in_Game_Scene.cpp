@@ -275,6 +275,7 @@ namespace scene
 			*ptr = score;
 			std::cout << "Score: " << score << std::endl;
 			return_value = scene::Scenes::GAMEOVER;
+			cv::destroyWindow("camera");
 		}
 
 		camera->Follow(main_character->GetPosition());
