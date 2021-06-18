@@ -19,10 +19,11 @@ namespace scene {
 	};
 
 	class Scene
-	{
+	{		
+		static int END_SCORE;
 	public:
 		virtual ~Scene() = 0;
-
+		
 		/**
 		 * @brief the method start is the start of a scene where a while loop runs, this runs the scene.
 		 * @param window the main window of the application
@@ -54,7 +55,13 @@ namespace scene {
 		 * @return void
 		 */
 		virtual void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) {};
+	
+		static void SetEndScore(int score) {
+			END_SCORE = score;
+		}
+
+		static int GetEndScore() {
+			return END_SCORE;
+		}
 	};
 }
-
-

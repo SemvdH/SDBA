@@ -22,12 +22,12 @@ namespace scene
 	shaders::GuiShader* gui_shader_gameOver;
 	std::vector<gui::GuiTexture*> guis_gameOver;
 	computervision::ObjectDetection objDetect_gameOver;
+	std::vector<std::shared_ptr<gui::GuiTexture>> score_textures_gameOver;
 
 	float item_number_gameOver = 0;
-
 	bool hand_mode_gameOver = false;
 
-	Game_Over_Scene::Game_Over_Scene() 
+	Game_Over_Scene::Game_Over_Scene(int score) 
 	{
 		shaders::EntityShader shader;
 		shader.Init();
@@ -36,13 +36,28 @@ namespace scene
 
 		gui_shader_gameOver = new shaders::GuiShader();
 		gui_shader_gameOver->Init();
+
+		for (int i = 0; i <= 9; i++)
+		{
+			std::shared_ptr<gui::GuiTexture> score_pointer;
+
+			std::string texture_path = "res/";
+			texture_path += std::to_string(i);
+			texture_path += ".png";
+
+			score_pointer = std::make_unique<gui::GuiTexture>(render_engine::loader::LoadTexture(texture_path), glm::vec2(0.0f, 0.2f), glm::vec2(0.07, 0.15));
+
+			score_textures_gameOver.push_back(score_pointer);
+		}
+
+		game_over_texture = std::make_unique<gui::GuiTexture>(render_engine::loader::LoadTexture("res/game_over.png"), glm::vec2(0.0f, 0.6f), glm::vec2(0.50f, 0.50f));
+		end_score = score;
 	}
 
 	gui::Button* ConvertGuiTextureToButtonGameOver(gui::GuiTexture* texture) {
 		gui::Button* button;
 		if (texture != NULL)
 		{
-
 			if (texture->GetType() == gui::GuiType::BUTTON) {
 
 				button = (gui::Button*)texture;
@@ -75,12 +90,13 @@ namespace scene
 	}
 
 	scene::Scenes scene::Game_Over_Scene::start(GLFWwindow* window) {
-		gui::Button button_start_scene(render_engine::loader::LoadTexture("res/Birb1.jpg"), glm::vec2(0.0f, 0.6f), glm::vec2(0.25f, 0.25f));
+		gui::Button button_start_scene(render_engine::loader::LoadTexture("res/Birb1.jpg"), glm::vec2(0.0f, -0.5f), glm::vec2(0.25f, 0.25f));
 		button_start_scene.SetHoverTexture(render_engine::loader::LoadTexture("res/Birb2.jpg"));
 		button_start_scene.SetClickedTexture(render_engine::loader::LoadTexture("res/Birb3.jpg"));
 		button_start_scene.SetOnClickAction([]()
 			{
 				std::cout << "Back to start screen!!" << std::endl;
+				
 			});
 		guis_gameOver.push_back(&button_start_scene);
 	
@@ -134,7 +150,7 @@ namespace scene
 				}
 			}
 			glfwSwapBuffers(window);
-			glfwPollEvents();
+			glfwPollEvents();			
 		}
 
 		gui_shader_gameOver->CleanUp();
@@ -165,7 +181,10 @@ namespace scene
 		}
 		bool hand_present;
 		objDetect_gameOver.DetectHand(objDetect_gameOver.ReadCamera(), hand_present);
-	}
+		
+		render_engine::renderer::Render(game_over_texture, *gui_shader_gameOver);
+		DrawScore(end_score);
+		}
 
 	/**
 	 * manages the key input in the start-up scene
@@ -174,11 +193,25 @@ namespace scene
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
-			return_value = scene::Scenes::INGAME;
+			return_value = scene::Scenes::STARTUP;
 			cv::destroyWindow("camera");
 		}
 		else if (glfwGetKey(window, GLFW_KEY_BACKSPACE) == GLFW_PRESS) {
 			hand_mode_gameOver = !hand_mode_gameOver;
+		}
+	}
+
+	void Game_Over_Scene::DrawScore(int score)
+	{
+		std::vector<int> digits;
+		score_guis_gameOver.clear();
+
+		toolbox::GetDigitsFromNumber(score, digits);
+
+		for (int i = digits.size() - 1; i >= 0; i--)
+		{
+			score_textures_gameOver[digits[i]].get()->position.x = (0.15 * i - 0.05);
+			render_engine::renderer::Render(score_textures_gameOver[digits[i]], *gui_shader_gameOver);
 		}
 	}
 	

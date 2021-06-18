@@ -46,6 +46,7 @@ namespace scene
 
 	int furniture_count_old;
 	int score;
+	int* ptr;
 
 	std::vector<computervision::HandDetectRegion> regions;
 	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
@@ -53,8 +54,9 @@ namespace scene
 	/**
 	 * sets up the first things when the objects has been made
 	 */
-	In_Game_Scene::In_Game_Scene()
+	In_Game_Scene::In_Game_Scene(int *score_ptr)
 	{
+		ptr = score_ptr;
 		camera = std::make_unique<entities::Camera>(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
 		shader = new shaders::EntityShader;
@@ -76,12 +78,7 @@ namespace scene
 			score_pointer = std::make_unique<gui::GuiTexture>(render_engine::loader::LoadTexture(texture_path), glm::vec2(-0.9f, 0.8f), glm::vec2(0.07, 0.15));
 			
 			score_textures.push_back(score_pointer);
-
-			std::cout << "Add to score_pointer: " << texture_path << std::endl;
 		}
-
-		std::cout << "Size textures: " << score_textures.size() << std::endl;
-		
 	}
 
 	/**
@@ -275,11 +272,12 @@ namespace scene
 		//camera.Move(window);
 		main_character->Move(window);
 		if (!main_character.get()->GetOnCollide())
-		{
+		{	
+			*ptr = score;
+			std::cout << "Score: " << score << std::endl;
 			return_value = scene::Scenes::GAMEOVER;
 		}
 
-		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 		camera->Follow(main_character->GetPosition());
 
 		// calculate where the next house model should be loaded
@@ -301,8 +299,6 @@ namespace scene
 		collision::CheckCollisions(collision_entities);
 		
 		update_hand_detection();
-	
-
 	}
 
 	//manages the key input in the game scene

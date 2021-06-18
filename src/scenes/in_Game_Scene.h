@@ -30,7 +30,6 @@ namespace scene
 		PAUSED
 	};
 
-
 	class In_Game_Scene : public scene::Scene
 	{
 	private:
@@ -68,7 +67,7 @@ namespace scene
 		void update_hand_detection();
 	
 	public:
-		In_Game_Scene();
+		In_Game_Scene(int *score_ptr);
 		~In_Game_Scene();
 
 		/**
