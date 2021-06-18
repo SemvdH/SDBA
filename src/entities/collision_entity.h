@@ -58,7 +58,7 @@ namespace entities
 		void SetCollisionBehaviour(std::function<void(const collision::Collision&)> function)
 		{ if (function != nullptr) { on_collide = function; } }
 
-	protected:
+	public:
 
 		/*
 		 * @brief: This method moves the collision to the center of the entity

@@ -7,7 +7,10 @@
 namespace scene
 {
 	std::shared_ptr<entities::MainCharacter>main_character;
-	std::vector<std::shared_ptr<entities::CollisionEntity>> collision_entities;
+	std::deque<std::shared_ptr<entities::CollisionEntity>> collision_entities;
+
+	//std::deque<std::shared_ptr<entities::CollisionEntity>> furniture_collision;
+
 	entities::HouseGenerator* house_generator;
 	std::deque<std::shared_ptr<entities::Entity>> house_models;
 
@@ -20,21 +23,19 @@ namespace scene
 
 	int furniture_count_old;
 	int score;
+	int* ptr;
 
-<<<<<<< HEAD
-	std::vector<computervision::HandDetectRegion*> regions;
-=======
 	float delta_time = 0;
 
 	std::vector<computervision::HandDetectRegion> regions;
->>>>>>> develop
 	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
 
 	/**
 	 * sets up the first things when the objects has been made
 	 */
-	In_Game_Scene::In_Game_Scene()
+	In_Game_Scene::In_Game_Scene(int *score_ptr)
 	{
+		ptr = score_ptr;
 		camera = std::make_unique<entities::Camera>(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
 		shader = new shaders::EntityShader;
@@ -54,11 +55,8 @@ namespace scene
 			texture_path += ".png";
 
 			score_pointer = std::make_unique<gui::GuiTexture>(render_engine::loader::LoadTexture(texture_path), glm::vec2(-0.9f, 0.8f), glm::vec2(0.07, 0.15));
-
 			score_textures.push_back(score_pointer);
 		}
-
-
 	}
 
 	/**
@@ -114,16 +112,19 @@ namespace scene
 			for (int i = 0; i < furniture_count; i++)
 			{
 				house_models.pop_front();
+				collision_entities.erase(collision_entities.begin() + 1);
 			}
 		}
 		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
 
-		std::deque<std::shared_ptr<entities::Entity>> furniture = house_generator->GenerateHouse(glm::vec3(0, -75, -50 - z_offset), 90);
+		std::deque<std::shared_ptr<entities::CollisionEntity>> furniture = house_generator->GenerateHouse(glm::vec3(0, -75, -50 - z_offset), 90);
 		furniture_count = furniture.size();
-
+		
 		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
+		collision_entities.insert(collision_entities.end(), furniture.begin(), furniture.end());
 		std::cout << "funriture_count in load chunk (house included): " << furniture_count << std::endl;
 		furniture_count_old = furniture_count - 1;
+
 	}
 
 	/**
@@ -139,8 +140,9 @@ namespace scene
 		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
 		models::TexturedModel model_char = { raw_model_char, texture };
 		collision::Box char_box = create_bounding_box(raw_model_char.model_size, glm::vec3(0, 0, 0), 1);
-		main_character = std::make_shared<entities::MainCharacter>(model_char, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5, char_box);
-		collision_entities.push_back(main_character);
+		main_character = std::make_shared<entities::MainCharacter>(model_char, glm::vec3(0, 50, -100), glm::vec3(0, 90, 0), 5, char_box);
+		
+		//collision_entities.push_back(main_character);
 		house_generator = new entities::HouseGenerator();
 
 		SetupHandDetection();
@@ -261,14 +263,15 @@ namespace scene
 	{
 		UpdateDeltaTime();
 		//camera.Move(window);
-<<<<<<< HEAD
 		update_hand_detection();
 		main_character->Move(regions);
-=======
-		main_character->Move(window);
->>>>>>> develop
+		if (!main_character.get()->GetOnCollide())
+		{	
+			*ptr = score;
+			std::cout << "Score: " << score << std::endl;
+			return_value = scene::Scenes::GAMEOVER;
+		}
 
-		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 		camera->Follow(main_character->GetPosition());
 
 		// calculate where the next house model should be loaded
@@ -286,14 +289,12 @@ namespace scene
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
+		collision_entities.push_front(main_character);
 
 		collision::CheckCollisions(collision_entities);
-<<<<<<< HEAD
-=======
+		collision_entities.pop_front();
+		
 		update_hand_detection();
-
-
->>>>>>> develop
 	}
 
 	//manages the key input in the game scene
@@ -350,11 +351,11 @@ namespace scene
 
 		toolbox::GetDigitsFromNumber(score, digits);
 
+
 		for (int i = digits.size() - 1; i >= 0; i--)
 		{
 			score_textures[digits[i]].get()->position.x = 0.15 * i - 0.9; // place the number at the top left. the numbers are just fine tuned to get the position just right
 			render_engine::renderer::Render(score_textures[digits[i]], *gui_shader);
-
 		}
 	}
 

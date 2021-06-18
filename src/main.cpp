@@ -27,12 +27,15 @@
 #include "scenes/scene.h"
 #include "scenes/in_Game_Scene.h"
 #include "scenes/startup_Scene.h"
+#include "scenes/game_Over_Scene.h"
+#include "entities/collision_entity.h"
 #include "computervision/object_detection.h"
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
 
+int score;
 static double UpdateDelta();
 
 static GLFWwindow* window;
@@ -58,7 +61,8 @@ int main(void)
 	glGetError();
 #pragma endregion
 
-    
+    //TODO change back to 0, only to show how score is visible on end screen
+    score = 0;
     current_scene = new scene::Startup_Scene();
 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -72,8 +76,6 @@ int main(void)
         });
     
     bool window_open = true;
-
-	
 
 	// Main game loop
 	while (!glfwWindowShouldClose(window) && window_open)
@@ -95,9 +97,13 @@ int main(void)
 
 		
             case scene::Scenes::INGAME:
-                current_scene = new scene::In_Game_Scene();
+                current_scene = new scene::In_Game_Scene(&score);
                 break;
                 
+            case scene::Scenes::GAMEOVER:
+                current_scene = new scene::Game_Over_Scene(score);
+                break;
+
             default:
                 std::cout << "Wrong return value!!! ->" << std::endl;
                 break;

@@ -5,6 +5,7 @@
 #include <map>
 #include "../models/Model.h"
 #include "../collision/collision.h"
+#include "collision_entity.h"
 
 namespace entities
 {
@@ -30,6 +31,8 @@ namespace entities
 		models::ModelTexture default_texture;
 		
 		std::map<FurnitureType, std::deque<models::TexturedModel>> furniture_models;
+		//std::deque<std::shared_ptr<CollisionEntity>> furniture_collision;
+
 
 	public:
 		HouseGenerator();
@@ -42,12 +45,17 @@ namespace entities
 		 *
 		 * @return: A list with all the entities of the generated house (the furniture)
 		 */
-		std::deque<std::shared_ptr<Entity>> GenerateHouse(const glm::vec3& position, float y_rotation);
+		std::deque<std::shared_ptr<CollisionEntity>> GenerateHouse(const glm::vec3& position, float y_rotation);
 
 		/*
 		 * @brief: Returns the depth of the house (chunk)
 		 */
-		float GetHouseDepth() const { return house_model.raw_model.model_size.x * HOUSE_SIZE; }
+		float GetHouseDepth() const { return house_model.raw_model.model_size.x * HOUSE_SIZE; 
+		
+		}
+
+		//std::deque<std::shared_ptr<CollisionEntity>> GetFurnitureCollisions();
+
 	
 	private:
 		/*

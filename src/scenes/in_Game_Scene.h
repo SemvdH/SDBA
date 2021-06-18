@@ -45,7 +45,6 @@ namespace scene
 		PAUSED
 	};
 
-
 	class In_Game_Scene : public scene::Scene
 	{
 	private:
@@ -117,7 +116,7 @@ namespace scene
 		void LoadChunk(int model_pos);
 	
 	public:
-		In_Game_Scene();
+		In_Game_Scene(int *score_ptr);
 		~In_Game_Scene();
 
 		/**
@@ -152,7 +151,11 @@ namespace scene
 		 */
 		void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) override;
 	
-		
+		/**
+		* @brief: This method renders the score points onto the game window
+		* @param score: Score to show
+		*/
+		void DrawScore(int score);
 
 	};
 }

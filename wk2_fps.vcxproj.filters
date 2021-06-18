@@ -39,6 +39,7 @@
     <ClCompile Include="src\entities\house_generator.cpp" />
     <ClCompile Include="src\computervision\MenuTest.cpp" />
     <ClCompile Include="src\scenes\scene.cpp" />
+    <ClCompile Include="src\scenes\game_Over_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\entities\Camera.cpp">
@@ -157,6 +158,7 @@
     <ClInclude Include="src\toolbox\Timer.h" />
     <ClInclude Include="src\toolbox\toolbox.h" />
     <ClInclude Include="src\scenes\startup_Scene.h" />
+    <ClInclude Include="src\scenes\game_Over_Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\haarcascade_frontalface_alt.xml" />
