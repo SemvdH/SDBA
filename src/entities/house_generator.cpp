@@ -79,7 +79,7 @@ namespace entities
 					glm::vec3 model_pos = glm::vec3(position.x + (x * multiplier_x) - (multiplier_x / 2) - offset_x, position.y, position.z + (z * multiplier_z) - (multiplier_z / 2) + offset_z);
 
 					collision::Box model_box = { model_pos, model.raw_model.model_size * HOUSE_SIZE };
-					model_box.SetRotation(-90);
+					model_box.SetRotation(90);
 					furniture_list->push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE, model_box));
 				}
 				//}

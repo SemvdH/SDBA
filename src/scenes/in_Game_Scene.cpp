@@ -24,6 +24,7 @@ namespace scene
 	int furniture_count_old;
 	int score;
 	int* ptr;
+	bool calibrated = false;
 
 	float delta_time = 0;
 
@@ -112,7 +113,7 @@ namespace scene
 			for (int i = 0; i < furniture_count; i++)
 			{
 				house_models.pop_front();
-				collision_entities.erase(collision_entities.begin() + 1);
+				collision_entities.pop_front();
 			}
 		}
 		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
@@ -265,6 +266,7 @@ namespace scene
 		UpdateDeltaTime();
 		//camera.Move(window);
 		update_hand_detection();
+		if (!calibrated) return;
 		main_character->Move(regions);
 		if (!main_character.get()->GetOnCollide())
 		{	
@@ -295,8 +297,6 @@ namespace scene
 
 		collision::CheckCollisions(collision_entities);
 		collision_entities.pop_front();
-		
-		update_hand_detection();
 	}
 
 	//manages the key input in the game scene
@@ -334,6 +334,7 @@ namespace scene
 
 	void scene::In_Game_Scene::OnSkinCalibrationCallback()
 	{
+		calibrated = true;
 		std::cout << "on skin calibration callback" << std::endl;
 		std::vector<int> tresholds = reg_left.CalculateSkinTresholds();
 		reg_right.setSkinTresholds(tresholds);
