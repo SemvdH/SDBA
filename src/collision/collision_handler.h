@@ -13,5 +13,5 @@ namespace collision
 	 *
 	 * @param entities: A list with all the collision entities.
 	 */
-	void CheckCollisions(std::vector<std::shared_ptr<entities::CollisionEntity>> entities);
+	void CheckCollisions(std::vector<std::shared_ptr<entities::CollisionEntity>>& entities);
 }

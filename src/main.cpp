@@ -76,7 +76,7 @@ int main(void)
 #pragma endregion
 
     //TODO change back to 0, only to show how score is visible on end screen
-    score = 30;
+    score = 0;
     current_scene = new scene::Startup_Scene();
 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
