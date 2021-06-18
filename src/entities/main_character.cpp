@@ -27,8 +27,8 @@ namespace entities
 		double delta_time = UpdateDelta();
 
 		if (is_playing) {
-			movement_speed = -15;	//Forward speed adjustment, bee is moving at a standard speedrate
-			down_speed = -50;		//Down speed adjustment, downspeed is difference between down_speed and UP_SPEED	
+			movement_speed = -50;	//Forward speed adjustment, bee is moving at a standard speedrate
+			down_speed = -40;		//Down speed adjustment, downspeed is difference between down_speed and UP_SPEED	
 			side_speed = 0;			//Side speed adjustment
 			//For gameplay with use of keyboard keys: W, A, S, D
 			//W: Go forward
@@ -69,7 +69,7 @@ namespace entities
 			}
 		}
 			IncreasePosition(glm::vec3(side_speed*delta_time, down_speed*delta_time, movement_speed*delta_time));
-			std::cout << "delta time char: "<< delta_time << std::endl;
+			//std::cout << "delta time char: "<< delta_time << std::endl;
 
 			//Use only for binding bee to house, such that it doesn't go outside of the room.
 			//TODO delete when boundingbox is implemented!

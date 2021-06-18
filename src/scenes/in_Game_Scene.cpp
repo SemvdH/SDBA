@@ -282,6 +282,7 @@ namespace scene
 		// if we have passed a model, load a new one and delete the one behind us
 		if (last_model_pos != model_pos)
 		{
+			std::cout << "updating score" << std::endl;
 			LoadChunk(model_pos + UPCOMING_MODEL_AMOUNT);
 			score += furniture_count_old;
 			std::cout << "Score: " << score << std::endl;

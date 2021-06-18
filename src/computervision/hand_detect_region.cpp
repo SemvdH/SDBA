@@ -1,6 +1,6 @@
 
 #include "hand_detect_region.h"
-#define TIME_DURATION 1.0f
+#define TIME_DURATION 1.5f
 namespace computervision
 {
 
