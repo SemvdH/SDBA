@@ -108,6 +108,7 @@ namespace scene
 	{
 		static unsigned int furniture_count = 0;
 		std::cout << "loading model chunk" << std::endl;
+		
 		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE * furniture_count)
 		{
 			for (int i = 0; i < furniture_count; i++)
@@ -117,15 +118,14 @@ namespace scene
 			}
 		}
 		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
+			std::deque<std::shared_ptr<entities::CollisionEntity>> furniture;
+			house_generator->GenerateHouse(&furniture, glm::vec3(0, -75, -50 - z_offset), 90);
+			furniture_count = furniture.size();
 
-		std::deque<std::shared_ptr<entities::CollisionEntity>> furniture;
-		house_generator->GenerateHouse(&furniture, glm::vec3(0, -75, -50 - z_offset), 90);
-		furniture_count = furniture.size();
-		
-		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
-		collision_entities.insert(collision_entities.end(), furniture.begin(), furniture.end());
-		std::cout << "funriture_count in load chunk (house included): " << furniture_count << std::endl;
-		furniture_count_old = furniture_count - 1;
+			house_models.insert(house_models.end(), furniture.begin(), furniture.end());
+			collision_entities.insert(collision_entities.end(), furniture.begin(), furniture.end());
+			std::cout << "funriture_count in load chunk (house included): " << furniture_count << std::endl;
+			furniture_count_old = furniture_count - 1;
 
 	}
 
@@ -142,7 +142,7 @@ namespace scene
 		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
 		models::TexturedModel model_char = { raw_model_char, texture };
 		collision::Box char_box = create_bounding_box(raw_model_char.model_size, glm::vec3(0, 0, 0), 1);
-		main_character = std::make_shared<entities::MainCharacter>(model_char, glm::vec3(0, 50, -100), glm::vec3(0, 90, 0), 5, char_box);
+		main_character = std::make_shared<entities::MainCharacter>(model_char, glm::vec3(0, 150, -100), glm::vec3(0, 90, 0), 5, char_box);
 		
 		//collision_entities.push_back(main_character);
 		house_generator = new entities::HouseGenerator();

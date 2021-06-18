@@ -75,8 +75,8 @@ namespace entities
 			//TODO delete when boundingbox is implemented!
 			if (position.x > 190) position.x = 190;
 			else if (position.x < -190) position.x = -190;
-			if (position.y > 350) position.y = 350;
-			else if (position.y < -40) position.y = -40;
+			if (position.y > 150) position.y = 150;
+			else if (position.y < -60) position.y = -60;
 			//Move player bounding box according to the position on screen
 			MoveCollisionBox();
 			if (reg_right->IsHandPresent() && reg_left->IsHandPresent())
