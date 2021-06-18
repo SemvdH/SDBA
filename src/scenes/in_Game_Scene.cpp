@@ -113,7 +113,7 @@ namespace scene
 		}
 		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
 
-		std::deque<std::shared_ptr<entities::Entity>> furniture;
+		std::deque<std::shared_ptr<entities::CollisionEntity>> furniture;
 		house_generator->GenerateHouse(&furniture, glm::vec3(0, -75, -50 - z_offset), 90);
 		furniture_count = furniture.size();
 

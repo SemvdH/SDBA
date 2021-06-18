@@ -49,12 +49,13 @@ namespace entities
 		}
 	}
 
-	void HouseGenerator::GenerateHouse(std::deque<std::shared_ptr<Entity>>* furniture_list , const glm::vec3& position, float y_rotation)
+	void HouseGenerator::GenerateHouse(std::deque<std::shared_ptr<CollisionEntity>>* furniture_list , const glm::vec3& position, float y_rotation)
 	{
 		std::deque<std::shared_ptr<Entity>> furniture;
 
 		// Add house
-		furniture_list->push_front(std::make_shared<Entity>(singleton::Model_Storage::get_instance()->get_house_model(), position, glm::vec3(0, y_rotation, 0), HOUSE_SIZE));
+		collision::Box bounding_box = { glm::vec3(0, 0, 0), glm::vec3(0, 0, 0) };
+		furniture_list->push_front(std::make_shared<CollisionEntity>(singleton::Model_Storage::get_instance()->get_house_model(), position, glm::vec3(0, y_rotation, 0), HOUSE_SIZE, bounding_box));
 		int house_size_x = singleton::Model_Storage::get_instance()->get_house_model().raw_model.model_size.x * HOUSE_SIZE;
 		int house_size_y = singleton::Model_Storage::get_instance()->get_house_model().raw_model.model_size.x * HOUSE_SIZE;
 		int house_size_z = singleton::Model_Storage::get_instance()->get_house_model().raw_model.model_size.x * HOUSE_SIZE;
@@ -76,7 +77,7 @@ namespace entities
 					//if (!(furniture_piece->size > 1 && x > 1)) {
 					glm::vec3 model_pos = glm::vec3(position.x + (x * multiplier_x) - (multiplier_x / 2) - offset_x, position.y, position.z + (z * multiplier_z) - (multiplier_z / 2) + offset_z);
 
-					collision::Box model_box = { model_pos, model.raw_model.model_size };
+					collision::Box model_box = { model_pos, model.raw_model.model_size * HOUSE_SIZE };
 					model_box.SetRotation(-90);
 					furniture_list->push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE, model_box));
 				}

@@ -19,7 +19,8 @@ namespace scene
 		shader_test = new shaders::EntityShader;
 		shader_test->Init();
 		render_engine::renderer::Init(*shader_test);
-
+		delete shader_test;
+		
 		gui_shader = new shaders::GuiShader();
 		gui_shader->Init();
 
@@ -35,6 +36,10 @@ namespace scene
 	Scenes Loading_Scene::start(GLFWwindow* window)
 	{
 		render();
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+		
 		load_default_variables();
 		load_all_models();
 		
@@ -45,22 +50,20 @@ namespace scene
 	{
 		render_engine::renderer::Prepare();
 		//starts the shader and begins to render
-		shader_test->Start();
-		shader_test->LoadSkyColor(render_engine::renderer::SKY_COLOR); 
-		shader_test->LoadViewMatrix(*camera_test);
-		
-
-
-		/*render_engine::renderer::Prepare();
-		
+		//shader_test->Start();
+		//shader_test->LoadSkyColor(render_engine::renderer::SKY_COLOR); 
+		//shader_test->LoadViewMatrix(*camera_test);
+				
 		gui::GuiTexture loading_image = { render_engine::loader::LoadTexture("res/loading_screen.png"),
 			glm::vec2(0,0),glm::vec2(1,1) };
 		
 		std::vector<gui::GuiTexture*> image_list;
 		image_list.push_back(&loading_image);
 		
-		render_engine::renderer::Render(image_list, *gui_shader);*/
-		shader_test->Stop();
+		render_engine::renderer::Render(image_list, *gui_shader);
+		//shader_test->Stop();
+
+		gui_shader->CleanUp();
 	}
 
 	void Loading_Scene::update(GLFWwindow* window)
