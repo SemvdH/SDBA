@@ -22,7 +22,10 @@ namespace entities
 
 	const FurniturePiece* HouseGenerator::GetRandomFurniturePiece()
 	{
-		FurnitureType random_type = FurnitureType(toolbox::Random(0, furniture_models.size() - 1));
+		FurnitureType random_type = FurnitureType::CEILING_OBJECTS;
+		while (random_type == FurnitureType::CEILING_OBJECTS ) {
+			random_type = FurnitureType(toolbox::Random(0, furniture_models.size() - 1));
+		}
 
 		for (std::deque<FurnitureModel>::iterator it = furniture_models.begin(); it != furniture_models.end(); ++it)
 		{
@@ -59,25 +62,25 @@ namespace entities
 
 		int offset_x = house_model.raw_model.model_size.z * (HOUSE_SIZE / 2);
 		int offset_z = house_model.raw_model.model_size.x * (HOUSE_SIZE / 2);
-		double multiplier_x = house_size_x / 2;
+		double multiplier_x = house_size_x / 4;
 		double multiplier_z = house_size_z / 3;
 
 		for (int z = 1; z < 4; z++) {
-			for (int x = 1; x < 3; x++)
+			for (int x = 1; x < 4; x++)
 			{
-				if (toolbox::Random(0, 100) < 90) {
+				//if (toolbox::Random(0, 100) < 90) {
 					const FurniturePiece* furniture_piece = GetRandomFurniturePiece();
 					if (furniture_piece->type != FurnitureType::CEILING_OBJECTS) {
 						models::TexturedModel model = GetFurnitureModel(furniture_piece);
-						if (!(furniture_piece->size > 1 && x > 1)) {
+						//if (!(furniture_piece->size > 1 && x > 1)) {
 							glm::vec3 model_pos = glm::vec3(position.x + (x * multiplier_x) - (multiplier_x / 2) - offset_x, position.y, position.z + (z * multiplier_z) - (multiplier_z / 2) + offset_z);
 
 							collision::Box model_box = { model_pos, model.raw_model.model_size };
 							model_box.SetRotation(-90);
 							furniture.push_back(std::make_shared<CollisionEntity>(model, model_pos, glm::vec3(0, -90, 0), HOUSE_SIZE, model_box));
 						}
-					}
-				}
+					//}
+				//}
 			}
 		}
 
