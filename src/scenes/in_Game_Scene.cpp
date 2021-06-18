@@ -144,7 +144,7 @@ namespace scene
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
-			load_chunk(i);
+			LoadChunk(i);
 		}
 
 		lights.push_back(entities::Light(glm::vec3(0, 1000, 7000), glm::vec3(5, 5, 5))); // sun
@@ -266,7 +266,7 @@ namespace scene
 		// if we have passed a model, load a new one and delete the one behind us
 		if (last_model_pos != model_pos)
 		{
-			load_chunk(model_pos + UPCOMING_MODEL_AMOUNT);
+			LoadChunk(model_pos + UPCOMING_MODEL_AMOUNT);
 			score += furniture_count_old;
 			std::cout << "Score: " << score << std::endl;
 			std::cout << "Furniture_count_old in model (house excluded): " << furniture_count_old << std::endl;
@@ -296,20 +296,6 @@ namespace scene
 		if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
 		{
 			game_state = scene::Game_State::RUNNING;
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
-		{
-			reg_left.CalibrateBackground();
-			reg_right.CalibrateBackground();
-			reg_up.CalibrateBackground();
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		{
-			std::vector<int> tresholds = reg_left.CalculateSkinTresholds();
-			reg_right.setSkinTresholds(tresholds);
-			reg_up.setSkinTresholds(tresholds);
 		}
 	}
 
@@ -351,7 +337,7 @@ namespace scene
 
 		for (int i = digits.size() - 1; i >= 0; i--)
 		{
-			score_textures[digits[i]].get()->position.x = 0.15 * i - 0.9;
+			score_textures[digits[i]].get()->position.x = 0.15 * i - 0.9; // place the number at the top left. the numbers are just fine tuned to get the position just right
 			render_engine::renderer::Render(score_textures[digits[i]], *gui_shader);
 
 		}

@@ -1,15 +1,5 @@
 
-#include <opencv2/videoio.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/video.hpp>
-#include <GLFW/glfw3.h>
-
 #include "object_detection.h"
-#include "background_remover.h"
-#include "skin_detector.h"
-#include "finger_count.h"
-#include "async/StaticCameraInstance.h"
-#include "calibration/HandCalibrator.h"
 
 #define TIME_DURATION 1.0f
 
@@ -127,6 +117,7 @@ namespace computervision
 		}
 		imshow("camera", camera_frame);
 
+		// uncomment these lines to show debug hand information
 		/*imshow("output", frame_out);
 		imshow("foreground", foreground);
 		imshow("handMask", handMask);
@@ -134,22 +125,6 @@ namespace computervision
 
 		hand_present = hand_calibrator.CheckIfHandPresent(handMask, handcalibration::HandDetectionType::MENU);
 		hand_calibrator.SetHandPresent(hand_present);
-
-
-
-		int key = waitKey(1);
-
-		if (key == 98) // b, calibrate the background
-		{
-			background_remover.calibrate(input_frame);
-			hand_calibrator.SetBackGroundCalibrated(true);
-		}
-		else if (key == 115) // s, calibrate the skin color
-		{
-			skin_detector.calibrate(input_frame);
-			hand_calibrator.SetSkinCalibration(true);
-
-		}
 
 
 		return fingers_amount > 0;

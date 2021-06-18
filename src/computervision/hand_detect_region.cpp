@@ -63,6 +63,7 @@ namespace computervision
 
 		}
 
+		// uncomment these lines to show debug hand information
 		//imshow("output" + region_id, frame_out);
 		//imshow("foreground" + region_id, foreground);
 		//imshow("handMask" + region_id, handMask);
