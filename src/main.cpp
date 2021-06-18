@@ -27,6 +27,10 @@
 #include "scenes/scene.h"
 #include "scenes/in_Game_Scene.h"
 #include "scenes/startup_Scene.h"
+#include "scenes/loading_Scene.h"
+#include "model_Storage.h"
+
+#include "computervision/ObjectDetection.h"
 #include "scenes/game_Over_Scene.h"
 #include "entities/collision_entity.h"
 #include "computervision/object_detection.h"
@@ -60,10 +64,10 @@ int main(void)
 	glewInit();
 	glGetError();
 #pragma endregion
-
-    //TODO change back to 0, only to show how score is visible on end screen
+    //current_scene = new scene::Startup_Scene();
+    current_scene = new scene::Loading_Scene();
     score = 0;
-    current_scene = new scene::Startup_Scene();
+
 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {
@@ -89,6 +93,10 @@ int main(void)
         switch (return_value) {
             case scene::Scenes::STOP:
                 window_open = false;
+                break;
+
+            case scene::Scenes::LOADING:
+                current_scene = new scene::Loading_Scene();
                 break;
 
             case scene::Scenes::STARTUP:
@@ -118,6 +126,7 @@ int main(void)
 
 	// Clean up -> preventing memory leaks!!!
     std::cout << "ending..." << std::endl;
+    render_engine::loader::CleanUp();
 	glfwTerminate();
 	return 0;
 }

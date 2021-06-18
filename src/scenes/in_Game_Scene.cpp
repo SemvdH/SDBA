@@ -117,7 +117,8 @@ namespace scene
 		}
 		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
 
-		std::deque<std::shared_ptr<entities::CollisionEntity>> furniture = house_generator->GenerateHouse(glm::vec3(0, -75, -50 - z_offset), 90);
+		std::deque<std::shared_ptr<entities::CollisionEntity>> furniture;
+		house_generator->GenerateHouse(&furniture, glm::vec3(0, -75, -50 - z_offset), 90);
 		furniture_count = furniture.size();
 		
 		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
@@ -225,7 +226,7 @@ namespace scene
 		}
 		shader->CleanUp();
 		gui_shader->CleanUp();
-		render_engine::loader::CleanUp();
+		//render_engine::loader::CleanUp();
 		return return_value;
 	}
 

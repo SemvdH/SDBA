@@ -3,40 +3,22 @@
 #include <deque>
 #include <memory>
 #include <map>
+
+#include "collision_entity.h"
 #include "../models/Model.h"
 #include "../collision/collision.h"
+#include "../model_Storage.h"
 #include "collision_entity.h"
 
 namespace entities
 {
-	enum class FurnitureType
-	{
-		COUCH,
-		TABLE,
-		CHAIR,
-		PLANT,
-		GUITAR,
-		BOOKSHELF,
-		LAMP,
-		CEILING_OBJECTS,
-		MISC
-	};
-	
 	class HouseGenerator
 	{
 	private:
 		const float HOUSE_SIZE = 30;
-		
-		models::TexturedModel house_model;
-		models::ModelTexture default_texture;
-		
-		std::map<FurnitureType, std::deque<models::TexturedModel>> furniture_models;
-		//std::deque<std::shared_ptr<CollisionEntity>> furniture_collision;
-
-
 	public:
 		HouseGenerator();
-
+		
 		/*
 		 * @brief: This function generates a house with furniture at the given position and rotation
 		 *
@@ -45,23 +27,16 @@ namespace entities
 		 *
 		 * @return: A list with all the entities of the generated house (the furniture)
 		 */
-		std::deque<std::shared_ptr<CollisionEntity>> GenerateHouse(const glm::vec3& position, float y_rotation);
+		void GenerateHouse(std::deque<std::shared_ptr<CollisionEntity>>* furniture_list, const glm::vec3& position, float y_rotation);
 
 		/*
 		 * @brief: Returns the depth of the house (chunk)
 		 */
-		float GetHouseDepth() const { return house_model.raw_model.model_size.x * HOUSE_SIZE; 
-		
-		}
-
-		//std::deque<std::shared_ptr<CollisionEntity>> GetFurnitureCollisions();
-
+		float GetHouseDepth() const { return singleton::Model_Storage::get_instance()->get_house_model().raw_model.model_size.x * HOUSE_SIZE; }
 	
 	private:
-		/*
-		 * @brief: This function loads all the 3D furniture models
-		 */
-		void GenerateFurnitureModels();
+		void GetRandomFurniturePiece(singleton::FurniturePiece* furniture_piece);
+		void GetFurniturePiece(singleton::FurnitureType type, singleton::FurniturePiece* furniture_piece);
 
 		/*
 		 * @brief: This funtion chooses and returns a random furniture of the given furniture type
@@ -70,6 +45,6 @@ namespace entities
 		 *
 		 * @return: The model of the random furniture of the chosen furniture type
 		 */
-		models::TexturedModel GetFurnitureModel(FurnitureType furniture);
+		models::TexturedModel GetFurnitureModel(const singleton::FurniturePiece* furniture);
 	};
 }

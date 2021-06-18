@@ -19,14 +19,14 @@ namespace gui
 	 */
 	struct GuiTexture
 	{
-		int texture;
+		GLuint texture;
 		glm::vec2 position;
 		glm::vec2 scale;
 
 		virtual GuiType GetType() {
 			return GuiType::LABEL;
 		}
-		GuiTexture(int texture, glm::vec2 position, glm::vec2 scale): texture(texture), position(position), scale(scale)
+		GuiTexture(GLuint texture, glm::vec2 position, glm::vec2 scale): texture(texture), position(position), scale(scale)
 		{
 			scale.x /= (WINDOW_WIDTH / WINDOW_HEIGHT);
 		}

@@ -175,7 +175,7 @@ namespace scene
 			glfwPollEvents();
 		}
 		gui_shader1->CleanUp();
-		render_engine::loader::CleanUp();
+		//render_engine::loader::CleanUp();
 		return return_value;
 	}
 
@@ -211,6 +211,7 @@ namespace scene
 	{
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
+
 			return_value = scene::Scenes::INGAME;
 			cv::destroyWindow("camera");
 		}
