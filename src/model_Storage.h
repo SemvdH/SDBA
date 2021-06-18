@@ -17,7 +17,6 @@ namespace singleton {
 		//default texture
 		models::ModelTexture default_texture;
 
-		entities::Entity* test_pointer;
 
 		//list of furniture:
 		//couches
@@ -97,9 +96,6 @@ namespace singleton {
 		//setters for the standard variables
 		void set_house_model(models::TexturedModel house);
 		void set_default_texture(models::ModelTexture texture);
-
-		void set_shared_test(entities::Entity* pointer);
-		entities::Entity* get_test_pointer();
 
 	};
 }

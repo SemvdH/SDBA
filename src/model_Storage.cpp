@@ -187,16 +187,3 @@ void singleton::Model_Storage::set_default_texture(models::ModelTexture texture)
 
 
 
-void singleton::Model_Storage::set_shared_test(entities::Entity* temp)
-{
-	test_pointer = temp;
-}
-
-entities::Entity* singleton::Model_Storage::get_test_pointer()
-{
-	return test_pointer;
-}
-
-
-
-

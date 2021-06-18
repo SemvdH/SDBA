@@ -12,6 +12,7 @@ namespace scene
 {
 	std::unique_ptr<entities::Camera> camera_test;
 	shaders::EntityShader* shader_test;
+	std::deque<std::shared_ptr<entities::Entity>> test;
 
 	Loading_Scene::Loading_Scene()
 	{
@@ -37,22 +38,6 @@ namespace scene
 		load_default_variables();
 		load_all_models();
 		
-		int vertices = singleton::Model_Storage::get_instance()->get_house_model().raw_model.vertex_count;
-		GLuint number = singleton::Model_Storage::get_instance()->get_house_model().raw_model.vao_id;
-
-		std::cout << "check shine damper: " << singleton::Model_Storage::get_instance()->get_test_pointer()->GetModel().texture.shine_damper << std::endl;
-		std::cout << "check texture id: " << singleton::Model_Storage::get_instance()->get_test_pointer()->GetModel().texture.texture_id << std::endl;
-
-		std::cout << "" << std::endl;
-		std::cout << "amount of vertices of the house model: " << vertices << std::endl;
-		std::cout << "GLUint of the house model: " << number << std::endl;
-
-		while (true) {
-			render();
-
-			glfwSwapBuffers(window);
-			glfwPollEvents();
-		}
 		return scene::Scenes::STARTUP;
 	}
 
@@ -63,9 +48,8 @@ namespace scene
 		shader_test->Start();
 		shader_test->LoadSkyColor(render_engine::renderer::SKY_COLOR); 
 		shader_test->LoadViewMatrix(*camera_test);
+		
 
-
-		//render_engine::renderer::Render(singleton::Model_Storage::get_instance()->get_test_pointer(), *shader_test);
 
 		/*render_engine::renderer::Prepare();
 		
@@ -92,18 +76,12 @@ namespace scene
 	void Loading_Scene::load_default_variables()
 	{
 		models::RawModel raw_model = render_engine::LoadObjModel("res/HouseNew.obj");
-		std::cout << "raw model vertices: " << raw_model.vertex_count << std::endl;
 		models::ModelTexture default_texture = { render_engine::loader::LoadTexture("res/Texture.png") };
 		default_texture.shine_damper = 10;
-
 		models::TexturedModel house = { raw_model, default_texture };
-		std::cout << "house struct vertices: " << house.raw_model.vertex_count << std::endl;
 		
-		entities::Entity temp = entities::Entity(singleton::Model_Storage::get_instance()->get_house_model(), glm::vec3(0, -100, -500), glm::vec3(0, 90, 0), 30);
-
-		singleton::Model_Storage::get_instance()->set_default_texture(default_texture);
 		singleton::Model_Storage::get_instance()->set_house_model(house);
-		singleton::Model_Storage::get_instance()->set_shared_test(&temp);
+		singleton::Model_Storage::get_instance()->set_default_texture(default_texture);
 	}
 
 	void Loading_Scene::load_all_models() 
