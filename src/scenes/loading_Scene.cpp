@@ -86,6 +86,49 @@ namespace scene
 
 	void Loading_Scene::load_all_models() 
 	{
+		// Couches
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/couchThree.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/Coach.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/lawnBenchOne.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+
+		// Tables
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/tableOne.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/tableTwo.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/bureauOne.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+
+		// Chairs
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/launchchair.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/lawnChairOne.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/ugly_chair.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+
+		// Plants
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/plantOne.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/plantTwo.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/plantThree.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+
+		// Guitars
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/guitarOne.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/guitarTwo.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		
+		// Bookshelves
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/bookShelfOne.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/bookShelfTwo.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/bookShelfThree.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+
+		// Lamps
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/lampOne.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/lampTwo.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+
+		// Ceiling objects
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/ceilingFan.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/ceilingFanTwo.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/ceilingLampOne.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/ceilingLampTwo.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+
+		// Miscs
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/tv.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/radio.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
+		singleton::Model_Storage::get_instance()->add_couch({ render_engine::LoadObjModel("res/Flowerpot.obj"), singleton::Model_Storage::get_instance()->get_default_texture() });
 
 	}
 }
