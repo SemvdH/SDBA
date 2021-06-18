@@ -18,7 +18,6 @@ namespace computervision
 		{
 			cv::rectangle(output_frame, cv::Rect(0, 0, output_frame.cols, 40), cv::Scalar(0, 0, 0), -1);
 			cv::putText(output_frame, "Hand calibration", cv::Point(output_frame.cols / 2 - 100, 25), cv::FONT_HERSHEY_PLAIN, 2.0, cv::Scalar(18, 219, 65), 2);
-			cv::putText(output_frame, "press 'b' to calibrate background,then press 's' to calibrate skin tone", cv::Point(5, 35), cv::FONT_HERSHEY_PLAIN, 1.0, cv::Scalar(18, 219, 65), 1);
 
 			cv::rectangle(output_frame, cv::Rect(0, output_frame.rows - 80, 450, output_frame.cols), cv::Scalar(0, 0, 0), -1);
 

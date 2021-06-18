@@ -174,9 +174,9 @@ namespace scene
 		gui::GuiTexture background(render_engine::loader::LoadTexture("res/background_grey.png"), glm::vec2(0, 0), glm::vec2(1, 1));
 		pause_guis.push_back(&background);
 
-		gui::Button pause_button_resume(render_engine::loader::LoadTexture("res/menu_item_start1.png"), glm::vec2(0.0f, 0.3f), glm::vec2(0.25f, 0.25f));
-		pause_button_resume.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_start1_hover.png"));
-		pause_button_resume.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_start1_click.png"));
+		gui::Button pause_button_resume(render_engine::loader::LoadTexture("res/menu_item_resume1.png"), glm::vec2(0.0f, 0.3f), glm::vec2(0.25f, 0.25f));
+		pause_button_resume.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_resume1_hover.png"));
+		pause_button_resume.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_resume1_click.png"));
 		std::function<void()> resume_fun = [this]()
 		{
 			std::cout << "I got clicked on the resume button!" << std::endl;
@@ -211,7 +211,9 @@ namespace scene
 
 			case scene::Game_State::PAUSED:
 				render();
+				update_buttons(window);
 				render_pause_menu();
+
 				break;
 
 			case scene::Game_State::RUNNING:
@@ -233,6 +235,27 @@ namespace scene
 		gui_shader->CleanUp();
 		//render_engine::loader::CleanUp();
 		return return_value;
+	}
+
+	gui::Button* In_Game_Scene::ConvertGuiTextureToButton(gui::GuiTexture* texture) {
+		gui::Button* button;
+		if (texture != NULL)
+		{
+
+			if (texture->GetType() == gui::GuiType::BUTTON) {
+
+				button = (gui::Button*)texture;
+				return button;
+			}
+			else {
+				button = nullptr;
+				return button;
+			}
+		}
+		else {
+			button = nullptr;
+			return button;
+		}
 	}
 
 	/**
@@ -262,6 +285,15 @@ namespace scene
 		shader->Stop();
 
 		DrawScore(score);
+	}
+
+	void scene::In_Game_Scene::update_buttons(GLFWwindow* window)
+	{
+		for (gui::GuiTexture* button : pause_guis) {
+			gui::Button* new_button = ConvertGuiTextureToButton(button);
+			if (new_button != NULL)
+				new_button->Update(window);
+		}
 	}
 
 	//updates certain variables 

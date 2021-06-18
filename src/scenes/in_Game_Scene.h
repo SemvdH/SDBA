@@ -114,6 +114,10 @@ namespace scene
 		 *
 		 */
 		void LoadChunk(int model_pos);
+
+		void update_buttons(GLFWwindow* window);
+
+		gui::Button* ConvertGuiTextureToButton(gui::GuiTexture* texture);
 	
 	public:
 		In_Game_Scene(int *score_ptr);
