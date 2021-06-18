@@ -177,21 +177,23 @@ namespace scene
 		gui::Button pause_button_resume(render_engine::loader::LoadTexture("res/menu_item_start1.png"), glm::vec2(0.0f, 0.3f), glm::vec2(0.25f, 0.25f));
 		pause_button_resume.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_start1_hover.png"));
 		pause_button_resume.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_start1_click.png"));
-		pause_button_resume.SetOnClickAction([]()
-			{
-				std::cout << "I got clicked on the resume button!" << std::endl;
-				//game_state = scene::Game_State::RUNNING;
-			});
+		std::function<void()> resume_fun = [this]()
+		{
+			std::cout << "I got clicked on the resume button!" << std::endl;
+			game_state = scene::Game_State::RUNNING;
+		};
+		pause_button_resume.SetOnClickAction(resume_fun);
 		pause_guis.push_back(&pause_button_resume);
 
 		gui::Button pause_button_quit(render_engine::loader::LoadTexture("res/menu_item_quit1.png"), glm::vec2(0.0f, -0.3f), glm::vec2(0.25f, 0.25f));
 		pause_button_quit.SetHoverTexture(render_engine::loader::LoadTexture("res/menu_item_quit1_hover.png"));
 		pause_button_quit.SetClickedTexture(render_engine::loader::LoadTexture("res/menu_item_quit1_click.png"));
-		pause_button_quit.SetOnClickAction([]()
-			{
-				std::cout << "I got clicked on the quit button!" << std::endl;
-				//return_value = scene::Scenes::STOP;
-			});
+		std::function<void()> stop_function = [this]()
+		{
+			std::cout << "I got clicked on the quit button!" << std::endl;
+			return_value = scene::Scenes::STOP;
+		};
+		pause_button_quit.SetOnClickAction(stop_function);
 		pause_guis.push_back(&pause_button_quit);
 
 		regions.push_back(&reg_left);
