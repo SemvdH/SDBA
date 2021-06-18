@@ -20,10 +20,10 @@ namespace scene {
 	};
 
 	class Scene
-	{
+	{		
 	public:
 		virtual ~Scene() = 0;
-
+		
 		/**
 		 * @brief the method start is the start of a scene where a while loop runs, this runs the scene.
 		 * @param window the main window of the application
@@ -55,7 +55,6 @@ namespace scene {
 		 * @return void
 		 */
 		virtual void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) {};
+
 	};
 }
-
-

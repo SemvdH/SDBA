@@ -8,6 +8,14 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/video.hpp>
+#include <GLFW/glfw3.h>
+
+#include "background_remover.h"
+#include "skin_detector.h"
+#include "finger_count.h"
+#include "async/StaticCameraInstance.h"
+#include "calibration/HandCalibrator.h"
 
 
 namespace computervision
@@ -86,6 +94,7 @@ namespace computervision
 	private:
 		bool is_hand_open;
 		bool is_hand_present;
+		void UpdateTime();
 
 	};
 

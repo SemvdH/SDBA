@@ -121,5 +121,87 @@ namespace render_engine
 
 			shader.Stop();
 		}
+
+		void Render(std::vector<std::shared_ptr<gui::GuiTexture>>& guis, shaders::GuiShader& shader)
+		{
+			shader.Start();
+
+			// Enable the VAO and the positions VBO
+			glBindVertexArray(quad.vao_id);
+			glEnableVertexAttribArray(0);
+
+			// Enable alpha blending (for transparency in the texture)
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			// Disable depth testing to textures with transparency can overlap
+			glDisable(GL_DEPTH_TEST);
+
+			// Render each gui to the screen
+			for (std::shared_ptr<gui::GuiTexture> gui : guis)
+			{
+				// Bind the texture of the gui to the shader
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, gui->texture);
+
+				glm::mat4 matrix = toolbox::CreateModelMatrix(gui->position, gui->scale);
+				shader.LoadModelMatrix(matrix);
+
+				glDrawArrays(GL_TRIANGLE_STRIP, 0, quad.vertex_count);
+
+				std::cout << "in render method, gui x value: " << gui.get()->scale.x << std::endl;
+			}
+
+			// Enable depth test again
+			glEnable(GL_DEPTH_TEST);
+
+			// Disable alpha blending
+			glDisable(GL_BLEND);
+
+			// Disable the VBO and VAO
+			glDisableVertexAttribArray(0);
+			glBindVertexArray(0);
+
+			shader.Stop();
+		}
+
+		void Render(std::shared_ptr<gui::GuiTexture>& gui, shaders::GuiShader& shader)
+		{
+			shader.Start();
+
+			// Enable the VAO and the positions VBO
+			glBindVertexArray(quad.vao_id);
+			glEnableVertexAttribArray(0);
+
+			// Enable alpha blending (for transparency in the texture)
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			// Disable depth testing to textures with transparency can overlap
+			glDisable(GL_DEPTH_TEST);
+
+			// Render each gui to the screen
+			// Bind the texture of the gui to the shader
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, gui->texture);
+
+			glm::mat4 matrix = toolbox::CreateModelMatrix(gui->position, gui->scale);
+			shader.LoadModelMatrix(matrix);
+
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, quad.vertex_count);
+
+
+			// Enable depth test again
+			glEnable(GL_DEPTH_TEST);
+
+			// Disable alpha blending
+			glDisable(GL_BLEND);
+
+			// Disable the VBO and VAO
+			glDisableVertexAttribArray(0);
+			glBindVertexArray(0);
+
+			shader.Stop();
+		}
 	}
 }

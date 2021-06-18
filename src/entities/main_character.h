@@ -2,6 +2,7 @@
 
 #include "collision_entity.h"
 #include "../shaders/entity_shader.h"
+#include "../computervision/HandDetectRegion.h"
 
 namespace entities
 {
@@ -9,8 +10,8 @@ namespace entities
 	* This class contains the information about the player model
 	*/
 	class MainCharacter : public CollisionEntity {
-		const float SIDE_SPEED = 0.8f;		//Standard movement speed for left/right movement
-		const float UP_SPEED = 2.0f;		//Standard movement speed for up movement
+		const int SIDE_SPEED = 40;		//Standard movement speed for left/right movement
+		const int UP_SPEED = 100;		//Standard movement speed for up movement
 	public:
 		/*
 		* @brief: Constructor for the main character model
@@ -31,8 +32,10 @@ namespace entities
 		* 
 		* @return: Vector with the adjusted side_speed, down_speed, and movement_speed
 		*/
-		void Move(GLFWwindow* window);
+		void Move(std::vector<computervision::HandDetectRegion*> regions);
 
 		void OnCollide(const collision::Collision& collision) override;
+
+		double UpdateDelta();
 	};
 }

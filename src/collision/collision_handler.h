@@ -4,6 +4,7 @@
 #include <vector>
 #include "../entities/collision_entity.h"
 #include "collision.h"
+#include <deque>
 
 namespace collision
 {
@@ -13,5 +14,5 @@ namespace collision
 	 *
 	 * @param entities: A list with all the collision entities.
 	 */
-	void CheckCollisions(std::vector<std::shared_ptr<entities::CollisionEntity>> entities);
+	void CheckCollisions(std::deque<std::shared_ptr<entities::CollisionEntity>>& entities);
 }

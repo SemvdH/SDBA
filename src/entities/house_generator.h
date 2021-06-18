@@ -8,6 +8,7 @@
 #include "../models/Model.h"
 #include "../collision/collision.h"
 #include "../model_Storage.h"
+#include "collision_entity.h"
 
 namespace entities
 {

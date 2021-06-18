@@ -1,36 +1,16 @@
-#include <iostream>
-#include <memory>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include "in_Game_Scene.h"
-#include "startup_Scene.h"
-#include "../entities/main_character.h"
-#include "../collision/collision_handler.h"
-#include "../gui/gui_interactable.h"
-#include "../models/model.h"
-#include "../renderEngine/loader.h"
-#include "../renderEngine/obj_loader.h"
-#include "../renderEngine/renderer.h"
-#include "../shaders/entity_shader.h"
-#include "../toolbox/toolbox.h"
-#include "../entities/house_generator.h"
-#include <deque>
-#include <functional>
-#include <memory>
-#include <queue>
-#include <opencv2/core/base.hpp>
-#include "../computervision/HandDetectRegion.h"
-#include "../computervision/ObjectDetection.h"
 
 #define MAX_MODEL_DEQUE_SIZE 6 // max amount of models to load at the same time
 #define UPCOMING_MODEL_AMOUNT 4 // how much models should be loaded in front of us
 
 
-
 namespace scene
 {
 	std::shared_ptr<entities::MainCharacter>main_character;
-	std::vector<std::shared_ptr<entities::CollisionEntity>> collision_entities;
+	std::deque<std::shared_ptr<entities::CollisionEntity>> collision_entities;
+
+	//std::deque<std::shared_ptr<entities::CollisionEntity>> furniture_collision;
+
 	entities::HouseGenerator* house_generator;
 	std::deque<std::shared_ptr<entities::Entity>> house_models;
 
@@ -39,9 +19,13 @@ namespace scene
 	shaders::EntityShader* shader;
 	shaders::GuiShader* gui_shader;
 	std::vector<gui::GuiTexture*> guis;
+	std::vector<std::shared_ptr<gui::GuiTexture>> score_textures;
 
 	int furniture_count_old;
 	int score;
+	int* ptr;
+
+	float delta_time = 0;
 
 	std::vector<computervision::HandDetectRegion> regions;
 	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
@@ -49,8 +33,9 @@ namespace scene
 	/**
 	 * sets up the first things when the objects has been made
 	 */
-	In_Game_Scene::In_Game_Scene()
+	In_Game_Scene::In_Game_Scene(int *score_ptr)
 	{
+		ptr = score_ptr;
 		camera = std::make_unique<entities::Camera>(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
 		shader = new shaders::EntityShader;
@@ -60,9 +45,22 @@ namespace scene
 		gui_shader = new shaders::GuiShader();
 		gui_shader->Init();
 		score = 0;
+
+		for (int i = 0; i <= 9; i++)
+		{
+			std::shared_ptr<gui::GuiTexture> score_pointer;
+
+			std::string texture_path = "res/";
+			texture_path += std::to_string(i);
+			texture_path += ".png";
+
+			score_pointer = std::make_unique<gui::GuiTexture>(render_engine::loader::LoadTexture(texture_path), glm::vec2(-0.9f, 0.8f), glm::vec2(0.07, 0.15));
+			score_textures.push_back(score_pointer);
+		}
 	}
+
 	/**
-	 * temporary!!!!
+	 * temporary?
 	 * just to make some bounding boxes
 	 */
 	collision::Box create_bounding_box(glm::vec3 size, glm::vec3 pos, int scale) {
@@ -83,32 +81,38 @@ namespace scene
 		delete house_generator;
 	}
 
-
-	/**
-	 * @brief loads a new chunk in front of the camera, and deletes the chunk behind the camera.
-	 *
-	 * @param model_pos the amount of models the camera has passed already. This is the rounded result of (z position of camera) / (size of model)
-	 *
-	 */
-	void load_chunk(int model_pos)
+	
+	void In_Game_Scene::SetupHandDetection()
 	{
-		static unsigned int furniture_count = 0;
-
 		// set up squares according to size of camera input
 		cv::Mat camera_frame;
 		static_camera::getCap().read(camera_frame); // get camera frame to know the width and heigth
+
+		reg_left.SetMainSkinDetecRegion(true);
+		reg_right.SetMainSkinDetecRegion(false);
+		reg_right.SetMainSkinDetecRegion(false);
+		std::function<void()> callback = [this]() {OnSkinCalibrationCallback(); };
+		reg_left.SetSkinTimerCallback(callback);
+
 		reg_left.SetXPos(10);
 		reg_left.SetYPos(camera_frame.rows / 2 - reg_left.GetHeight() / 2);
 		reg_right.SetXPos(camera_frame.cols - 10 - reg_right.GetWidth());
 		reg_right.SetYPos(camera_frame.rows / 2 - reg_right.GetHeight() / 2);
 		reg_up.SetXPos(camera_frame.cols / 2 - reg_up.GetWidth() / 2);
 		reg_up.SetYPos(10);
+	}
+
+	
+	void In_Game_Scene::LoadChunk(int model_pos)
+	{
+		static unsigned int furniture_count = 0;
 		std::cout << "loading model chunk" << std::endl;
 		if (house_models.size() >= MAX_MODEL_DEQUE_SIZE * furniture_count)
 		{
 			for (int i = 0; i < furniture_count; i++)
 			{
 				house_models.pop_front();
+				collision_entities.erase(collision_entities.begin() + 1);
 			}
 		}
 		int z_offset = model_pos * (house_generator->GetHouseDepth()); // how much "in the distance" we should load the model
@@ -116,10 +120,12 @@ namespace scene
 		std::deque<std::shared_ptr<entities::CollisionEntity>> furniture;
 		house_generator->GenerateHouse(&furniture, glm::vec3(0, -75, -50 - z_offset), 90);
 		furniture_count = furniture.size();
-
+		
 		house_models.insert(house_models.end(), furniture.begin(), furniture.end());
+		collision_entities.insert(collision_entities.end(), furniture.begin(), furniture.end());
 		std::cout << "funriture_count in load chunk (house included): " << furniture_count << std::endl;
 		furniture_count_old = furniture_count - 1;
+
 	}
 
 	/**
@@ -135,13 +141,17 @@ namespace scene
 		raw_model_char = render_engine::LoadObjModel("res/beeTwo.obj");
 		models::TexturedModel model_char = { raw_model_char, texture };
 		collision::Box char_box = create_bounding_box(raw_model_char.model_size, glm::vec3(0, 0, 0), 1);
-		main_character = std::make_shared<entities::MainCharacter>(model_char, glm::vec3(0, -50, -100), glm::vec3(0, 90, 0), 5, char_box);
-		collision_entities.push_back(main_character);
+		main_character = std::make_shared<entities::MainCharacter>(model_char, glm::vec3(0, 50, -100), glm::vec3(0, 90, 0), 5, char_box);
+		
+		//collision_entities.push_back(main_character);
 		house_generator = new entities::HouseGenerator();
+
+		SetupHandDetection();
+
 		// load the first few house models
 		for (int i = 0; i <= UPCOMING_MODEL_AMOUNT; i++)
 		{
-			load_chunk(i);
+			LoadChunk(i);
 		}
 
 		lights.push_back(entities::Light(glm::vec3(0, 1000, 7000), glm::vec3(5, 5, 5))); // sun
@@ -181,6 +191,9 @@ namespace scene
 			});
 		pause_guis.push_back(&pause_button_quit);
 
+		regions.push_back(&reg_left);
+		regions.push_back(&reg_up);
+		regions.push_back(&reg_right);
 
 		//the scene loop, this while loop represent the scene
 		while (return_value == scene::Scenes::INGAME)
@@ -242,16 +255,24 @@ namespace scene
 
 		// Stop rendering the entities
 		shader->Stop();
+
+		DrawScore(score);
 	}
 
 	//updates certain variables 
 	void scene::In_Game_Scene::update(GLFWwindow* window)
 	{
+		UpdateDeltaTime();
 		//camera.Move(window);
+		update_hand_detection();
+		main_character->Move(regions);
+		if (!main_character.get()->GetOnCollide())
+		{	
+			*ptr = score;
+			std::cout << "Score: " << score << std::endl;
+			return_value = scene::Scenes::GAMEOVER;
+		}
 
-		main_character->Move(window);
-
-		//std::cout << "x get: " << movement.x << "\ny get: " << movement.y << "\nz get: " << movement.z << "\n";
 		camera->Follow(main_character->GetPosition());
 
 		// calculate where the next house model should be loaded
@@ -261,15 +282,19 @@ namespace scene
 		// if we have passed a model, load a new one and delete the one behind us
 		if (last_model_pos != model_pos)
 		{
-			load_chunk(model_pos + UPCOMING_MODEL_AMOUNT);
+			LoadChunk(model_pos + UPCOMING_MODEL_AMOUNT);
 			score += furniture_count_old;
 			std::cout << "Score: " << score << std::endl;
-			std::cout << "Funriture_count_old in model (house excluded): " << furniture_count_old << std::endl;
+			std::cout << "Furniture_count_old in model (house excluded): " << furniture_count_old << std::endl;
+
 		}
 		// remember the position at which the new model was added
 		last_model_pos = model_pos;
+		collision_entities.push_front(main_character);
 
 		collision::CheckCollisions(collision_entities);
+		collision_entities.pop_front();
+		
 		update_hand_detection();
 	}
 
@@ -289,24 +314,14 @@ namespace scene
 		{
 			game_state = scene::Game_State::RUNNING;
 		}
-
-		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
-		{
-			reg_left.CalibrateBackground();
-			reg_right.CalibrateBackground();
-			reg_up.CalibrateBackground();
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		{
-			std::vector<int> tresholds = reg_left.CalculateSkinTresholds();
-			reg_right.setSkinTresholds(tresholds);
-			reg_up.setSkinTresholds(tresholds);
-		}
 	}
 
 	void scene::In_Game_Scene::update_hand_detection()
 	{
+		reg_left.UpdateTime(delta_time);
+		reg_right.UpdateTime(delta_time);
+		reg_up.UpdateTime(delta_time);
+
 		cv::Mat camera_frame;
 		static_camera::getCap().read(camera_frame);
 		reg_left.DetectHand(camera_frame);
@@ -316,9 +331,41 @@ namespace scene
 		cv::imshow("camera", camera_frame);
 	}
 
+	void scene::In_Game_Scene::OnSkinCalibrationCallback()
+	{
+		std::cout << "on skin calibration callback" << std::endl;
+		std::vector<int> tresholds = reg_left.CalculateSkinTresholds();
+		reg_right.setSkinTresholds(tresholds);
+		reg_up.setSkinTresholds(tresholds);
+	}
+
 	//renders the models for the pause menu
 	void In_Game_Scene::render_pause_menu()
 	{
 		render_engine::renderer::Render(pause_guis, *gui_shader);
+	}
+
+	void In_Game_Scene::DrawScore(int score)
+	{
+		std::vector<int> digits;
+		score_guis.clear();
+
+		toolbox::GetDigitsFromNumber(score, digits);
+
+
+		for (int i = digits.size() - 1; i >= 0; i--)
+		{
+			score_textures[digits[i]].get()->position.x = 0.15 * i - 0.9; // place the number at the top left. the numbers are just fine tuned to get the position just right
+			render_engine::renderer::Render(score_textures[digits[i]], *gui_shader);
+		}
+	}
+
+	void In_Game_Scene::UpdateDeltaTime()
+	{
+		double current_time = glfwGetTime();
+		static double last_frame_time = current_time;
+		delta_time = current_time - last_frame_time;
+		last_frame_time = current_time;
+
 	}
 }

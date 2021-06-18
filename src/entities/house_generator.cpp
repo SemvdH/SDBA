@@ -33,6 +33,7 @@ namespace entities
 			}
 		}
 		
+
 	}
 
 	void HouseGenerator::GetFurniturePiece(singleton::FurnitureType type, singleton::FurniturePiece* furniture_piece)
@@ -127,5 +128,4 @@ namespace entities
 
 		return furniture_list.at(modelNumber);
 	}
-	
 }
