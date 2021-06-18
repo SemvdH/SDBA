@@ -1,7 +1,9 @@
 #pragma once
+#include <iostream>
 #include <deque>
 #include <mutex>
 #include "models/Model.h"
+#include "entities/Entity.h"
 
 namespace singleton {
 	class Model_Storage
@@ -14,6 +16,8 @@ namespace singleton {
 		models::TexturedModel house_model;
 		//default texture
 		models::ModelTexture default_texture;
+
+		entities::Entity* test_pointer;
 
 		//list of furniture:
 		//couches
@@ -44,7 +48,7 @@ namespace singleton {
 		std::deque<models::TexturedModel> miscs;
 
 	protected:
-		Model_Storage() {}
+		Model_Storage() { std::cout << "MAKING A NEW SINGLETON!!!" << std::endl; }
 		~Model_Storage();
 
 	public:
@@ -93,6 +97,10 @@ namespace singleton {
 		//setters for the standard variables
 		void set_house_model(models::TexturedModel house);
 		void set_default_texture(models::ModelTexture texture);
+
+		void set_shared_test(entities::Entity* pointer);
+		entities::Entity* get_test_pointer();
+
 	};
 }
 

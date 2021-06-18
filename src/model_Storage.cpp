@@ -165,12 +165,12 @@ models::TexturedModel singleton::Model_Storage::get_misc(int index)
 //getters for default variables
 models::TexturedModel singleton::Model_Storage::get_house_model()
 {
-	return models::TexturedModel();
+	return house_model;
 }
 
 models::ModelTexture singleton::Model_Storage::get_default_texture()
 {
-	return models::ModelTexture();
+	return default_texture;
 }
 
  //setters for deafult variables
@@ -183,5 +183,20 @@ void singleton::Model_Storage::set_default_texture(models::ModelTexture texture)
 {
 	default_texture = texture;
 }
+
+
+
+
+void singleton::Model_Storage::set_shared_test(entities::Entity* temp)
+{
+	test_pointer = temp;
+}
+
+entities::Entity* singleton::Model_Storage::get_test_pointer()
+{
+	return test_pointer;
+}
+
+
 
 
