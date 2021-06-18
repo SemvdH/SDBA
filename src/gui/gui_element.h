@@ -19,7 +19,7 @@ namespace gui
 	 */
 	struct GuiTexture
 	{
-		unsigned int texture;
+		GLuint texture;
 		glm::vec2 position;
 		glm::vec2 scale;
 
