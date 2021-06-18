@@ -27,7 +27,7 @@ namespace scene
 
 	float delta_time = 0;
 
-	std::vector<computervision::HandDetectRegion> regions;
+	std::vector<computervision::HandDetectRegion*> regions;
 	computervision::HandDetectRegion reg_left("left", 0, 0, 150, 150), reg_right("right", 0, 0, 150, 150), reg_up("up", 0, 0, 150, 150);
 
 	/**

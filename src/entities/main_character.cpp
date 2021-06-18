@@ -100,4 +100,9 @@ namespace entities
 		last_frame_time = current_time;
 		return delt_time;
 	}
+
+	bool MainCharacter::GetOnCollide()
+	{
+		return is_playing;
+	}
 }

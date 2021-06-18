@@ -2,7 +2,7 @@
 
 #include "collision_entity.h"
 #include "../shaders/entity_shader.h"
-#include "../computervision/HandDetectRegion.h"
+#include "../computervision/hand_detect_region.h"
 
 namespace entities
 {
@@ -35,6 +35,8 @@ namespace entities
 		void Move(std::vector<computervision::HandDetectRegion*> regions);
 
 		void OnCollide(const collision::Collision& collision) override;
+
+		bool GetOnCollide();
 
 		double UpdateDelta();
 	};

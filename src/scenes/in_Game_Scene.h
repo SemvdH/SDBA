@@ -150,13 +150,6 @@ namespace scene
 		 * @return void
 		 */
 		void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) override;
-	
-		/**
-		* @brief: This method renders the score points onto the game window
-		* @param score: Score to show
-		*/
-		void DrawScore(int score);
-
 	};
 }
 

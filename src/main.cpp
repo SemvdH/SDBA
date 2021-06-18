@@ -30,7 +30,7 @@
 #include "scenes/loading_Scene.h"
 #include "model_Storage.h"
 
-#include "computervision/ObjectDetection.h"
+#include "computervision/object_detection.h"
 #include "scenes/game_Over_Scene.h"
 #include "entities/collision_entity.h"
 #include "computervision/object_detection.h"
