@@ -2,11 +2,13 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
+#include <GLFW/glfw3.h>
+
 #include "async/StaticCameraInstance.h"
 #include "calibration/HandCalibrator.h"
-#include "BackgroundRemover.h"
-#include "SkinDetector.h"
-#include "FingerCount.h"
+#include "background_remover.h"
+#include "skin_detector.h"
+#include "finger_count.h"
 namespace computervision
 {
 	class HandDetectRegion
@@ -36,8 +38,12 @@ namespace computervision
 		std::vector<int> CalculateSkinTresholds();
 
 		void setSkinTresholds(std::vector<int>& tresholds);
+		void UpdateTime(float delta_time);
+		void SetMainSkinDetecRegion(bool val) { is_main_skin_detection_region = val; };
+		void SetSkinTimerCallback(std::function<void()> fun) { skin_timer_callback = fun; };
 
 	private:
+
 		int start_x_pos;
 		int start_y_pos;
 		int region_height;
@@ -51,6 +57,17 @@ namespace computervision
 		std::string region_id;
 
 		bool DrawHandMask(cv::Mat* input);
+
+		float time = 0;
+		int seconds_left = 5; // calibration countdown
+
+		bool background_calibrated = false;
+		bool skin_calibrated = false;
+		bool is_main_skin_detection_region = false;
+		std::function<void()> skin_timer_callback;
+
+
+		
 	};
 
 }

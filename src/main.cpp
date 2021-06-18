@@ -27,8 +27,7 @@
 #include "scenes/scene.h"
 #include "scenes/in_Game_Scene.h"
 #include "scenes/startup_Scene.h"
-
-#include "computervision/ObjectDetection.h"
+#include "computervision/object_detection.h"
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
