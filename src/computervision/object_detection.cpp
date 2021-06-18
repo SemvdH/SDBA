@@ -4,10 +4,10 @@
 #include <opencv2/video.hpp>
 #include <GLFW/glfw3.h>
 
-#include "ObjectDetection.h"
-#include "BackgroundRemover.h"
-#include "SkinDetector.h"
-#include "FingerCount.h"
+#include "object_detection.h"
+#include "background_remover.h"
+#include "skin_detector.h"
+#include "finger_count.h"
 #include "async/StaticCameraInstance.h"
 #include "calibration/HandCalibrator.h"
 
@@ -116,8 +116,15 @@ namespace computervision
 		std::string calibration_text = (!background_calibrated ? "calibrating background in " : (!skin_calibrated ? "calibrating skin in " : ""));
 		calibration_text += std::to_string(seconds_left);
 		if (!background_calibrated || !skin_calibrated)
-			cv:putText(camera_frame, calibration_text, cv::Point(5, 400), cv::FONT_HERSHEY_COMPLEX, 1.0, cv::Scalar(255, 0, 255), 2);
+		{
+			cv::rectangle(camera_frame, cv::Rect(0, camera_frame.rows - 120, 500, 50), cv::Scalar(0, 0, 0), -1);
+			cv::putText(camera_frame, calibration_text, cv::Point(5, camera_frame.rows-80), cv::FONT_HERSHEY_COMPLEX, 1.0, cv::Scalar(255, 0, 255), 2);
+		}
 
+		if (background_calibrated && !skin_calibrated)
+		{
+			cv::putText(camera_frame, "put your hand in the square", cv::Point(5, camera_frame.rows - 100), cv::FONT_HERSHEY_COMPLEX, 1.0, cv::Scalar(255, 0, 255), 2);
+		}
 		imshow("camera", camera_frame);
 
 		/*imshow("output", frame_out);

@@ -6,9 +6,9 @@
 
 #include "async/StaticCameraInstance.h"
 #include "calibration/HandCalibrator.h"
-#include "BackgroundRemover.h"
-#include "SkinDetector.h"
-#include "FingerCount.h"
+#include "background_remover.h"
+#include "skin_detector.h"
+#include "finger_count.h"
 namespace computervision
 {
 	class HandDetectRegion

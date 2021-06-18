@@ -1,4 +1,4 @@
-#include "SkinDetector.h"
+#include "skin_detector.h"
 #include <iostream>
 
 /*

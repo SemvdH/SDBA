@@ -1,5 +1,5 @@
 
-#include "HandDetectRegion.h"
+#include "hand_detect_region.h"
 #define TIME_DURATION 1.0f
 namespace computervision
 {
@@ -83,7 +83,14 @@ namespace computervision
 		std::string calibration_text = (!background_calibrated ? "calibrating background in " : (!skin_calibrated ? "calibrating skin in " : ""));
 		calibration_text += std::to_string(seconds_left);
 		if (!background_calibrated || !skin_calibrated)
+		{
+			cv::rectangle(camera_frame, cv::Rect(0, camera_frame.rows - 130, 600, 60), cv::Scalar(0, 0, 0), -1);
 			cv:putText(camera_frame, calibration_text, cv::Point(5, 400), cv::FONT_HERSHEY_COMPLEX, 1.0, cv::Scalar(255, 0, 255), 2);
+		}
+		if (background_calibrated && !skin_calibrated)
+		{
+			cv::putText(camera_frame, "put your hand in the left square", cv::Point(5, camera_frame.rows - 105), cv::FONT_HERSHEY_COMPLEX, 1.0, cv::Scalar(255, 0, 255), 2);
+		}
 
 	}
 

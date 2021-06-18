@@ -28,7 +28,7 @@
 #include "scenes/in_Game_Scene.h"
 #include "scenes/startup_Scene.h"
 
-#include "computervision/ObjectDetection.h"
+#include "computervision/object_detection.h"
 //#include "computervision/OpenPoseImage.h"
 #include "computervision/OpenPoseVideo.h"
 

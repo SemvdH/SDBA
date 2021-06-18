@@ -19,8 +19,8 @@
 #include <memory>
 #include <queue>
 #include <opencv2/core/base.hpp>
-#include "../computervision/HandDetectRegion.h"
-#include "../computervision/ObjectDetection.h"
+#include "../computervision/hand_detect_region.h"
+#include "../computervision/object_detection.h"
 #include <string>
 
 #define MAX_MODEL_DEQUE_SIZE 6 // max amount of models to load at the same time

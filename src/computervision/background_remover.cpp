@@ -1,4 +1,4 @@
-#include "BackgroundRemover.h"
+#include "background_remover.h"
 
 /*
  Author: Pierfrancesco Soffritti https://github.com/PierfrancescoSoffritti

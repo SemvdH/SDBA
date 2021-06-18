@@ -14,8 +14,8 @@
 #include "../gui/gui_interactable.h"
 #include "../toolbox/toolbox.h"
 #include "../computervision/MenuTest.h"
-#include "../computervision/ObjectDetection.h"
-#include "../computervision/HandDetectRegion.h"
+#include "../computervision/object_detection.h"
+#include "../computervision/hand_detect_region.h"
 
 
 
